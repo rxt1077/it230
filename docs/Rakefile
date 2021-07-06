@@ -1,0 +1,33 @@
+require 'asciidoctor'
+require 'asciidoctor-diagram'
+require 'webrick'
+
+output = 'output'
+
+desc 'Builds output directories'
+task :dirs do
+  mkdir_p "#{output}/images"
+end
+
+desc 'Copies over the images for HTML5 output'
+task :images => [:dirs] do
+  cp Dir.glob('images/*'), "#{output}/images"
+end
+
+desc 'Builds the HTML5 version of the book'
+task :html5 => [:images] do
+  Asciidoctor.convert_file(
+    'index.adoc',
+    to_dir: output,
+    safe: :unsafe
+  )
+end
+
+desc "Runs an HTTP server to serve the /docs/#{output} directory"
+task :server do
+  server = WEBrick::HTTPServer.new :Port => 8080, :DocumentRoot => "/docs/#{output}"
+  trap 'INT' do server.shutdown end
+  server.start
+end
+
+task :default => [:html5]

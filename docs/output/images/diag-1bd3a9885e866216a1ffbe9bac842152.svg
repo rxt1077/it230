@@ -1,0 +1,137 @@
+<svg height='256' preserveAspectRatio='xMidYMid meet' viewBox='0 0 440 256' width='440' xmlns='http://www.w3.org/2000/svg'>
+    <style>line, path, circle,rect,polygon {
+                          stroke: black;
+                          stroke-width: 2;
+                          stroke-opacity: 1;
+                          fill-opacity: 1;
+                          stroke-linecap: round;
+                          stroke-linejoin: miter;
+                        }
+
+                    text {
+                        /* This fix the spacing bug in svg text*/
+                        white-space: pre;
+                        fill: black;
+                        }
+                        rect.backdrop{
+                            stroke: none;
+                            fill: white;
+                        }
+                        .broken{
+                            stroke-dasharray: 8;
+                        }
+                        .filled{
+                            fill: black;
+                        }
+                        .bg_filled{
+                            fill: white;
+                        }
+                        .nofill{
+                            fill: white;
+                        }
+
+                        text {
+                         font-family: monospace;
+                         font-size: 14px;
+                        }
+
+                        .end_marked_arrow{
+                            marker-end: url(#arrow);
+                         }
+                        .start_marked_arrow{
+                            marker-start: url(#arrow);
+                         }
+
+                        .end_marked_diamond{
+                            marker-end: url(#diamond);
+                         }
+                        .start_marked_diamond{
+                            marker-start: url(#diamond);
+                         }
+
+                        .end_marked_circle{
+                            marker-end: url(#circle);
+                         }
+                        .start_marked_circle{
+                            marker-start: url(#circle);
+                         }
+
+                        .end_marked_open_circle{
+                            marker-end: url(#open_circle);
+                         }
+                        .start_marked_open_circle{
+                            marker-start: url(#open_circle);
+                         }
+
+                        .end_marked_big_open_circle{
+                            marker-end: url(#big_open_circle);
+                         }
+                        .start_marked_big_open_circle{
+                            marker-start: url(#big_open_circle);
+                         }
+
+                         
+                        </style>
+    <defs>
+        <marker id='arrow' markerHeight='7' markerWidth='7' orient='auto-start-reverse' refX='4' refY='2' viewBox='-2 -2 8 8'>
+            <polygon points='0,0 0,4 4,2 0,0'/>
+        </marker>
+        <marker id='diamond' markerHeight='7' markerWidth='7' orient='auto-start-reverse' refX='4' refY='2' viewBox='-2 -2 8 8'>
+            <polygon points='0,2 2,0 4,2 2,4 0,2'/>
+        </marker>
+        <marker id='circle' markerHeight='7' markerWidth='7' orient='auto-start-reverse' refX='4' refY='4' viewBox='0 0 8 8'>
+            <circle class='filled' cx='4' cy='4' r='2'/>
+        </marker>
+        <marker id='open_circle' markerHeight='7' markerWidth='7' orient='auto-start-reverse' refX='4' refY='4' viewBox='0 0 8 8'>
+            <circle class='bg_filled' cx='4' cy='4' r='2'/>
+        </marker>
+        <marker id='big_open_circle' markerHeight='7' markerWidth='7' orient='auto-start-reverse' refX='4' refY='4' viewBox='0 0 8 8'>
+            <circle class='bg_filled' cx='4' cy='4' r='3'/>
+        </marker>
+    </defs>
+    <rect class='backdrop' height='256' width='440' x='0' y='0'/>
+    <text x='194' y='12'>Legal</text>
+    <text x='186' y='236'>Illegal</text>
+    <text x='258' y='76'>White</text>
+    <text x='306' y='76'>Hat</text>
+    <text x='2' y='124'>Malicious</text>
+    <text x='354' y='124'>Benevolent</text>
+    <text x='98' y='204'>Black</text>
+    <text x='146' y='204'>Hat</text>
+    <text x='266' y='204'>Gray</text>
+    <text x='306' y='204'>Hat</text>
+    <g>
+        <polygon class='filled' points='208,28 212,16 216,28'/>
+        <line class='solid' x1='212' x2='212' y1='28' y2='212'/>
+        <polygon class='filled' points='208,212 216,212 212,224'/>
+    </g>
+    <g>
+        <polygon class='filled' points='88,116 80,120 88,124'/>
+        <line class='solid' x1='88' x2='336' y1='120' y2='120'/>
+        <polygon class='filled' points='336,116 344,120 336,124'/>
+    </g>
+    <g>
+        <path class='nofill' d='M 288,40 A 4,4 0,0,0 284,44'/>
+        <line class='solid' x1='284' x2='284' y1='44' y2='56'/>
+        <line class='solid' x1='288' x2='296' y1='40' y2='40'/>
+        <path class='nofill' d='M 296,40 A 4,4 0,0,1 300,44'/>
+        <line class='solid' x1='300' x2='300' y1='44' y2='56'/>
+        <line class='solid' x1='272' x2='312' y1='56' y2='56'/>
+    </g>
+    <g>
+        <path class='nofill' d='M 128,168 A 4,4 0,0,0 124,172'/>
+        <line class='solid' x1='124' x2='124' y1='172' y2='184'/>
+        <line class='solid' x1='128' x2='136' y1='168' y2='168'/>
+        <path class='nofill' d='M 136,168 A 4,4 0,0,1 140,172'/>
+        <line class='solid' x1='140' x2='140' y1='172' y2='184'/>
+        <line class='solid' x1='112' x2='152' y1='184' y2='184'/>
+    </g>
+    <g>
+        <path class='nofill' d='M 288,168 A 4,4 0,0,0 284,172'/>
+        <line class='solid' x1='284' x2='284' y1='172' y2='184'/>
+        <line class='solid' x1='288' x2='296' y1='168' y2='168'/>
+        <path class='nofill' d='M 296,168 A 4,4 0,0,1 300,172'/>
+        <line class='solid' x1='300' x2='300' y1='172' y2='184'/>
+        <line class='solid' x1='272' x2='312' y1='184' y2='184'/>
+    </g>
+</svg>

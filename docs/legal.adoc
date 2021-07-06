@@ -1,0 +1,9 @@
+= Legal
+
+This work is licensed under a http://creativecommons.org/licenses/by-sa/4.0/[Creative Commons Attribution-ShareAlike 4.0 International License.]
+
+image:cc.png[Creative Commons License]
+
+All product names, logos, and brands are property of their respective owners.
+All company, product and service names used in this text are for identification purposes only.
+Use of these names, logos, and brands does not imply endorsement.

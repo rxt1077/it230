@@ -1,0 +1,14 @@
+= Computer Systems Security
+Ryan Tolboom <Ryan.Tolboom@njit.edu>
+:imagesdir: images
+:toc: left
+
+:leveloffset: +1
+
+include::legal.adoc[]
+
+include::ack.adoc[]
+
+:sectnums:
+
+include::intro.adoc[]

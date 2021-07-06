@@ -1,0 +1,200 @@
+= Introduction
+
+== Managing Risk
+
+image::db-locked.svg[width=200, float=left]
+
+_Information security_ (infosec) is largely the practice of preventing _unauthorized access_ to data.
+Unauthorized access is when an actor gains access to data that they do not have the permissions to access.
+The system is often used in an unintended manner to provide such access.
+Data has become an increasingly valuable asset and the _risks_ of others having access to data are incredibly high.
+Information security is typically falls under the risk-management plan of a company and its importance cannot be understated.
+People working in information technology (IT) have migrated from basic service positions all the way to directors of the company as IT assets have become the most valuable things a company owns.
+Guarding these assets and managing the inherent risk of their loss is the job of information security professionals.
+
+_Malicious software_, sometimes referred to as malware, is often employed to help an attacker gain access to a system.
+Many types of malicious software exist, but the common thread is that they perform actions that cause harm to a computer system or network.
+In the case of many attacks, _system failure_ may occur either as an intended, as is the case in Denial of Service (DoS) attacks, or unintended consequence.
+This means the system will no longer be able to perform its intended purpose.
+System failure is yet another risk that needs to be managed.
+
+== Learning the Lingo
+
+In general, the technical fields are laden with acronyms and obtuse vocabulary.
+Unfortunately security is no exception to this rule.
+Two of the most important acronyms you should be aware of to start are CIA and AAA.
+
+=== CIA
+
+[svgbob, cia, width=300, float=right]
+....
+                   /\
+                  /  \
+Confidentiality  /    \ Integrity
+                / CIA  \
+               /________\
+
+              Availability
+....
+
+CIA is an acronym used to remember the three foundational information security principles: confidentiality, integrity, and availability.
+These ideas form the cornerstone of security and should be ever-present in your thoughts.
+
+Confidentiality refers to the practice of keeping secret information secret.
+For example, if an e-commerce site stores credit card numbers (a questionable practice to begin with) those credit card numbers should be kept _confidential_.
+You would not want other users of the site or outsiders to have access to your credit card number.
+Many steps could be taken to ensure the confidentiality of user credit card numbers, but at this point it is enough to understand that maintaining confidentiality is a principle of security.
+
+Integrity is an assurance that data has not been corrupted or purposefully tampered with.
+As we discussed previously, data is very valuable, but how valuable is it if you can't be sure it is intact and reliable?
+In security we strive to maintain integrity so that the system and even the controls we have in place to guard the system can be trusted.
+Imagine that e-commerce site again.
+What would happen if an attacker could arbitrarily change delivery addresses stored in the system?
+Packages could be routed improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.
+
+Availability means that a system should remain up an running to ensure that valid users have access to the data when needed.
+In the simplest sense, you could ensure confidentiality and integrity by simply taking the system off line and not allowing any access.
+Such a system would be useless and this final principle addresses that.
+Systems are designed to be accessible and part of your security plan should be ensuring that they are.
+You will need to account for the costs of implementing confidentiality and integrity and make sure that the resources are available to keep the system working.
+In an extreme case, denial of service (DoS) attacks can actually target availability.
+By keeping this principle in mind, hopefully you can mitigate some of those risks.
+
+=== AAA
+
+[svgbob, aaa, width=200, float=left]
+....
+.---.
+| A |uthentication
++---+
+| A |uthorization
++---+
+| A |ccounting
+'---'
+....
+
+Another acronym you're going to encounter in many different contexts is AAA.
+It stands for Authentication, Authorization, and Accounting and it is used in designing and implementing protocols.
+Theses concepts should be remembered when designing security plans.
+
+Authentication is the process of confirming someone's identity.
+This may be done with usernames and passwords or more frequently via multi-factor authentication (MFA) which requires not only something you know, but something you have (fingerprints, key fob, etc.).
+
+Authorization refers to keeping track of which resources an entity has access to.
+This can be done via a permission scheme or access control list (ACL).
+Occasionally you will encounter something more exotic where authorization limits users to interactions during a particular time of day of from a particular IP address.
+
+Accounting refers to tracking the usage of resources.
+This may be as simple as noting in a log file when a user has logged in to keeping track of exactly which services and user uses and how long they use them.
+Accounting is incredibly important because it allows you to not only monitor for possible problems, but also inspect what has occurred _after_ a problem is encountered.
+Accounting also allows system administrators to show irrefutably what actions as user has taken.
+This can be very important evidence in a court of law.
+
+=== DRY
+
+While we're dispensing knowledge in the form of three letter acronyms (TLAs), another important acronym to keep in mind is DRY: Don't Repeat Yourself.
+
+[quote, Talking Heads, Psycho Killer]
+Say something once, why say it again?
+
+This is of course not entirely literal.
+Just because you've explained something to a coworker once does not mean that you shouldn't explain it again.
+It is meant as more of a guide for how you make use of _automation_ and how you design systems.
+Increasingly security experts are not being asked to analyze a single system, but a network of hundreds if not thousands of systems.
+In this case you should make use of scripts and tools to make sure you are not manually doing the same thing over and over.
+Have you found a good way of testing to see if a part of a system is secure?
+Put it in a script so that you can reuse the test on other systems.
+This same logic applies to how systems are designed.
+Do you have a database of user login info?
+Reuse that database across multiple systems.
+In short, "Don't repeat yourself!"
+
+== Hacker Culture
+
+The term _hacker_ comes from the sound that programmers would make when typing or _hacking_ away at keyboards.
+Originally a hacker was anyone who worked feverishly at a problem on a computer and the term _cracker_ was used to define people who attempted to bypass security systems.
+The distinction was eventually lost and a hacker has come to be the popular term for someone attempting to gain unauthorized access to data.
+For an interesting glimpse into early hacker culture/reasoning read https://archive.org/stream/The_Conscience_of_a_Hacker/hackersmanifesto.txt[The Conscience of a Hacker] by The Mentor originally published in Phrack Magazine 1986.
+
+.Hacker Hats
+****
+image::hats.png[width=450, float=right]
+////
+[svgbob, hats]
+....
+                        Legal
+                          ^
+                          |        .-.
+                          |       -+-+-
+                          |     White Hat
+                          |
+                          |
+Malicious <---------------+---------------> Benevolent
+                          |
+                          |
+               .-.        |        .-.
+              -+-+-       |       -+-+-
+            Black Hat     |      Gray Hat
+                          v
+                       Illegal
+....
+////
+
+An early attempt at classifying hackers involved assigning hat colors according to their motivations.
+This harkens back to the old western movies where the bad guys wore black hats and the good guys wore white hats.
+Just as in real life nothing is clearly black and white, as such we've laid the traditional roles on a two-axis continuum from malicious to benevolent and illegal to legal.
+
+White Hat::
+    These hackers are typically employed by a company to test the security of their systems.
+    They operate legally with the intent of ultimately improving security.
+Black Hat::
+    These hackers operate outside the bounds of the law, and as such are subject to prosecution.
+    Their intent is nefarious usually involving personal profit, malice, or some combination of the two.
+Gray Hat::
+    A gray hat hacker operates illegally but ultimately wants to improve the security of the system.
+    They may inform administrators of the details of their breach or they may be acting to force a group to better secure their system.
+    In rare circumstances a gray hat hacker may actually exploit a system for the purposes of hardening it once they have gained administrative access.
+    It should be noted that despite the good intentions, gray hat hackers are still operating illegally and may be subject to prosecution.
+
+There are several more hat distinctions (blue hats, green hats, etc.) with mixed meanings.
+For example a blue hat may refer to an external entity hired by a company to test the security of a component, as is the case in Microsoft, or it may refer to a hacker motivated by revenge.
+It is also worth nothing that the second quadrant of our graph is empty, but this does not mean that there aren't malicious, legal hackers.
+These may be software developers exploiting legal loopholes or possibly even individuals working for another government engaged in cyber warfare.
+****
+
+== Threat Actors
+
+* script kiddie, lamer, noob, luser
+* hacktivist
+* organized crime
+* advanced persistent threat (APT)
+
+== Security Plans
+
+== Tools of the Trade
+
+With all of this talk regarding how and why hackers attack systems, the question remains, "What can be done?"
+There are a few tools the security professional employs that are worth mentioning at this juncture including: _user awareness_, _anti-malware software_, _backups_, and _encryption_.
+
+User Awareness::
+    A major risk, some would argue the biggest risk, is that unprepared users will run malware programs or perform other harmful actions as directed by actors looking to gain access.
+    These actors may impersonate others or perform other _social engineering_ tactics to cause users to do as they say.
+    Probably the scariest statistic is the ease with which a massive attack requiring little effort can be performed.
+    Threat actors do not even need to personally reach out to users, they could simply send a mass email.
+    Through training programs and other methods of interaction a security professional can make users aware of these threats and train them to act accordingly.
+    Raising user awareness is a critical component of any security plan.
+
+Anti-Malware Software::
+    Given how prevalent the use of malware is a host of tools have been developed to prevent its usage.
+    These tools may filter downloads requests to prevent downloading malware, monitor network traffic to detect active malware patterns, scan files for malware signatures, or harden operating system loopholes used by malware.
+    A security plan will typically detail the type of anti-malware software being used as well as the intended purpose of its usage.
+
+Backups::
+    Maintaining a copy of the data used by a system can be a quick solution to the problems of ransomware and other attacks aimed at causing or threatening system failure.
+    While a backup does not solve the problem of the data being sold or used by others, it does allow for a quick recovery in many instances and should be part of a security plan.
+
+Encryption::
+    At its most simple, encryption obfuscates data and requires a key to make it useful.
+    Encryption can be employed to make copies of data obtained through unauthorized access useless to attackers that do not have the key.
+    Often, encryption and backups complement each other and fill in the use cases that each lacks individually.
+    As such, encryption will show up multiple times and in multiple ways in an average security plan.

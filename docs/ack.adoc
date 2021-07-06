@@ -1,0 +1,3 @@
+= Acknowledgements
+
+The author would like to thank New Jersey Institute of Technology (NJIT) Open Access Textbooks (OAT) project for helping to make this text possible.
