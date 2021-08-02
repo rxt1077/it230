@@ -8,21 +8,22 @@ _Information security_ (infosec) is largely the practice of preventing _unauthor
 Unauthorized access is when an actor gains access to data that they do not have the permissions to access.
 The system is often used in an unintended manner to provide such access.
 Data has become an increasingly valuable asset and the _risks_ of others having access to data are incredibly high.
-Information security is typically falls under the risk-management plan of a company and its importance cannot be understated.
-People working in information technology (IT) have migrated from basic service positions all the way to directors of the company as IT assets have become the most valuable things a company owns.
+Because of this, information security typically falls under the risk-management plan of a company and its importance cannot be understated.
+This is evidenced by the fact that information technology's (IT) typical role in a company has migrated from basic a basic service provider to directoships with a seat at the highest decision making table.
+This is directly due to the fact that IT assets have become the most valuable things many companies own.
 Guarding these assets and managing the inherent risk of their loss is the job of information security professionals.
 
-_Malicious software_, sometimes referred to as malware, is often employed to help an attacker gain access to a system.
+_Malicious software_, also referred to as malware, is often employed to help an attacker gain access to a system.
 Many types of malicious software exist, but the common thread is that they perform actions that cause harm to a computer system or network.
-In the case of many attacks, _system failure_ may occur either as an intended, as is the case in Denial of Service (DoS) attacks, or unintended consequence.
+In the case of many attacks, _system failure_ may occur either as an intended (as is the case in Denial of Service (DoS) attacks) or unintended consequence.
 This means the system will no longer be able to perform its intended purpose.
-System failure is yet another risk that needs to be managed.
+System failure is a serious risk that needs to be managed.
 
 == Learning the Lingo
 
 In general, the technical fields are laden with acronyms and obtuse vocabulary.
 Unfortunately security is no exception to this rule.
-Two of the most important acronyms you should be aware of to start are CIA and AAA.
+Three of the most important acronyms you should be aware of to start are _CIA_, _AAA_, and _DRY_.
 
 === CIA
 
@@ -37,22 +38,22 @@ Confidentiality  /    \ Integrity
               Availability
 ....
 
-CIA is an acronym used to remember the three foundational information security principles: confidentiality, integrity, and availability.
+While the Central Intelligence Agency does have a role to play in information security, for our purposes CIA is an acronym used to remember the three foundational information security principles: confidentiality, integrity, and availability.
 These ideas form the cornerstone of security and should be ever-present in your thoughts.
 
-Confidentiality refers to the practice of keeping secret information secret.
+_Confidentiality_ refers to the practice of keeping secret information secret.
 For example, if an e-commerce site stores credit card numbers (a questionable practice to begin with) those credit card numbers should be kept _confidential_.
 You would not want other users of the site or outsiders to have access to your credit card number.
 Many steps could be taken to ensure the confidentiality of user credit card numbers, but at this point it is enough to understand that maintaining confidentiality is a principle of security.
 
-Integrity is an assurance that data has not been corrupted or purposefully tampered with.
+_Integrity_ is an assurance that data has not been corrupted or purposefully tampered with.
 As we discussed previously, data is very valuable, but how valuable is it if you can't be sure it is intact and reliable?
 In security we strive to maintain integrity so that the system and even the controls we have in place to guard the system can be trusted.
 Imagine that e-commerce site again.
 What would happen if an attacker could arbitrarily change delivery addresses stored in the system?
 Packages could be routed improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.
 
-Availability means that a system should remain up an running to ensure that valid users have access to the data when needed.
+_Availability_ means that a system should remain up an running to ensure that valid users have access to the data when needed.
 In the simplest sense, you could ensure confidentiality and integrity by simply taking the system off line and not allowing any access.
 Such a system would be useless and this final principle addresses that.
 Systems are designed to be accessible and part of your security plan should be ensuring that they are.
@@ -74,11 +75,11 @@ By keeping this principle in mind, hopefully you can mitigate some of those risk
 ....
 
 Another acronym you're going to encounter in many different contexts is AAA.
-It stands for Authentication, Authorization, and Accounting and it is used in designing and implementing protocols.
+It stands for _Authentication_, _Authorization_, and _Accounting_ and it is used in designing and implementing protocols.
 Theses concepts should be remembered when designing security plans.
 
 Authentication is the process of confirming someone's identity.
-This may be done with usernames and passwords or more frequently via multi-factor authentication (MFA) which requires not only something you know, but something you have (fingerprints, key fob, etc.).
+This may be done with user names and passwords or more frequently via multi-factor authentication (MFA) which requires not only something you know, but something you have (fingerprints, key fob, etc.).
 
 Authorization refers to keeping track of which resources an entity has access to.
 This can be done via a permission scheme or access control list (ACL).
@@ -98,7 +99,7 @@ While we're dispensing knowledge in the form of three letter acronyms (TLAs), an
 Say something once, why say it again?
 
 This is of course not entirely literal.
-Just because you've explained something to a coworker once does not mean that you shouldn't explain it again.
+Just because you've explained something to a coworker once does _not_ mean that you shouldn't explain it again.
 It is meant as more of a guide for how you make use of _automation_ and how you design systems.
 Increasingly security experts are not being asked to analyze a single system, but a network of hundreds if not thousands of systems.
 In this case you should make use of scripts and tools to make sure you are not manually doing the same thing over and over.
@@ -164,12 +165,50 @@ These may be software developers exploiting legal loopholes or possibly even ind
 
 == Threat Actors
 
-* script kiddie, lamer, noob, luser
-* hacktivist
-* organized crime
-* advanced persistent threat (APT)
+.Guy Fawkes Mask
+image::anonymous.svg[width=200, float=right, link=https://en.wikipedia.org/wiki/Guy_Fawkes_mask#Anonymous]
+
+To better be able to manage the risks of a data breach, it helps to be able to identify/understand the attacker or threat actor involved.
+Just as there are many reasons an actor may attempt to gain unauthorized access there are also many groups of threat actors.
+
+Neophytes making use of automated tools that they may not fully understand are often referred to a _script kiddies_.
+You may hear other pejorative names as well such as lamer, noob, or luser, but the common thread is that these threat actors or _not_ highly sophisticated.
+The same techniques used for automating defensive security can also be applied to automating attacks.
+Unfortunately this means that you may encounter actors "punching above their weight" or using complex tools while having only a rudimentary understanding of what they do.
+
+Hacktivist are threat actors that attack to further social or political ends.
+These groups can be very sophisticated.
+The most well known hacktivist group is _Anonymous_ which has been linked to several politically motivated attacks.
+
+Organized crime is another element which may employ or support threat actors typically to make money.
+These groups typically have access to more resources and contacts than a solo actor.
+It is important to note that threat actors with roots in organized crime may find it easier to migrate into other areas of crime due to their proximity to a large criminal enterprise.
+For example, while it may be difficult for a script kiddie to broker the sale of valuable data, a hacker working with an organized crime syndicate may have people close to them that are familiar with the sale of stolen goods.
+
+The last group of threat actors, and arguably the group with the most resources, are threat actors working with or for governments and nation states.
+These groups may have the explicit or implicit permission of their country to commit cyber crimes targeting other nations.
+Given the constant threat and resources available to these groups, they are referred to as an advanced persistent threat (APT).
+By utilizing the resources of a nation (often including its intelligence and military resources) APTs are a severe threat.
 
 == Security Plans
+
+While confronting such a diverse array of actors can seem daunting at first, the key element to being successful is having a plan.
+A _security plan_ analyzes the risks, details the resources that need to be protected, and presents a clear path to protecting them.
+Typically a security plan utilizes the three types of security controls available: physical, administrative, and technical.
+
+* Physical controls are things like door locks, cameras, or even the way rooms in a building are laid out.
+  These things can have a dramatic impact on the overall security and should not be overlooked!
+* Administrative controls include human resources policies (HR), classifying and limiting access to data, and separating duties.
+  It helps to have a whole-organization understanding of security to make it easier to put these controls in place.
+* Technical controls are often what new security professionals think of first.
+  These are things like intrusion detection systems (IDS), firewalls, anti-malware software, etc.
+  While these are an import segment of security and they are the segment that falls almost entirely within the purview of IT, it is critical to remember that these are only as strong as the physical and administrative controls that support them!
+
+WARNING: Physical controls definitely lack the cool factor that technical controls have.
+Movies typically show security professionals hunched over laptops typing frantically or scrolling rapidly through pages and pages of logs on a giant screen.
+Rarely do they show them filling out a purchase order (PO) to have a locksmith come in and re-key the locks to the data closet.
+Just because it isn't cool doesn't mean it isn't important!
+Remember, once an attacker has physical access, anything is possible.
 
 == Tools of the Trade
 
@@ -198,3 +237,35 @@ Encryption::
     Encryption can be employed to make copies of data obtained through unauthorized access useless to attackers that do not have the key.
     Often, encryption and backups complement each other and fill in the use cases that each lacks individually.
     As such, encryption will show up multiple times and in multiple ways in an average security plan.
+
+== Review
+
+=== Labs
+
+.Think Like a Hacker
+[lab]
+--
+For this lab, we will be engaging in a though experiment.
+Imagine you are at a university that is having a student appreciation breakfast.
+At the entrance to the cafeteria an attendant has a clipboard with all of the student IDs listed.
+Students line up, show their ID, and their ID number is crossed off of the list.
+
+Thinking like a hacker, how would you exploit this system to get extra free breakfasts?
+Feel free to think outside the box and make multiple plans depending on the circumstances you would encounter when go the breakfast.
+Come up with at least five different ways of getting free breakfasts and then see if you can map them to real-world information security attacks.
+
+Here is an example that you _can not_ use:
+
+I would tell the attendant that I forgot my ID, but I know my number and then give someone elses number.
+This is very similar to logging in to systems by claiming the user has forgotten their password and then knowing the answers to the security questions required to change the password.
+--
+
+=== Questions
+
+[qanda]
+In terms of information security, what does CIA stand for? What do each of the principles mean?::
+    {empty}
+Why is it important to have a security plan? What types of controls can a security plan make use of? Give an example of each.::
+    {empty}
+How do backups and encryped data compliment eachother? Explain.::
+    {empty}

@@ -1,0 +1,65 @@
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+
+@import url(//fonts.googleapis.com/css?family=Ubuntu);
+@import url(//asciidoctor.org/stylesheets/asciidoctor.css); /* Default asciidoc style framework - important */
+
+/* CUSTOMISATIONS */
+/* Change the values in root for quick customisation. If you want even more fine grain... venture further. */
+
+:root{
+--maincolor:#FFFFFF;
+--primarycolor:#E95420;
+--secondarycolor:#333333;
+--tertiarycolor: #772953;
+--sidebarbackground:#CCC;
+--linkcolor:#b71c1c;
+--linkcoloralternate:#f44336;
+--white:#FFFFFF;
+--black:#000000;
+}
+
+/* Text styles */
+body{font-family: "Ubuntu",sans-serif;}
+
+h1,h2{color:var(--primarycolor) !important;font-family:"Ubuntu",sans-serif;}
+h3,h4,h5,h6{color:var(--secondarycolor);font-family: "Ubuntu",sans-serif;}
+.title{color:(--primarycolor) !important;font-family:"Ubuntu",sans-serif;font-style: normal; font-weight: normal;}
+p{font-family: "Ubuntu",sans-serif ! important}
+#toc.toc2 a:link{color:white;}
+code{background-color: var(--secondarycolor) !important;color:var(--white)}
+
+
+/* Table styles */
+th{background-color: var(--tertiarycolor);color:var(--white) !important;}
+
+#toc.toc2{background-color:#2C001E;color:white;}
+#toc.toc2.a{color:white;}
+#toctitle{color:#E95420;}
+
+/* Lab blocks */
+body {
+    counter-reset: labnum;
+}
+
+.lab > .title::before {
+    counter-increment: labnum;
+    content: "Lab " counter(labnum) ": ";
+}
+
+.lab > .content {
+  background-color: #fffef7;
+  border-color: #e0e0dc;
+  -webkit-box-shadow: 0 1px 4px #e0e0dc;
+  box-shadow: 0 1px 4px #e0e0dc;
+}
+
+/* Responsiveness fixes */
+video {
+  max-width: 100%;
+}
+
+@media all and (max-width: 600px) {
+table {
+  width: 55vw!important;
+  font-size: 3vw;
+}

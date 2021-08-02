@@ -1,7 +1,23 @@
-= Computer Systems Security
+= Computer Systems Security: Planning for Success
 Ryan Tolboom <Ryan.Tolboom@njit.edu>
+:icons: font
 :imagesdir: images
 :toc: left
+:stylesheet: ubuntu.css
+
+////
+++++
+<script src="https://darshandsoni.com/asciidoctor-skins/switcher.js" type="text/javascript"></script>
+++++
+////
+
+
+
+ifdef::backend-html5[]
+
+image::cover.svg[width=50%, align=center]
+
+endif::backend-html5[]
 
 :leveloffset: +1
 
