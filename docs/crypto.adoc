@@ -1,0 +1,213 @@
+= Cryptography
+
+This chapter is meant to serve as a brief and gentle introduction to the cryptographic concepts often encountered in the field of security.
+It is by no means exhaustive but it should provide a basis for a better understanding of why protocols are designed the way they are.
+
+== Review
+
+=== Labs
+
+.Hash it Out
+[lab]
+--
+A _hash_ is a one-way cryptographic function that produces a _unique_ set of characters for a given _message_.
+In a perfect world, given a hash you should _not_ be able to determine what the original message was, but given a hash and the original message you can check that the hash matches the message.
+Before we dive into the uses of a hash, lets try to further understand it by looking at a simple and consequently poor hashing algorithm.footnote:[This algorithm is so poor that it may be a stretch even to call it a hashing algorithm. That being said, it is being used as a tool to explain what hashes are.]
+
+*Anagram Hash*
+
+Let's assume we wanted to hash the message "Hello from Karl" so that we can have a string of characters the uniquely represent that phrase.
+One way to do it would be to strip all the punctuation in the message, make everything lowercase, and then arrange all the letters alphabetically.
+"Hello from Karl" becomes "aefhklllmoorr".
+You can think of it like saying, "There is one 'a' in the message, one 'e' in the message, one 'f' in the message', one 'k' in the message, three 'l's in the message...
+Now our hash, "aefhklllmoorr", can be used to uniquely identify the phrase.
+
+Now assume Karl wants to send us a message but he can't trust the person sending the message.
+He could use the untrusted party to send us the message and then put the hash someplace public like on a website.
+We could use the hash to know the message came from Karl _and_ if anyone else got the hash they would not be able to discern the message because a hash is a one-way function.
+"aefhklllmoorr" reveals very little about the message, but it can be used to check its accuracy.
+
+Hopefully this is beginning to show the power of hashes.
+Now lets examine another very common usecase and find out exactly why this is a terrible algorithm.
+
+Assume you run a website where a user uses a password to log in.
+You want to make sure users are using their password when they log in, but you do not want to store the password on your website.
+This is quite common.
+If you website was breached you don't want to leak a bunch of people's passwords.
+What do you do?
+What you could do is store a hash of their password, hash the password when they try to login, and compare the hashes.
+For example if our password was "password" using our basic hash algorithm the hash would be "adoprssw".
+We could store "adoprssw" in our database, use it for comparison during login, and if someone were to ever steal the data in our database they wouldn't know that the original password is "password".
+This may prevent an attacker from exploiting the fact that many people use the same password on multiple sites.
+
+The problem is that there are many things that hash to "adoprssw" including "wordpass", "drowsaps", or even the hash we're storing: "adoprssw".
+When multiple messages have the same hash it is referred to as a _collision_ and this particular algorithm is useless because it generates so many of them.
+
+Take a moment to answer question one of this lab.
+
+Now that we understand what hashes do and to some extant how they are possible, lets look at a much more useful hash function.
+
+*MD5*
+
+For this section, we are going to be using Docker and a terminal.
+https://docs.docker.com/get-docker/[Please follow these directions for installing Docker.]
+For Windows you can use the https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701[Windows Terminal app] and in MacOS you can use the preinstalled Terminal app.
+Gray boxes show the commands as typed into the terminal with typical output where possible.
+Your prompt (the part shown before the command) may differ depending on your OS.
+
+Start by running a BASH shell on an Ubuntu Linux container:
+
+[source,console]
+----
+ryan@R90VJ3MK:/windir/c/Users/rxt1077/it230/docs$ docker run -it ubuntu bash <1>
+root@8e0962021f85:/# <2>
+----
+<1> Here we are using the Docker run command to interactively (-it) run bash on the Ubuntu
+<2> Notice the new prompt showing that we are root on this container
+
+MD5 is a message-digest algorithm that produces significantly better hashes than our Anagram algorithm.
+Most Linux distributions include a simple utility for creating an MD5 hash based on a file's contents.
+This command is named md5sum.
+Typically this is used to detect if a file has been tampered with.
+A website may provide links to download software as well as an MD5 hash of the files so that you know what you've downloaded is correct.
+Similarly a security system may keep md5sums (MD5 hashes) of certain critical files to determine if they have been tampered with by malware.
+Let's practice taking the md5sum of the `/etc/passwd` file:
+
+[source,console]
+----
+root@8e0962021f85:/# md5sum /etc/passwd
+9911b793a6ca29ad14ab9cb40671c5d7  /etc/passwd <1>
+----
+<1> The first part of this line is the MD5 hash, the second part is the file name
+
+Take a moment to answer question two of this lab.
+
+For our final activity, lets take a look at some of the weaknesses of hashes.
+
+*Hash Cracking*
+
+Passwords in a Linux system are hashed and stored in the `/etc/shadow` file.
+Let's create a user, give them a simple password, and print out the contents of that file to see how it looks:
+
+[source,console]
+----
+root@8e0962021f85:/# useradd karl
+root@8e0962021f85:/# passwd karl
+New password: <1>
+Retype new password: <2>
+passwd: password updated successfully
+root@8e0962021f85:/# cat /etc/shadow
+root:*:18866:0:99999:7:::
+daemon:*:18866:0:99999:7:::
+bin:*:18866:0:99999:7:::
+sys:*:18866:0:99999:7:::
+sync:*:18866:0:99999:7:::
+games:*:18866:0:99999:7:::
+man:*:18866:0:99999:7:::
+lp:*:18866:0:99999:7:::
+mail:*:18866:0:99999:7:::
+news:*:18866:0:99999:7:::
+uucp:*:18866:0:99999:7:::
+proxy:*:18866:0:99999:7:::
+www-data:*:18866:0:99999:7:::
+backup:*:18866:0:99999:7:::
+list:*:18866:0:99999:7:::
+irc:*:18866:0:99999:7:::
+gnats:*:18866:0:99999:7:::
+nobody:*:18866:0:99999:7:::
+_apt:*:18866:0:99999:7:::
+karl:$6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5KdBTo1vZic00RYAupPRiqyC1d.:18871:0:99999:7::: <3>
+----
+<1> At this prompt type `test`, it will _not_ be echoed to the screen
+<2> At this prompt retype `test`
+<3> As you can see here the `karl` user has a long hash immediately after their username
+
+One of the problems with hashes are that if people choose simple passwords, like `test`, they can be easily cracked by a program that takes a wordlist of common passwords, generates their hashes, and then checks to see if the hash is the same.
+While a hash may be a one-way function, it is still subject to this type of attack.
+We're going to install a program called https://www.openwall.com/john/[John the Ripper] on our container and do exactly that:
+
+[source,console]
+----
+root@8e0962021f85:/# apt-get update <1>
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:3 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [488 kB]
+Get:4 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.1 kB]
+Get:5 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1037 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:7 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
+Get:8 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [790 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:10 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:11 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1479 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [535 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [33.4 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1068 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [6324 B]
+Get:18 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [2668 B]
+Fetched 18.9 MB in 22s (869 kB/s)
+Reading package lists... Done
+root@8e0962021f85:/# apt-get install john <2>
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  john-data
+Suggested packages:
+  wordlist
+The following NEW packages will be installed:
+  john john-data
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 4466 kB of archives.
+After this operation, 7875 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y <3>
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 john-data all 1.8.0-2build1 [4276 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/main amd64 john amd64 1.8.0-2build1 [189 kB]
+Fetched 4466 kB in 7s (683 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package john-data.
+(Reading database ... 4127 files and directories currently installed.)
+Preparing to unpack .../john-data_1.8.0-2build1_all.deb ...
+Unpacking john-data (1.8.0-2build1) ...
+Selecting previously unselected package john.
+Preparing to unpack .../john_1.8.0-2build1_amd64.deb ...
+Unpacking john (1.8.0-2build1) ...
+Setting up john-data (1.8.0-2build1) ...
+Setting up john (1.8.0-2build1) ...
+----
+<1> We start by updating the available package list
+<2> We then install the program
+<3> You must interactively press `Y` here to continue the installation
+
+Now that we have John the Ripper installed, we can use the default wordlist to try and determine what the password is that matches karl's hash in `/etc/shadow`:
+
+[source,console]
+----
+root@8e0962021f85:/# john --wordlist=/usr/share/john/password.lst /etc/shadow
+Loaded 1 password hash (crypt, generic crypt(3) [?/64])
+Press 'q' or Ctrl-C to abort, almost any other key for status
+test             (karl)
+1g 0:00:00:01 100% 0.6211g/s 178.8p/s 178.8c/s 178.8C/s lacrosse..pumpkin
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+----
+
+Given that `test` is in the included common password wordlist, `/usr/share/john/password.lst`, you will quickly find that John the Ripper figures out that karl's password is `test`.
+John the Ripper can also run incrementally though all the possible passwords, but it takes much longer.
+Modern hash crackers may use https://en.wikipedia.org/wiki/Rainbow_table[rainbow tables] so that all of the possible hashes have already been computed.
+These tables may take up terabytes of disk space, but can make cracking even complicated hashes much simpler.
+
+Take a moment to answer lab question three and when you are finished with the lab you can exit the container by typing `exit`.
+
+.Lab Questions
+[qanda]
+What would the anagram hash of "AlwaysDancing" be?::
+  {empty}
+What is the md5sum of `/etc/shadow` on the container we ran?::
+  {empty}
+How does John the Ripper figure out what a user's password is from a hash?::
+  {empty}
+
+--
