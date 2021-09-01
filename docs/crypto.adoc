@@ -43,7 +43,7 @@ This may prevent an attacker from exploiting the fact that many people use the s
 The problem is that there are many things that hash to "adoprssw" including "wordpass", "drowsaps", or even the hash we're storing: "adoprssw".
 When multiple messages have the same hash it is referred to as a _collision_ and this particular algorithm is useless because it generates so many of them.
 
-Take a moment to answer question one of this lab.
+IMPORTANT: What would the anagram hash of "AlwaysDancing" be?
 
 Now that we understand what hashes do and to some extant how they are possible, lets look at a much more useful hash function.
 
@@ -80,7 +80,15 @@ root@8e0962021f85:/# md5sum /etc/passwd
 ----
 <1> The first part of this line is the MD5 hash, the second part is the file name
 
-Take a moment to answer question two of this lab.
+Now we'll make a file with _your_ first name in it and store it in /tmp/name.txt:
+
+[source,console]
+----
+root@8e0962021f85:/# echo "<your_name>" >> /tmp/name.txt <1>
+----
+<1> Substitute your actual first name for <your_name>
+
+IMPORTANT: What is the md5sum of `/tmp/name.txt`?
 
 For our final activity, lets take a look at some of the weaknesses of hashes.
 
@@ -195,19 +203,87 @@ Session completed
 ----
 
 Given that `test` is in the included common password wordlist, `/usr/share/john/password.lst`, you will quickly find that John the Ripper figures out that karl's password is `test`.
-John the Ripper can also run incrementally though all the possible passwords, but it takes much longer.
+John the Ripper can also run incrementally though all the possible character combinations, but it takes much longer.
+To help make these types of attacks more difficult, every hash in `/etc/shadow` is built off of a random number.
+This number is called a _salt_ and is stored with the hash.
+This means that instead of just trying one hash for each word in the wordlist, the hash cracker must try every possible salt for every word in the wordlist, slowing things down significantly.
 Modern hash crackers may use https://en.wikipedia.org/wiki/Rainbow_table[rainbow tables] so that all of the possible hashes have already been computed.
 These tables may take up terabytes of disk space, but can make cracking even complicated hashes much simpler.
 
-Take a moment to answer lab question three and when you are finished with the lab you can exit the container by typing `exit`.
+Let's use https://www.mkssoftware.com/docs/man1/openssl_passwd.1.asp[the openssl passwd command] to show that `test` is the actual password.
+Note that the salt is stored in between the second set of `$` in the karl users line in `/etc/shadow`.
+The number in between the first set of `$` is the version of the hashing algorithm being used, six in our case.
+Your salt _will be different_ so when you execute these commands you will need to copy and paste it accordingly.
 
-.Lab Questions
-[qanda]
-What would the anagram hash of "AlwaysDancing" be?::
-  {empty}
-What is the md5sum of `/etc/shadow` on the container we ran?::
-  {empty}
-How does John the Ripper figure out what a user's password is from a hash?::
-  {empty}
+[source,console]
+----
+root@e6e96ae9488c:/# apt-get install openssl
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following additional packages will be installed:
+  libssl1.1
+Suggested packages:
+  ca-certificates
+The following NEW packages will be installed:
+  libssl1.1 openssl
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 1941 kB of archives.
+After this operation, 5411 kB of additional disk space will be used.
+Do you want to continue? [Y/n] <1>
+Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libssl1.1 amd64 1.1.1f-1ubuntu2.8 [1320 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 openssl amd64 1.1.1f-1ubuntu2.8 [620 kB]
+Fetched 1941 kB in 3s (706 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libssl1.1:amd64.
+(Reading database ... 4127 files and directories currently installed.)
+Preparing to unpack .../libssl1.1_1.1.1f-1ubuntu2.8_amd64.deb ...
+Unpacking libssl1.1:amd64 (1.1.1f-1ubuntu2.8) ...
+Selecting previously unselected package openssl.
+Preparing to unpack .../openssl_1.1.1f-1ubuntu2.8_amd64.deb ...
+Unpacking openssl (1.1.1f-1ubuntu2.8) ...
+Setting up libssl1.1:amd64 (1.1.1f-1ubuntu2.8) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontE
+nd/Dialog.pm line 76.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/lo
+cal/lib/x86_64-linux-gnu/perl/5.30.0 /usr/local/share/perl/5.30.0 /usr/lib/x86_64-linux-gnu/perl5/5.30 /usr/share/perl5 /usr/lib/x86_
+64-linux-gnu/perl/5.30 /usr/share/perl/5.30 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base) at /usr/share/perl5/Debconf
+/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up openssl (1.1.1f-1ubuntu2.8) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+root@e6e96ae9488c:/# cat /etc/shadow <2>
+root:*:18866:0:99999:7:::
+daemon:*:18866:0:99999:7:::
+bin:*:18866:0:99999:7:::
+sys:*:18866:0:99999:7:::
+sync:*:18866:0:99999:7:::
+games:*:18866:0:99999:7:::
+man:*:18866:0:99999:7:::
+lp:*:18866:0:99999:7:::
+mail:*:18866:0:99999:7:::
+news:*:18866:0:99999:7:::
+uucp:*:18866:0:99999:7:::
+proxy:*:18866:0:99999:7:::
+www-data:*:18866:0:99999:7:::
+backup:*:18866:0:99999:7:::
+list:*:18866:0:99999:7:::
+irc:*:18866:0:99999:7:::
+gnats:*:18866:0:99999:7:::
+nobody:*:18866:0:99999:7:::
+_apt:*:18866:0:99999:7:::
+karl:$6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5KdBTo1vZic00RYAupPRiqyC1d.:18871:0:99999:7::: <3>
+root@e6e96ae9488c:/# openssl passwd -6 -salt A52NvzxmRoUpGksY test <4>
+$6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5KdBTo1vZic00RYAupPRiqyC1d. <5>
+----
+<1> Don't forget to hit `y`
+<2> `cat` is a command that prints the contents of a file
+<3> My salt is `A52NvzxmRoUpGksY` but yours will be different!
+<4> We know from John the Ripper that the password is `test` if you look at the hash it should match what is in `/etc/shadow`
+
+IMPORTANT: Submit a screenshot with your lab showing that the output of the openssl command matches the hash in /etc/shadow
 
 --
