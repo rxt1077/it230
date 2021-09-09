@@ -294,18 +294,53 @@ This combination makes for a modern, robust algorithm that is gaining rapid adop
 
 .Case Study: Exploiting Non-Rolling Codes
 ****
-https://github.com/HackingIntoYourHeart/Unoriginal-Rice-Patty/blob/main/README.md
+The importance of non-repeating codes, such as the counter codes used in the CTR and GCM block cipher modes of operation can be highlighted through analysis of another important technology that uses codes: keyless entry systems.
+When garage door openers first came on to the market, the remote would broadcast a single code that the receiver was programmed to recognize as correct.
+This meant that anyone listening in could easily get the code and replay the code to open the garage door with their own device.footnote:[In actuality the code space was so small that you could even easily create a device to cycle through all possible codes in under a minute.] To combat this, companies began using https://en.wikipedia.org/wiki/Rolling_code[rolling codes] in their remotes and receivers. Given the same seed a rolling code allows each device to generate a sequence of codes that are exactly the same. The remote will use the next code in a sequence every time the button is hit. The receiver will validate the recieved code if it matches any of the next several codes in the sequence (in case the button was hit a few times out of range). This effectively mitigates the replay attack.
+
+Given that this was implemented in the 1980s with garage door remotes, you would assume car manufacturers employ the same technology in their remotes.
+In a case of "everything old is new again" this isn't true.
+https://github.com/HackingIntoYourHeart/Unoriginal-Rice-Patty/blob/main/README.md[Blake Berry (HackingIntoYourHeart) discovered that several makes and models of cars are actually still vulnerable to a replay attack.]
+
+Sammy Kamkar also discovered a vulnerablility for rolling codes, named RollJam, which he demonstrated at DEF CON 23.
+Kamkar's device jams signals sent by a keyfob, while recording the codes being sent.
+Once it has two codes recorded, presumably from the victim pressing the button multiple times, it stops jamming, sends out the first code to unlock the car and stores the second code to unlock the car at a later time. 
 ****
 
 == Encryption Examples
 
 === RSA
 
-=== AES
+RSA is an asymmetric encryption standard developed in 1977 that is still very popular.
+Its trapdoor function is based on the difficulty of factoring large numbers.
+The name RSA comes from the names of the authors of the system: Ron Rivest, Adi Shamir, and Leonard Adleman.
 
-=== ECC
+=== Advanced Encryption Standard (AES)
+
+AES is a symmetric block cipher developed in 1998 to supersede the less secure Data Encryption Standard (DES). 
+AES works on 128 bit blocks of data, performing multiple rounds of substitution-permutation to encrypt data.
+You will find AES used to encrypt network traffic (as is the case in a virtual private network), data stored to disk (disk encryption), or computer game data that is saved to storage.
+AES is a _very_ common cipher.
+
+=== Elliptic-curve Cryptography (ECC)
+
+ECC is an asymmetric encryption scheme that is quite fast and easy to computer.
+It is rapidly becoming the go to choice for digital signatures and key exchanges, gaining adopting starting in 2004.
+ECC is based on the geometry of a pre-determined set of curves (some examples can be found http://www.secg.org/sec2-v2.pdf[here]), which can be used to create a trapdoor function.
 
 === Diffie-Hellman Key Exchange
+
+[.float-group]
+--
+
+[link=https://commons.wikimedia.org/w/index.php?curid=17063048]
+image::dh.svg[width=300, float=right]
+
+Given the slow nature of asymmetric algorithms, often an application such as a VPN will choose to use asymmetric cryptography to exchange a shared secret key and then use that secret key with a faster symmetric algorithm such as AES.
+Diffie-Hellman does exactly that and was first published in 1976.
+Diffie-Hellman key exchange uses the same mathematical concepts as RSA, exponentiation and modulus arithmetic, to great effect, but to visualize what is happening a metaphor of secret color mixing is used (see the included diagram).
+It is important to remember that because the medium of exchange may be slow a DH key exchange is designed to generate minimal traffic.
+--
 
 === Digital Certificates
 

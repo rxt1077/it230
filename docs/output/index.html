@@ -868,7 +868,9 @@ This combination makes for a modern, robust algorithm that is gaining rapid adop
 <div class="sidebarblock">
 <div class="content">
 <div class="title">Case Study: Exploiting Non-Rolling Codes</div>
-
+<div class="paragraph">
+<p><a href="https://github.com/HackingIntoYourHeart/Unoriginal-Rice-Patty/blob/main/README.md" class="bare">https://github.com/HackingIntoYourHeart/Unoriginal-Rice-Patty/blob/main/README.md</a></p>
+</div>
 </div>
 </div>
 </div>
@@ -878,19 +880,46 @@ This combination makes for a modern, robust algorithm that is gaining rapid adop
 <h3 id="_encryption_examples">2.10. Encryption Examples</h3>
 <div class="sect3">
 <h4 id="_rsa">2.10.1. RSA</h4>
-
+<div class="paragraph">
+<p>RSA is an asymmetric encryption standard developed in 1977 that is still very popular.
+Its trapdoor function is based on the difficulty of factoring large numbers.
+The name RSA comes from the names of the authors of the system: Ron Rivest, Adi Shamir, and Leonard Adleman.</p>
+</div>
 </div>
 <div class="sect3">
-<h4 id="_aes">2.10.2. AES</h4>
-
+<h4 id="_advanced_encryption_standard_aes">2.10.2. Advanced Encryption Standard (AES)</h4>
+<div class="paragraph">
+<p>AES is a symmetric block cipher developed in 1998 to supersede the less secure Data Encryption Standard (DES).
+AES works on 128 bit blocks of data, performing multiple rounds of substitution-permutation to encrypt data.
+You will find AES used to encrypt network traffic (as is the case in a virtual private network), data stored to disk (disk encryption), or computer game data that is saved to storage.
+AES is a <em>very</em> common cipher.</p>
+</div>
 </div>
 <div class="sect3">
-<h4 id="_ecc">2.10.3. ECC</h4>
-
+<h4 id="_elliptic_curve_cryptography_ecc">2.10.3. Elliptic-curve Cryptography (ECC)</h4>
+<div class="paragraph">
+<p>ECC is an asymmetric encryption scheme that is quite fast and easy to computer.
+It is rapidly becoming the go to choice for digital signatures and key exchanges, gaining adopting starting in 2004.
+ECC is based on the geometry of a pre-determined set of curves (some examples can be found <a href="http://www.secg.org/sec2-v2.pdf">here</a>), which can be used to create a trapdoor function.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_diffie_hellman_key_exchange">2.10.4. Diffie-Hellman Key Exchange</h4>
-
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock right">
+<div class="content">
+<a class="image" href="https://commons.wikimedia.org/w/index.php?curid=17063048"><img src="images/dh.svg" alt="dh" width="300"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>Given the slow nature of asymmetric algorithms, often an application such as a VPN will choose to use asymmetric cryptography to exchange a shared secret key and then use that secret key with a faster symmetric algorithm such as AES.
+Diffie-Hellman does exactly that and was first published in 1976.
+Diffie-Hellman key exchange uses the same mathematical concepts as RSA, exponentiation and modulus arithmetic, to great effect, but to visualize what is happening a metaphor of secret color mixing is used (see the included diagram).
+It is important to remember that because the medium of exchange may be slow a DH key exchange is designed to generate minimal traffic.</p>
+</div>
+</div>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_digital_certificates">2.10.5. Digital Certificates</h4>
