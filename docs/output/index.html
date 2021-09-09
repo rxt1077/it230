@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.15">
+<meta name="generator" content="Asciidoctor 2.0.16">
 <meta name="author" content="Ryan Tolboom">
 <title>Computer Systems Security: Planning for Success</title>
 <style>
@@ -61,6 +61,22 @@ body {
   border-color: #e0e0dc;
   -webkit-box-shadow: 0 1px 4px #e0e0dc;
   box-shadow: 0 1px 4px #e0e0dc;
+  padding: 1.25em;
+}
+
+.lab > .title {
+  color: #7a2518;
+  margin-top: 0;
+  text-align: center;
+  font-size: 1.3em;
+  font-family: "Ubuntu",sans-serif;
+  font-style: normal;
+}
+
+/* Deliverable admonitions */
+.admonitionblock.deliverable td.icon .icon-important:before {
+  content:"\f15b";
+  color:#000;
 }
 
 /* Responsiveness fixes */
@@ -102,7 +118,17 @@ table {
 </li>
 <li><a href="#_cryptography">2. Cryptography</a>
 <ul class="sectlevel2">
-<li><a href="#_review_2">2.1. Review</a></li>
+<li><a href="#_why_do_we_need_cryptography">2.1. Why do we need cryptography?</a></li>
+<li><a href="#_terminology">2.2. Terminology</a></li>
+<li><a href="#_keys">2.3. Keys</a></li>
+<li><a href="#_mathematical_foundation">2.4. Mathematical Foundation</a></li>
+<li><a href="#_hashes">2.5. Hashes</a></li>
+<li><a href="#_symmetric_encryption">2.6. Symmetric Encryption</a></li>
+<li><a href="#_asymmetric_encryption">2.7. Asymmetric Encryption</a></li>
+<li><a href="#_stream_ciphers">2.8. Stream Ciphers</a></li>
+<li><a href="#_block_ciphers">2.9. Block Ciphers</a></li>
+<li><a href="#_encryption_examples">2.10. Encryption Examples</a></li>
+<li><a href="#_review_2">2.11. Review</a></li>
 </ul>
 </li>
 </ul>
@@ -492,12 +518,401 @@ This is very similar to logging in to systems by claiming the user has forgotten
 <div class="sectionbody">
 <div class="paragraph">
 <p>This chapter is meant to serve as a brief and gentle introduction to the cryptographic concepts often encountered in the field of security.
-It is by no means exhaustive but it should provide a basis for a better understanding of why protocols are designed the way they are.</p>
+It is by no means exhaustive but it should provide a basis for a better understanding of why protocols are designed the way they are.
+Cryptography is a method of scrambling data into non-readable text.
+It allows us to transform data into a secure form so that unauthorized users cannot view it.</p>
 </div>
 <div class="sect2">
-<h3 id="_review_2">2.1. Review</h3>
+<h3 id="_why_do_we_need_cryptography">2.1. Why do we need cryptography?</h3>
+<div class="paragraph">
+<p>Cryptography is used to set up secure channels of communication, but it can also be used to provide non-repudiation of actions, basically leaving digital footprints that show someone did something.
+This means that cryptography allows us to provide authentication, authorization, <em>and</em> accounting (AAA).</p>
+</div>
+<div class="paragraph">
+<p>By using a secure and <em>confidential</em> encrypted channel we can be sure that anyone who intercepts our communications cannot "listen in." This helps prevents <em>man-in-the-middle (MITM)</em> attacks.
+Cryptography can also be used to provide <em>integrity</em>: proving that the data is valid. With cryptography you can provide a <em>signature</em> for the data showing that the person who claims to have sent it really did send it.
+Cryptography also allows for <em>non-repudiation</em> as it can show that only one person was capable of sending a particular message. Lastly cryptography also allows us to perform authentication <em>without</em> storing passwords in plaintext.
+This is critical in an age where data breaches are increasingly common.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Case Study: Equifax</div>
+<div class="paragraph">
+<p><a href="https://www.ftc.gov/enforcement/cases-proceedings/refunds/equifax-data-breach-settlement">In September of 2017, Equifax announced a data breach the exposed the personal information of 147 million people.</a>
+The original attack made use of an exploit in an outdated version of <a href="https://struts.apache.org/">Apache Struts</a> which was being used as part of Equifax&#8217;s system for handling credit disputes from customers.
+Once the attackers had gained access to internal Equifax servers, the began gathering as much information as they could from internal databases.</p>
+</div>
+<div class="paragraph">
+<p>What is particularly egregious about this data breach is that passwords in many databases were stored in plaintext.
+This means that the attackers were able to try the passwords and usernames on other services.
+While it is important that users use different passwords for different services it is far more disturbing that a company as large as Equifax did not have the policies in place to use cryptography to mitigate the risks from such an enormous breach.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_terminology">2.2. Terminology</h3>
+<div class="paragraph">
+<p>Going forward, it is important to address some common cryptography terms as they will be used frequently:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Plaintext</dt>
+<dd>
+<p><a href="https://en.wikipedia.org/wiki/Plaintext">unencrypted information</a>, data that is "in clear", or cleartext</p>
+</dd>
+<dt class="hdlist1">Cipher</dt>
+<dd>
+<p><a href="https://en.wikipedia.org/wiki/Cipher">an algorithm for performing encryption or decryption</a></p>
+</dd>
+<dt class="hdlist1">Ciphertext</dt>
+<dd>
+<p>data that has undergone encryption</p>
+</dd>
+<dt class="hdlist1">Cryptographic algorithm</dt>
+<dd>
+<p>a series of steps to follow to encrypt or decrypt data</p>
+</dd>
+<dt class="hdlist1">Public key</dt>
+<dd>
+<p>information (typically a byte array) that can be used to encrypt data such that only the owner of the matching <em>private key</em> can unencrypt it</p>
+</dd>
+<dt class="hdlist1">Private (secret) key</dt>
+<dd>
+<p>information (typically a byte array) that can be used to decrypt data encrypted using the corresponding public key</p>
+</dd>
+</dl>
+</div>
+<div class="exampleblock">
+<div class="title">Example 1. Caesar Cipher</div>
+<div class="content">
+<div class="paragraph">
+<p>One of the most basic examples of encryption is the Caesar cipher, or substitution cipher.
+It is easy to understand, computer, and trivial to crack.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_keys">2.3. Keys</h3>
+<div class="paragraph">
+<p>Typically a series of random bytes can be used as a key to either encrypt or decrypt data.
+A key is used by a cryptographic algorithm to change plaintext to ciphertext.
+Keys may also be asymmetric in that they can only be used to perform <em>one</em> of the operations (either encryption or decryption).</p>
+</div>
+<div class="paragraph">
+<p>It is important to have an idea of what factors make a <em>strong</em> cryptographic key.
+Length plays an important role.
+The longer the key, the hard it is to <em>crack</em> the encryption.
+Likewise the randomness of the data in the key also makes it stronger.
+If the byte sequence is somehow predictable, the length is irrelevant.
+Finally we have the concept of a cryptoperiod or lifetime of a key.
+If we are working with a system that frequently changes keys an attacker may not have enough time to crack it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mathematical_foundation">2.4. Mathematical Foundation</h3>
+<div class="paragraph">
+<p>Cryptography relies largely on the concept of one-way or trap door functions.
+That is a process that is hard to compute in one direction, but easy to compute in the other.
+For example it is much easier for a computer to multiply large numbers than to determine the factors of large numbers.
+This is the foundation of the RSA algorithm.
+<a href="https://www.cs.drexel.edu/~jpopyack/IntroCS/HW/RSAWorksheet.html">A simplified version of the algorithm</a> is shown below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">KEY GENERATION
+p = a random prime number
+q = a random prime number
+N = p * q
+r = (p - 1) * (q - 1)
+K = a number which equals one when modded by r and can be factored
+e = a factor of K that doesn't share factors with N
+d = another factor of K that doesn't share factors with N
+Your public key is N and e
+Your private key is N and d
+
+ENCRYPTION
+ciphertext = (cleartext**e)%N
+
+DECRYPTION
+cleartext = (ciphertext**d)%N
+
+EXAMPLE
+p = 7
+q = 13
+N = 7 * 13 = 91
+r = 72
+K = 145 (because 145%72 = 1)
+e = 5
+d = 29
+Public Key = 91, 5
+Private Key = 91, 29
+cleartext = 72 ('H' in ASCII)
+ciphertext = (72**5)%91 = 11 (encrypted using N and e)
+cleartext = (11**29)%91 = 72 (decrypted using N and d)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to <em>crack</em> RSA you would need to be able to factor N into it&#8217;s two prime numbers.
+While it is trivial in our simple example, imagine how difficult it would be for to <a href="https://stackoverflow.com/questions/11832022/why-are-large-prime-numbers-used-in-rsa-encryption">factor a number with 1400 decimal digits</a> the current recommended keysize for RSA.
+You&#8217;ll notice that the algorithm only requires exponentiation, multiplication, and modulus arithmetic.
+At no point do you ever have to factor a large prime number to generate keys, encrypt, or decrypt.
+You only have to perform that operation if you&#8217;re trying to work backwards without the keys.</p>
+</div>
+<div class="paragraph">
+<p>Other similar one-way function exist based on elliptical curves.
+It turns out that motion along an elliptical curve can be described according to a start and end point and several iterations of a simple algorithm.
+You can reconstruct the initial conditions if you know the start point, end point, and how many iterations it took.
+If all you know is the start and end point you can&#8217;t determine the initial conditions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hashes">2.5. Hashes</h3>
+<div class="imageblock right">
+<div class="content">
+<img src="images/hash.svg" alt="hash" width="300" height="144">
+</div>
+</div>
+<div class="paragraph">
+<p>A hashing algorithm is a one-way function that creates hashed text from plaintext.
+It is often used for data validation as a relatively small hash <em>digest</em> or <em>signature</em> can demonstrate the integrity of a large block of data.
+Hashes can also be used so that sensitive information does not have to be stored in cleartext.
+By storing a hash of a password, you can check to see if the correct password was entered without storing the password itself.
+In the case of a data breach only the hashes are leaked and the attacker does not have access to the passwords to try with other services.</p>
+</div>
+<div class="paragraph">
+<p>Two main families of hash algorithms are used: MD5 and SHA.
+MD5 produces a 128-bit hash value and is still often used to verify data integrity.
+The algorithm is technically cryptographically broken, but you may still see it in use.
+The SHA family of algorithms consists of SHA-1, SHA-2, and SHA-3:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SHA-1: 160 bits, similar to MD5, designed by the NSA, no longer approved for cryptographic use</p>
+</li>
+<li>
+<p>SHA-2: SHA-256 and SHA-512, very common with the number indicating the block size, designed by the NSA</p>
+</li>
+<li>
+<p>SHA-3: non-NSA designed, not widely adopted, similar numbering scheme as SHA-2 (SHA3-256, etc.)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Dictionary based attacks against password hashes are fairly common.
+Typically software is used which generates a hash for every word in the dictionary and then compares that hash to what is stored on the compromised machine.
+One way to combat this is through salting or adding random bits to each password.
+When salting the bits are stored with the hash.
+This forces a dictionary based attack to actively generate the hashes based on what the salt is as opposed to using a stored table (rainbow table) of all the possible hashes.
+It can make attacks go from instant to days or even years depending on the complexity of the password.</p>
+</div>
+<div class="paragraph">
+<p>An even better way of combating attacks against hashes is through a secret salt or <em>pepper</em>.
+A pepper is a random value that is added to the password but not stored with the resulting hash.
+The random value can be stored in a separate medium such as a hardware Security Module.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_symmetric_encryption">2.6. Symmetric Encryption</h3>
+<div class="imageblock left">
+<div class="content">
+<img src="images/symmetric.svg" alt="symmetric" width="550" height="144">
+</div>
+</div>
+<div class="paragraph">
+<p>Symmetric encryption is probably the simplest encryption to understand in that it only uses a single key (in this case our key is labelled 'A') to encrypt or decrypt data.
+Both parties need to know the private key in order to communicate.
+It does pose a security risk in that if the channel used for key exchange is insecure, all of the messages can be decrypted.
+That being said, given that it is simpler than many other forms of encryption, it is often used for secure communication or storage.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 2. One-time-pad</div>
+<div class="content">
+<div class="paragraph">
+<p>One-time-pad (OTP) is a rare example of a pen and paper, symmetric encryption scheme that cannot be cracked.
+The difficulty in OTP mirrors the difficulty with all symmetric encryption, namely that pre-shared keys need to be exchanged at some point.</p>
+</div>
+<div class="paragraph">
+<p>Imagine that a prisoner wishes to send encrypted messages to someone outside the prison.
+To do so, they will make use of a copy of Harry Potter and the Sorcerer&#8217;s Stone that they have in their cell.
+The message they want to send is "DIG UP THE GOLD".
+They turn to "Chapter One: The Boy Who Lived" and look up the first twelve letters in the chapter: MR AND MRS DURS.
+For each letter of their message, they convert it to its number in the alphabet: 4 9 7 21 16 20 8 5 7 15 12 4 (DIG UP THE GOLD).
+They do the same for the key they looked up in their book: 13 18 1 14 4 13 18 19 4 21 18 19 (MR AND MRS DURS).
+Finally they add the two numbers to get their ciphertext: 17 27 8 35 20 33 26 24 11 36 30 23.</p>
+</div>
+<div class="paragraph">
+<p>If the prisoner sends that ciphertext to someone on the outside who knows that they key is the first chapter of Harry Potter and the Sorcerer&#8217;s Stone, they will be able to subtract the key from each of the numbers in the ciphertext and discover the plaintext message.
+While theoretically unbreakable, anybody else who has the key can recover the text as well.
+This means that using common keys like popular books make it trivial for a man-in-the-middle to decode the ciphertext.
+After all, the warden probably knows every book that the prisoner has in their cell.</p>
+</div>
+<div class="paragraph">
+<p>OTP has been used by spy agencies, often for communications between individuals via dead-drops.
+In this situation tables of random characters printed in duplicate are exchanged as the key.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_asymmetric_encryption">2.7. Asymmetric Encryption</h3>
+<div class="imageblock">
+<div class="content">
+<img src="images/asymmetric.svg" alt="asymmetric" width="700" height="144">
+</div>
+</div>
+<div class="paragraph">
+<p>An asymmetric encryption algorithm has actually already been demonstrated in the <a href="#_mathematical_foundation">Mathematical Foundation</a> section.
+Asymmetric encryption has a public key which can be published anywhere and used to encrypt messages that only the holder of the private key, which is not published, can unencrypt.
+For example if you want to receive encrypted emails you may make your <a href="https://gnupg.org/">GNU Privacy Guard (GPG)</a> public key available a <a href="https://keyserver.ubuntu.com/">public key server</a>.
+This would allow anyone to look up your public key, encrypt a message that only you can read, and send you the ciphertext.
+Asymmetric encryption gets around the difficulties of key exchange via an untrusted channel (like email).
+Unfortunately the cost of such a useful system is that asymmetric algorithms tend to be much slower that their symmetric counterparts.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_stream_ciphers">2.8. Stream Ciphers</h3>
+<div class="paragraph">
+<p>Stream ciphers encode data one symbol at a time and produces one ciphertext symbol for each cleartext symbol.
+Given that you can often use some sort of block encryption with a significantly small block size, stream encryption is not used as often.
+Technically the OTP example, when used one symbol at a time, is a stream cipher.
+The keys come in one symbol at a time, the cleartext comes in one symbol at a time, and an operation is performed (addition in the case of the example) to create the ciphertext.
+Given a suitable keysize and a well-researched algorithm, stream ciphers can be just as secure as block ciphers.
+That being said a stream cipher is usually more consistent in its runtime characteristics and typically consumes less memory
+Unfortunately there are not as many well-researched algorithms and widely used stream ciphers.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_block_ciphers">2.9. Block Ciphers</h3>
+<div class="paragraph">
+<p>Block ciphers takes the data in, in blocks and use cipher blocks of the same size to perform the encryption.
+It is very popular and there are many secure algorithms to choose from.
+Unfortunately if the input data doesn&#8217;t fit neatly into blocks of the same size, padding may be required, which takes up more space/memory and reduces the speed of the cipher.
+As such the block encryption is often less performant than stream encryption.</p>
+</div>
 <div class="sect3">
-<h4 id="_labs_2">2.1.1. Labs</h4>
+<h4 id="_block_cipher_modes_of_operation">2.9.1. Block Cipher Modes of Operation</h4>
+<div class="paragraph">
+<p>There are several ways you can create your cipher blocks and depending on how you do it, various attacks are possible:</p>
+</div>
+<div class="sect4">
+<h5 id="_electronic_codebook_ecb">Electronic Codebook (ECB)</h5>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock right">
+<div class="content">
+<a class="image" href="https://commons.wikimedia.org/w/index.php?curid=26434116"><img src="images/ecb.svg" alt="ecb" width="600"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>The simplest mode of operation, data is divided into blocks and each block is encoded using a key.
+Since the blocks are encoded the same way, identical blocks will give identical ciphertexts.
+This makes it easier, given enough data, to determine what the key is.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_cipher_block_chaining_cbc">Cipher block chaining (CBC)</h5>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<a class="image" href="https://commons.wikimedia.org/w/index.php?curid=26434096"><img src="images/cbc.svg" alt="cbc" width="600"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>Starting with an initialization vector (IV) each block is XORed with part of the ciphertext of the previous block to create a chain of ciphertext that is constantly changing.
+This means that identical blocks will result in <em>different</em> ciphertexts.
+This is the most common mode of operation, its weaknesses being that the algorithm cannot be run in parallel (sorry modern processors) and that the IV is a common attack target.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_counter_ctr">Counter (CTR)</h5>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock right">
+<div class="content">
+<a class="image" href="https://commons.wikimedia.org/w/index.php?curid=26434109"><img src="images/ctr.svg" alt="ctr" width="600"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>Instead of using an IV, CTR uses a nonce (random number that is the same for all blocks) and counter.
+The counter is incremented with each block, meaning this mode can function in parallel.
+CTR mode solves the problems of ECB while still providing an algorithm that can run quickly on modern machines.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_galoiscounter_mode_gcm">Galois/Counter Mode (GCM)</h5>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<a class="image" href="https://commons.wikimedia.org/w/index.php?curid=74845777"><img src="images/gcm.svg" alt="gcm" width="400"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>GCM uses a counter like CTR, but does not make use of a nonce.
+Instead an IV is used with the inititial counter.
+GCM also generates a message authentication code (MAC) for each block to verify the integrity of the block.
+This combination makes for a modern, robust algorithm that is gaining rapid adoption.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Case Study: Exploiting Non-Rolling Codes</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_encryption_examples">2.10. Encryption Examples</h3>
+<div class="sect3">
+<h4 id="_rsa">2.10.1. RSA</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_aes">2.10.2. AES</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_ecc">2.10.3. ECC</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_diffie_hellman_key_exchange">2.10.4. Diffie-Hellman Key Exchange</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_digital_certificates">2.10.5. Digital Certificates</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_blockchain">2.10.6. Blockchain</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_trusted_platform_module_tpm_hardware_security_module_hsm">2.10.7. Trusted Platform Module (TPM) / Hardware Security Module (HSM)</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_steganography">2.10.8. Steganography</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review_2">2.11. Review</h3>
+<div class="sect3">
+<h4 id="_labs_2">2.11.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Hash it Out</div>
 <div class="content">
@@ -541,14 +956,16 @@ This may prevent an attacker from exploiting the fact that many people use the s
 <p>The problem is that there are many things that hash to "adoprssw" including "wordpass", "drowsaps", or even the hash we&#8217;re storing: "adoprssw".
 When multiple messages have the same hash it is referred to as a <em>collision</em> and this particular algorithm is useless because it generates so many of them.</p>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock important deliverable">
 <table>
 <tr>
 <td class="icon">
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-What would the anagram hash of "AlwaysDancing" be?
+<div class="paragraph">
+<p>What would the anagram hash of "AlwaysDancing" be?</p>
+</div>
 </td>
 </tr>
 </table>
@@ -626,14 +1043,16 @@ Let&#8217;s practice taking the md5sum of the <code>/etc/passwd</code> file:</p>
 </tr>
 </table>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock important deliverable">
 <table>
 <tr>
 <td class="icon">
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-What is the md5sum of <code>/tmp/name.txt</code>?
+<div class="paragraph">
+<p>What is the md5sum of <code>/tmp/name.txt</code>?</p>
+</div>
 </td>
 </tr>
 </table>
@@ -791,10 +1210,10 @@ Modern hash crackers may use <a href="https://en.wikipedia.org/wiki/Rainbow_tabl
 These tables may take up terabytes of disk space, but can make cracking even complicated hashes much simpler.</p>
 </div>
 <div class="paragraph">
-<p>Lets use openssl to prove that <code>test</code> is the actual password.
+<p>Let&#8217;s use <a href="https://www.mkssoftware.com/docs/man1/openssl_passwd.1.asp">the openssl passwd command</a> to show that <code>test</code> is the actual password.
 Note that the salt is stored in between the second set of <code>$</code> in the karl users line in <code>/etc/shadow</code>.
 The number in between the first set of <code>$</code> is the version of the hashing algorithm being used, six in our case.
-Your salt <em>will be different</em> so when you execute these commands you will need to pull it out accordingly.</p>
+Your salt <em>will be different</em> so when you execute these commands you will need to copy and paste it accordingly.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -869,7 +1288,7 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>cat is a command that prints the contents of a file</td>
+<td><code>cat</code> is a command that prints the contents of a file</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -881,14 +1300,16 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 </tr>
 </table>
 </div>
-<div class="admonitionblock important">
+<div class="admonitionblock important deliverable">
 <table>
 <tr>
 <td class="icon">
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Submit a screenshot with your lab showing that the output of the openssl command matches the hash in /etc/shadow
+<div class="paragraph">
+<p>Submit a screenshot with your lab showing that the output of the openssl command matches the hash in /etc/shadow</p>
+</div>
 </td>
 </tr>
 </table>

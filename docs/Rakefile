@@ -30,4 +30,9 @@ task :server do
   server.start
 end
 
+desc 'Deploys the output directory to https://web.njit.edu/~rxt1077/security'
+task :deploy do
+  sh "rsync --delete -av #{output}/ rxt1077@afs22.njit.edu:public_html/security/"
+end
+
 task :default => [:html5]

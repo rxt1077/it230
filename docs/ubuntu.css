@@ -51,6 +51,22 @@ body {
   border-color: #e0e0dc;
   -webkit-box-shadow: 0 1px 4px #e0e0dc;
   box-shadow: 0 1px 4px #e0e0dc;
+  padding: 1.25em;
+}
+
+.lab > .title {
+  color: #7a2518;
+  margin-top: 0;
+  text-align: center;
+  font-size: 1.3em;
+  font-family: "Ubuntu",sans-serif;
+  font-style: normal;
+}
+
+/* Deliverable admonitions */
+.admonitionblock.deliverable td.icon .icon-important:before {
+  content:"\f15b";
+  color:#000;
 }
 
 /* Responsiveness fixes */
