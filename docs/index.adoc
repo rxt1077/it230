@@ -30,3 +30,5 @@ include::ack.adoc[]
 include::intro.adoc[]
 
 include::crypto.adoc[]
+
+include::malware.adoc[]

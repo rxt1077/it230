@@ -46,7 +46,23 @@ Private (secret) key::
 .Caesar Cipher
 ====
 One of the most basic examples of encryption is the Caesar cipher, or substitution cipher.
-It is easy to understand, computer, and trivial to crack.
+It is easy to understand, compute, and trivial to crack.
+Let's create a table that maps every letter in the alphabet to a different letter:
+
+|===
+|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z
+
+|J|G|T|Q|X|Y|A|U|C|R|V|I|F|H|O|K|L|E|D|B|W|S|Z|M|N|P
+|===
+
+Now creating a message is simple a matter of performing the substitutions.
+For example, `HELLO WORLD` becomes `UXIIO ZOEIQ`.
+
+While this is simple to understand and set up, it is also very easy to break.
+You could use a frequency attack, where you analyze a large chunk of encrypted text knowing that certain letters are more frequent than others.
+By matching up the most frequently used ciphertext letters with their standard English equivalents you may quickly reach a solution.
+You could also go through all permutations of the alphabet (4E26) and see what gives you the most English words.
+The second attack is made much more feasible through computing.
 ====
 
 == Keys
@@ -344,11 +360,57 @@ It is important to remember that because the medium of exchange may be slow a DH
 
 === Digital Certificates
 
+A digital certificate is a set of credentials used to identify a company or an individual.
+Since asymmetric encryption requires know a party's public key, a digital certificate includes that key as well as an ID of the owner.
+The question then becomes how do you trust that the public key is _actually_ for the alleged owner?
+That's where the issuing authority comes in.
+A _certificate authority (CA)_ signs the certificate indicating that the ID and public_key are correct.
+Certificates can be self-signed, but this sidesteps the trust placed in the CA and is often only used in testing.
+Since most certificates are used for encrypting web traffic, Web browsers will typically warn you if a site is using a self-signed certificate.
+
+Given how how many certificates need to be issued and the work that needs to be done to verify them, most certs are not issues by root CAs, but are actually issued by intermediate CAs.
+Root CAs delegate the work to Intermediate CAs and indicate their trust in them by signing the intermediate CAs keys.
+This creates a _chain of trust_ from the issued certificate (signed by the Intermediate CA) to the Intermediate CA (signed by the root CA) to the root CA (trusted by the browser).
+Tools that use this chain of trust will keep the root CA certificates and update them from the companies that issue them as needed.
+
+The certificate store is very important and while users rarely interact with it is often possible to install root CAs manually.
+https://docs.telerik.com/fiddler/configure-fiddler/tasks/trustfiddlerrootcert[This is can be used to create a proxy that can decrypt HTTPS traffic for debugging] or for more nefarious purposes.
+For this reason some applications, Facebook mobiles apps for example, maintain their own certificate store and prevent users from adding root CAs to it.
+
+image::letsencrypt.svg[width=200, float=left]
+
+So how do you get a certificate for your website?
+The customer will generate a Certificate Signing Request (CSR) that includes the public key and their ID.
+The CA will validate that the customer owns the website and build and sign the cert.
+This who process can be automated and performed for free via a  tool called https://letsencrypt.org/[Let's Encrypt].
+
 === Blockchain
+
+[link=https://commons.wikimedia.org/w/index.php?curid=68638112]
+image::btc.svg[width=150, float=right]
+
+It is hard to talk about cryptography without addressing blockchains, one of the concepts behind cryptocurrencies.
+A blockchain is a shared ledger (of transactions in the case of BitCoin) where blocks are constantly being added to add to the information being stored.
+Periodically an new block is created, which includes a hash of the previous block and a hash of itself for the next block to reference.
+By examining these hashes, you can prove the integrity each block and its position, thus making a publicly-available, mutually agreed upon accounting of what has occurred on the network.
+Typically to prevent bad actors from adding block some sort of proof of work, a mathematically difficult operation, or proof of stake, an accounting of investment in the network, must be included when adding a block to the chain.
 
 === Trusted Platform Module (TPM) / Hardware Security Module (HSM)
 
+These modules provide hardware specifically for use with encryption.
+HSMs are removable modules while TPMs are motherboard chips.
+Many ciphers rely on a reliable source of entropy (randomness) which these modules provide.
+They can also significantly increase the speed at which cryptographic algorithms run by moving the operations to specialized hardware.
+Lastly, these modules can be used to store keys _and_ make them only accessible via the module.
+This can add an extra layer of security to prevent the keys from being easily copied.
+
 === Steganography
+
+Steganography is the process of hiding data in something such that to a casual observer it cannot be detected.
+Data can be hidden in audio, images, or even https://dl.packetstormsecurity.net/crypt/snow/description.html[plain text!].
+The hidden data can also be encrypted if an additional layer of security is required.
+In the field of security, malicious code may be hidden inside other files using steganographic techniques.
+This makes it more difficult for tools to find them when searching storage.
 
 == Review
 
@@ -643,3 +705,13 @@ Submit a screenshot with your lab showing that the output of the openssl command
 ====
 
 --
+
+=== Questions
+
+[qanda]
+What is the difference between symmetric and asymmetric encryption? Give one common use case for each.::
+    {empty}
+What is a hash and what is it used for? How are hashes used in a blockchain?::
+    {empty}
+What is the difference between a stream cipher and a block cipher? Give one common use case for each.::
+    {empty}
