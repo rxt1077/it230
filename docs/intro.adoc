@@ -9,7 +9,7 @@ Unauthorized access is when an actor gains access to data that they do not have 
 The system is often used in an unintended manner to provide such access.
 Data has become an increasingly valuable asset and the _risks_ of others having access to data are incredibly high.
 Because of this, information security typically falls under the risk-management plan of a company and its importance cannot be understated.
-This is evidenced by the fact that information technology's (IT) typical role in a company has migrated from basic a basic service provider to directoships with a seat at the highest decision making table.
+This is evidenced by the fact that information technology's (IT) typical role in a company has migrated from a basic service provider to directorships with a seat at the highest decision making table.
 This is directly due to the fact that IT assets have become the most valuable things many companies own.
 Guarding these assets and managing the inherent risk of their loss is the job of information security professionals.
 
@@ -51,7 +51,7 @@ As we discussed previously, data is very valuable, but how valuable is it if you
 In security we strive to maintain integrity so that the system and even the controls we have in place to guard the system can be trusted.
 Imagine that e-commerce site again.
 What would happen if an attacker could arbitrarily change delivery addresses stored in the system?
-Packages could be routed improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.
+Packages could be routed to improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.
 
 _Availability_ means that a system should remain up an running to ensure that valid users have access to the data when needed.
 In the simplest sense, you could ensure confidentiality and integrity by simply taking the system off line and not allowing any access.
@@ -76,19 +76,19 @@ By keeping this principle in mind, hopefully you can mitigate some of those risk
 
 Another acronym you're going to encounter in many different contexts is AAA.
 It stands for _Authentication_, _Authorization_, and _Accounting_ and it is used in designing and implementing protocols.
-Theses concepts should be remembered when designing security plans.
+These concepts should be remembered when designing security plans.
 
 Authentication is the process of confirming someone's identity.
 This may be done with user names and passwords or more frequently via multi-factor authentication (MFA) which requires not only something you know, but something you have (fingerprints, key fob, etc.).
 
 Authorization refers to keeping track of which resources an entity has access to.
 This can be done via a permission scheme or access control list (ACL).
-Occasionally you will encounter something more exotic where authorization limits users to interactions during a particular time of day of from a particular IP address.
+Occasionally you will encounter something more exotic where authorization limits users to interactions during a particular time of day or from a particular IP address.
 
 Accounting refers to tracking the usage of resources.
 This may be as simple as noting in a log file when a user has logged in to keeping track of exactly which services and user uses and how long they use them.
 Accounting is incredibly important because it allows you to not only monitor for possible problems, but also inspect what has occurred _after_ a problem is encountered.
-Accounting also allows system administrators to show irrefutably what actions as user has taken.
+Accounting also allows system administrators to show irrefutably what actions a user has taken.
 This can be very important evidence in a court of law.
 
 === DRY
@@ -172,7 +172,7 @@ To better be able to manage the risks of a data breach, it helps to be able to i
 Just as there are many reasons an actor may attempt to gain unauthorized access there are also many groups of threat actors.
 
 Neophytes making use of automated tools that they may not fully understand are often referred to a _script kiddies_.
-You may hear other pejorative names as well such as lamer, noob, or luser, but the common thread is that these threat actors or _not_ highly sophisticated.
+You may hear other pejorative names as well such as lamer, noob, or luser, but the common thread is that these threat actors are _not_ highly sophisticated.
 The same techniques used for automating defensive security can also be applied to automating attacks.
 Unfortunately this means that you may encounter actors "punching above their weight" or using complex tools while having only a rudimentary understanding of what they do.
 
@@ -202,7 +202,7 @@ Typically a security plan utilizes the three types of security controls availabl
   It helps to have a whole-organization understanding of security to make it easier to put these controls in place.
 * Technical controls are often what new security professionals think of first.
   These are things like intrusion detection systems (IDS), firewalls, anti-malware software, etc.
-  While these are an import segment of security and they are the segment that falls almost entirely within the purview of IT, it is critical to remember that these are only as strong as the physical and administrative controls that support them!
+  While these are an important segment of security and they are the segment that falls almost entirely within the purview of IT, it is critical to remember that these are only as strong as the physical and administrative controls that support them!
 
 WARNING: Physical controls definitely lack the cool factor that technical controls have.
 Movies typically show security professionals hunched over laptops typing frantically or scrolling rapidly through pages and pages of logs on a giant screen.
@@ -225,7 +225,7 @@ User Awareness::
 
 Anti-Malware Software::
     Given how prevalent the use of malware is a host of tools have been developed to prevent its usage.
-    These tools may filter downloads requests to prevent downloading malware, monitor network traffic to detect active malware patterns, scan files for malware signatures, or harden operating system loopholes used by malware.
+    These tools may filter download requests to prevent downloading malware, monitor network traffic to detect active malware patterns, scan files for malware signatures, or harden operating system loopholes used by malware.
     A security plan will typically detail the type of anti-malware software being used as well as the intended purpose of its usage.
 
 Backups::

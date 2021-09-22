@@ -428,7 +428,7 @@ Before we dive into the uses of a hash, lets try to further understand it by loo
 Let's assume we wanted to hash the message "Hello from Karl" so that we can have a string of characters the uniquely represent that phrase.
 One way to do it would be to strip all the punctuation in the message, make everything lowercase, and then arrange all the letters alphabetically.
 "Hello from Karl" becomes "aefhklllmoorr".
-You can think of it like saying, "There is one 'a' in the message, one 'e' in the message, one 'f' in the message', one 'k' in the message, three 'l's in the message...
+You can think of it like saying, "There is one 'a' in the message, one 'e' in the message, one 'f' in the message', one 'k' in the message, three 'l's in the message..."
 Now our hash, "aefhklllmoorr", can be used to uniquely identify the phrase.
 
 Now assume Karl wants to send us a message but he can't trust the person sending the message.
