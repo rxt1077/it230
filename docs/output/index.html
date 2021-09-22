@@ -154,6 +154,11 @@ table {
 <li><a href="#_review_3">3.19. Review</a></li>
 </ul>
 </li>
+<li><a href="#_protocols">4. Protocols</a>
+<ul class="sectlevel2">
+<li><a href="#_review_4">4.1. Review</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -187,8 +192,20 @@ Use of these names, logos, and brands does not imply endorsement.</p>
 <h2 id="_acknowledgements">Acknowledgements</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The author would like to thank New Jersey Institute of Technology (NJIT) Open Access Textbooks (OAT) project for helping to make this text possible.
-The author would also like to acknowledge the contributions and hard work of Karl Giannoglou, Adjunct Professor NJIT.</p>
+<p>The author would like to thank New Jersey Institute of Technology (NJIT) Open Access Textbooks (OAT) project for helping to make this text possible.</p>
+</div>
+<div class="paragraph">
+<p>The author would also like to acknowledge the contributions and hard work of:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Karl Giannoglou, Adjunct Professor NJIT</p>
+</li>
+<li>
+<p>Jacob Jones, NJIT 2023</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -208,7 +225,7 @@ Unauthorized access is when an actor gains access to data that they do not have 
 The system is often used in an unintended manner to provide such access.
 Data has become an increasingly valuable asset and the <em>risks</em> of others having access to data are incredibly high.
 Because of this, information security typically falls under the risk-management plan of a company and its importance cannot be understated.
-This is evidenced by the fact that information technology&#8217;s (IT) typical role in a company has migrated from basic a basic service provider to directoships with a seat at the highest decision making table.
+This is evidenced by the fact that information technology&#8217;s (IT) typical role in a company has migrated from a basic service provider to directorships with a seat at the highest decision making table.
 This is directly due to the fact that IT assets have become the most valuable things many companies own.
 Guarding these assets and managing the inherent risk of their loss is the job of information security professionals.</p>
 </div>
@@ -250,7 +267,7 @@ As we discussed previously, data is very valuable, but how valuable is it if you
 In security we strive to maintain integrity so that the system and even the controls we have in place to guard the system can be trusted.
 Imagine that e-commerce site again.
 What would happen if an attacker could arbitrarily change delivery addresses stored in the system?
-Packages could be routed improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.</p>
+Packages could be routed to improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.</p>
 </div>
 <div class="paragraph">
 <p><em>Availability</em> means that a system should remain up an running to ensure that valid users have access to the data when needed.
@@ -272,7 +289,7 @@ By keeping this principle in mind, hopefully you can mitigate some of those risk
 <div class="paragraph">
 <p>Another acronym you&#8217;re going to encounter in many different contexts is AAA.
 It stands for <em>Authentication</em>, <em>Authorization</em>, and <em>Accounting</em> and it is used in designing and implementing protocols.
-Theses concepts should be remembered when designing security plans.</p>
+These concepts should be remembered when designing security plans.</p>
 </div>
 <div class="paragraph">
 <p>Authentication is the process of confirming someone&#8217;s identity.
@@ -281,13 +298,13 @@ This may be done with user names and passwords or more frequently via multi-fact
 <div class="paragraph">
 <p>Authorization refers to keeping track of which resources an entity has access to.
 This can be done via a permission scheme or access control list (ACL).
-Occasionally you will encounter something more exotic where authorization limits users to interactions during a particular time of day of from a particular IP address.</p>
+Occasionally you will encounter something more exotic where authorization limits users to interactions during a particular time of day or from a particular IP address.</p>
 </div>
 <div class="paragraph">
 <p>Accounting refers to tracking the usage of resources.
 This may be as simple as noting in a log file when a user has logged in to keeping track of exactly which services and user uses and how long they use them.
 Accounting is incredibly important because it allows you to not only monitor for possible problems, but also inspect what has occurred <em>after</em> a problem is encountered.
-Accounting also allows system administrators to show irrefutably what actions as user has taken.
+Accounting also allows system administrators to show irrefutably what actions a user has taken.
 This can be very important evidence in a court of law.</p>
 </div>
 </div>
@@ -385,7 +402,7 @@ Just as there are many reasons an actor may attempt to gain unauthorized access 
 </div>
 <div class="paragraph">
 <p>Neophytes making use of automated tools that they may not fully understand are often referred to a <em>script kiddies</em>.
-You may hear other pejorative names as well such as lamer, noob, or luser, but the common thread is that these threat actors or <em>not</em> highly sophisticated.
+You may hear other pejorative names as well such as lamer, noob, or luser, but the common thread is that these threat actors are <em>not</em> highly sophisticated.
 The same techniques used for automating defensive security can also be applied to automating attacks.
 Unfortunately this means that you may encounter actors "punching above their weight" or using complex tools while having only a rudimentary understanding of what they do.</p>
 </div>
@@ -427,7 +444,7 @@ It helps to have a whole-organization understanding of security to make it easie
 <li>
 <p>Technical controls are often what new security professionals think of first.
 These are things like intrusion detection systems (IDS), firewalls, anti-malware software, etc.
-While these are an import segment of security and they are the segment that falls almost entirely within the purview of IT, it is critical to remember that these are only as strong as the physical and administrative controls that support them!</p>
+While these are an important segment of security and they are the segment that falls almost entirely within the purview of IT, it is critical to remember that these are only as strong as the physical and administrative controls that support them!</p>
 </li>
 </ul>
 </div>
@@ -468,7 +485,7 @@ Raising user awareness is a critical component of any security plan.</p>
 <dt class="hdlist1">Anti-Malware Software</dt>
 <dd>
 <p>Given how prevalent the use of malware is a host of tools have been developed to prevent its usage.
-These tools may filter downloads requests to prevent downloading malware, monitor network traffic to detect active malware patterns, scan files for malware signatures, or harden operating system loopholes used by malware.
+These tools may filter download requests to prevent downloading malware, monitor network traffic to detect active malware patterns, scan files for malware signatures, or harden operating system loopholes used by malware.
 A security plan will typically detail the type of anti-malware software being used as well as the intended purpose of its usage.</p>
 </dd>
 <dt class="hdlist1">Backups</dt>
@@ -1768,11 +1785,11 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 <p></p>
 </li>
 <li>
-<p><em>What IP address does this malware attempt to connect to?</em></p>
+<p><em>What IP addresses does this malware attempt to connect to?</em></p>
 <p></p>
 </li>
 <li>
-<p><em>Does this malware resolve any DNS addresses?</em></p>
+<p><em>Does this malware resolve any DNS addresses? How do you know?</em></p>
 <p></p>
 </li>
 <li>
@@ -1780,7 +1797,7 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 <p></p>
 </li>
 <li>
-<p><em>What are IOCs and what are the IOCs for this malware?</em></p>
+<p><em>What are IoCs and what are the IoCs for this malware?</em></p>
 <p></p>
 </li>
 </ol>
@@ -1814,6 +1831,334 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_protocols">4. Protocols</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_review_4">4.1. Review</h3>
+<div class="sect3">
+<h4 id="_labs_4">4.1.1. Labs</h4>
+<div class="openblock lab">
+<div class="title">Scanning with nmap</div>
+<div class="content">
+<div class="paragraph">
+<p>For this lab we will start by downloading and extracting the files required.
+You can do this easily from the terminal in Windows via PowerShell:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\temp&gt; Invoke-WebRequest -Uri https://github.com/rxt1077/it230/raw/main/labs/nmap.zip -OutFile nmap.zip
+PS C:\Users\rxt1077\temp&gt; Expand-Archive nmap.zip
+PS C:\Users\rxt1077\temp&gt; cd nmap
+PS C:\Users\rxt1077\temp\nmap&gt; ls
+
+
+    Directory: C:\Users\rxt1077\temp\nmap
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         9/22/2021   3:58 PM                scanner
+d-----         9/22/2021   3:58 PM                victim
+-a----         9/22/2021   2:34 PM             75 docker-compose.yml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or via BASH/zsh on a Mac:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">ryan@R90VJ3MK:/tmp$ wget https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
+--2021-09-22 16:00:37--  https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
+Resolving github.com (github.com)... 140.82.112.4
+Connecting to github.com (github.com)|140.82.112.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip [following]
+--2021-09-22 16:00:37--  https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1233 (1.2K) [application/zip]
+Saving to: ‘nmap.zip’
+
+nmap.zip                               100%[============================================================================&gt;]   1.20K  --.-KB/s    in 0s
+
+2021-09-22 16:00:37 (51.8 MB/s) - ‘nmap.zip’ saved [1233/1233]
+
+ryan@R90VJ3MK:/tmp$ unzip nmap.zip
+  inflating: nmap/docker-compose.yml
+  inflating: nmap/scanner/Dockerfile
+  inflating: nmap/victim/bad.conf
+  inflating: nmap/victim/Dockerfile
+ryan@R90VJ3MK:/tmp$ cd nmap/
+ryan@R90VJ3MK:/tmp/nmap$ ls
+docker-compose.yml  scanner  victim</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since we will be simulating multiple machines in this lab, we will make use of Docker Compose which was already installed with Docker.
+Docker Compose reads a <code>docker-compose.yml</code> file which should already be in your <code>nmap</code> directory.
+Run <code>docker-compose up --build --detach</code> to build and run the images in the background:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\temp\nmap&gt; docker-compose up --build --detach
+Building victim
+[+] Building 2.9s (15/15) FINISHED
+ =&gt; [internal] load build definition from Dockerfile                                                                                                   0.1s
+ =&gt; =&gt; transferring dockerfile: 518B                                                                                                                   0.0s
+ =&gt; [internal] load .dockerignore                                                                                                                      0.1s
+ =&gt; =&gt; transferring context: 2B                                                                                                                        0.0s
+ =&gt; [internal] load metadata for docker.io/library/debian:latest                                                                                       0.0s
+ =&gt; [ 1/10] FROM docker.io/library/debian                                                                                                              0.0s
+ =&gt; [internal] load build context                                                                                                                      0.0s
+ =&gt; =&gt; transferring context: 640B                                                                                                                      0.0s
+ =&gt; CACHED [ 2/10] RUN apt-get -y update                                                                                                               0.0s
+ =&gt; CACHED [ 3/10] RUN apt-get -y install proftpd-basic                                                                                                0.0s
+ =&gt; CACHED [ 4/10] RUN sed -i "1s/.*/root:$6$.DEC7ti\/4959zEK9$H7BPwBTz6tISYG8oZuhXLS5L3ZPYwdzzQNQTg8m4Ql3ebX9U\/afVhi4OSpK3mNTSpT8DefJ2USdWuT5DHOkRY  0.0s
+ =&gt; [ 5/10] RUN sed -i "/^root/d" /etc/ftpusers                                                                                                        0.4s
+ =&gt; [ 6/10] COPY bad.conf /etc/proftpd/conf.d/                                                                                                         0.0s
+ =&gt; [ 7/10] RUN chsh -s /bin/bash ftp                                                                                                                  0.6s
+ =&gt; [ 8/10] RUN mkdir -p /home/ftp/incoming                                                                                                            0.5s
+ =&gt; [ 9/10] RUN cp /etc/shadow /home/ftp/incoming/shadow.backup                                                                                        0.6s
+ =&gt; [10/10] RUN chown -R ftp.users /home/ftp                                                                                                           0.5s
+ =&gt; exporting to image                                                                                                                                 0.2s
+ =&gt; =&gt; exporting layers                                                                                                                                0.2s
+ =&gt; =&gt; writing image sha256:dc9af53b250b4f7fcfbe5a6668a540bd02ebef0353c5927ed4591a512363e831                                                           0.0s
+ =&gt; =&gt; naming to docker.io/library/nmap_victim                                                                                                         0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+Building scanner
+[+] Building 0.1s (7/7) FINISHED
+ =&gt; [internal] load build definition from Dockerfile                                                                                                   0.0s
+ =&gt; =&gt; transferring dockerfile: 111B                                                                                                                   0.0s
+ =&gt; [internal] load .dockerignore                                                                                                                      0.0s
+ =&gt; =&gt; transferring context: 2B                                                                                                                        0.0s
+ =&gt; [internal] load metadata for docker.io/library/debian:latest                                                                                       0.0s
+ =&gt; [1/3] FROM docker.io/library/debian                                                                                                                0.0s
+ =&gt; CACHED [2/3] RUN apt-get -y update                                                                                                                 0.0s
+ =&gt; CACHED [3/3] RUN apt-get -y install nmap ftp john                                                                                                  0.0s
+ =&gt; exporting to image                                                                                                                                 0.0s
+ =&gt; =&gt; exporting layers                                                                                                                                0.0s
+ =&gt; =&gt; writing image sha256:14ba503b7925089023184d783c53c22c4167fdf2338df0e85143daedf8b458ac                                                           0.0s
+ =&gt; =&gt; naming to docker.io/library/nmap_scanner                                                                                                        0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+Starting nmap_scanner_1  ... done
+Recreating nmap_victim_1 ... done</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we actually have to containers running, one named <code>victim</code> which is our target machine and another named <code>scanner</code> which we will use to learn about nmap.
+Lets start a BASH shell on <code>scanner</code> and work from there:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\temp\nmap&gt; docker-compose run scanner bash
+Creating nmap_scanner_run ... done
+root@7b6d733cc03a:/<i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Notice the prompt change. We are now <em>inside</em> the <code>scanner</code> container running BASH.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Lets use the Linux <code>ip addr</code> command to see what our IP address on this network is:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">----.
+root@7b6d733cc03a:/# ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+3: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+165: eth0@if166: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:14:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.20.0.2/16 brd 172.20.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+----</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We care about the <code>eth0</code> device, so as you can see on my machine the address is 172.20.0.2.
+We will use nmaps ping scan to search for any device within the last 8 bits of our IP address (/24).
+You may notice that we are actually on a /16 subnet, but by limiting ourselves to /24 the scan will go <em>much</em> faster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">root@7b6d733cc03a:/# nmap -sP 172.20.0.0/24
+Starting Nmap 7.70 ( https://nmap.org ) at 2021-09-22 20:25 UTC
+Nmap scan report for 172.20.0.1
+Host is up (0.000076s latency).
+MAC Address: 02:42:A6:CA:0D:77 (Unknown)
+Nmap scan report for nmap_victim_1.nmap_default (172.20.0.3)
+Host is up (0.000070s latency).
+MAC Address: 02:42:AC:14:00:03 (Unknown)
+Nmap scan report for 7b6d733cc03a (172.20.0.2)
+Host is up.
+Nmap done: 256 IP addresses (3 hosts up) scanned in 5.78 seconds</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this instance we found three other machines on the network.
+One of which is conveniently named victim.</p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p><a href="https://nmap.org/book/man-host-discovery.html">Read the nmap documentation for host discovery.</a>
+What other types of scans could you use if a host does not respond to an ICMP ping packet?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now lets do a full scan on on the victim machine.
+Docker Compose does a nice job of resolving DNS requests for sensible names in the <code>docker-compose.yml</code> file so we can refer to the host we want to scan as <code>victim</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">root@7b6d733cc03a:/# nmap victim
+Starting Nmap 7.70 ( https://nmap.org ) at 2021-09-22 20:37 UTC
+Nmap scan report for victim (172.20.0.3)
+Host is up (0.000018s latency).
+rDNS record for 172.20.0.3: nmap_victim_1.nmap_default
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+21/tcp open  ftp
+MAC Address: 02:42:AC:14:00:03 (Unknown)
+
+Nmap done: 1 IP address (1 host up) scanned in 1.84 seconds</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, nmap uses a SYN scan against well known ports.
+This type of scan is harder to detect (as it does not fully open a connection) and can be run quickly.</p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>What ports are open on the victim machine? Why is <em>this</em> particular protocol insecure?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>nmap is capable of much more than just simple port scanning.
+nmap includes version detection and OS fingerprinting (among other things).
+To get a much better picture of what exactly <code>victim</code> is running, you can use the <code>-A</code> option:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">root@7b6d733cc03a:/# nmap -A victim
+Starting Nmap 7.70 ( https://nmap.org ) at 2021-09-22 20:44 UTC
+Nmap scan report for victim (172.20.0.3)
+Host is up (0.000096s latency).
+rDNS record for 172.20.0.3: nmap_victim_1.nmap_default
+Not shown: 999 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     ProFTPD
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_drwxr-xr-x   1 ftp      users        4096 Sep 22 20:11 incoming
+MAC Address: 02:42:AC:14:00:03 (Unknown)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.70%E=4%D=9/22%OT=21%CT=1%CU=44136%PV=Y%DS=1%DC=D%G=Y%M=0242AC%T
+OS:M=614B95AE%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=109%TI=Z%CI=Z%TS=A
+OS:)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B
+OS:4ST11NW7%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88
+OS:)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+
+OS:%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+OS:T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A
+OS:=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%D
+OS:F=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=4
+OS:0%CD=S)
+
+Network Distance: 1 hop
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.10 ms nmap_victim_1.nmap_default (172.20.0.3)
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 28.39 seconds</code></pre>
+</div>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>What additional information did you learn from the <code>-A</code> option?
+How do you think this could be exploited?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now, using the <code>scanner</code> container you are currently on see what you can find out about <code>victim</code>.
+<a href="https://linux.die.net/man/1/ftp">This man page may be of some help.</a></p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>BONUS: Remembering what you learned in the <em>Hash it Out</em> lab, what is the root password on the victim machine?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>BONUS: How can you test to see if you got it right? What does this say about how ProFTP is configured on <code>victim</code>?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footnotes">
 <hr>
@@ -1826,7 +2171,7 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-12 15:55:16 UTC
+Last updated 2021-09-22 20:52:59 UTC
 </div>
 </div>
 </body>

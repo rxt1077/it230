@@ -1,0 +1,256 @@
+= Protocols
+
+== Review
+
+=== Labs
+
+.Scanning with nmap
+[lab]
+--
+For this lab we will start by downloading and extracting the files required.
+You can do this easily from the terminal in Windows via PowerShell:
+
+[source, console]
+----
+PS C:\Users\rxt1077\temp> Invoke-WebRequest -Uri https://github.com/rxt1077/it230/raw/main/labs/nmap.zip -OutFile nmap.zip
+PS C:\Users\rxt1077\temp> Expand-Archive nmap.zip
+PS C:\Users\rxt1077\temp> cd nmap
+PS C:\Users\rxt1077\temp\nmap> ls
+
+
+    Directory: C:\Users\rxt1077\temp\nmap
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         9/22/2021   3:58 PM                scanner
+d-----         9/22/2021   3:58 PM                victim
+-a----         9/22/2021   2:34 PM             75 docker-compose.yml
+----
+
+Or via BASH/zsh on a Mac:
+
+[source, console]
+----
+ryan@R90VJ3MK:/tmp$ wget https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
+--2021-09-22 16:00:37--  https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
+Resolving github.com (github.com)... 140.82.112.4
+Connecting to github.com (github.com)|140.82.112.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip [following]
+--2021-09-22 16:00:37--  https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1233 (1.2K) [application/zip]
+Saving to: ‘nmap.zip’
+
+nmap.zip                               100%[============================================================================>]   1.20K  --.-KB/s    in 0s
+
+2021-09-22 16:00:37 (51.8 MB/s) - ‘nmap.zip’ saved [1233/1233]
+
+ryan@R90VJ3MK:/tmp$ unzip nmap.zip
+  inflating: nmap/docker-compose.yml
+  inflating: nmap/scanner/Dockerfile
+  inflating: nmap/victim/bad.conf
+  inflating: nmap/victim/Dockerfile
+ryan@R90VJ3MK:/tmp$ cd nmap/
+ryan@R90VJ3MK:/tmp/nmap$ ls
+docker-compose.yml  scanner  victim
+----
+
+Since we will be simulating multiple machines in this lab, we will make use of Docker Compose which was already installed with Docker.
+Docker Compose reads a `docker-compose.yml` file which should already be in your `nmap` directory.
+Run `docker-compose up --build --detach` to build and run the images in the background:
+
+[source, console]
+----
+PS C:\Users\rxt1077\temp\nmap> docker-compose up --build --detach
+Building victim
+[+] Building 2.9s (15/15) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                   0.1s
+ => => transferring dockerfile: 518B                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                      0.1s
+ => => transferring context: 2B                                                                                                                        0.0s
+ => [internal] load metadata for docker.io/library/debian:latest                                                                                       0.0s
+ => [ 1/10] FROM docker.io/library/debian                                                                                                              0.0s
+ => [internal] load build context                                                                                                                      0.0s
+ => => transferring context: 640B                                                                                                                      0.0s
+ => CACHED [ 2/10] RUN apt-get -y update                                                                                                               0.0s
+ => CACHED [ 3/10] RUN apt-get -y install proftpd-basic                                                                                                0.0s
+ => CACHED [ 4/10] RUN sed -i "1s/.*/root:$6$.DEC7ti\/4959zEK9$H7BPwBTz6tISYG8oZuhXLS5L3ZPYwdzzQNQTg8m4Ql3ebX9U\/afVhi4OSpK3mNTSpT8DefJ2USdWuT5DHOkRY  0.0s
+ => [ 5/10] RUN sed -i "/^root/d" /etc/ftpusers                                                                                                        0.4s
+ => [ 6/10] COPY bad.conf /etc/proftpd/conf.d/                                                                                                         0.0s
+ => [ 7/10] RUN chsh -s /bin/bash ftp                                                                                                                  0.6s
+ => [ 8/10] RUN mkdir -p /home/ftp/incoming                                                                                                            0.5s
+ => [ 9/10] RUN cp /etc/shadow /home/ftp/incoming/shadow.backup                                                                                        0.6s
+ => [10/10] RUN chown -R ftp.users /home/ftp                                                                                                           0.5s
+ => exporting to image                                                                                                                                 0.2s
+ => => exporting layers                                                                                                                                0.2s
+ => => writing image sha256:dc9af53b250b4f7fcfbe5a6668a540bd02ebef0353c5927ed4591a512363e831                                                           0.0s
+ => => naming to docker.io/library/nmap_victim                                                                                                         0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+Building scanner
+[+] Building 0.1s (7/7) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                   0.0s
+ => => transferring dockerfile: 111B                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                      0.0s
+ => => transferring context: 2B                                                                                                                        0.0s
+ => [internal] load metadata for docker.io/library/debian:latest                                                                                       0.0s
+ => [1/3] FROM docker.io/library/debian                                                                                                                0.0s
+ => CACHED [2/3] RUN apt-get -y update                                                                                                                 0.0s
+ => CACHED [3/3] RUN apt-get -y install nmap ftp john                                                                                                  0.0s
+ => exporting to image                                                                                                                                 0.0s
+ => => exporting layers                                                                                                                                0.0s
+ => => writing image sha256:14ba503b7925089023184d783c53c22c4167fdf2338df0e85143daedf8b458ac                                                           0.0s
+ => => naming to docker.io/library/nmap_scanner                                                                                                        0.0s
+
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+Starting nmap_scanner_1  ... done
+Recreating nmap_victim_1 ... done
+----
+
+Now we actually have to containers running, one named `victim` which is our target machine and another named `scanner` which we will use to learn about nmap.
+Lets start a BASH shell on `scanner` and work from there:
+
+[source, console]
+----
+PS C:\Users\rxt1077\temp\nmap> docker-compose run scanner bash
+Creating nmap_scanner_run ... done
+root@7b6d733cc03a:/# <1>
+----
+<1> Notice the prompt change. We are now _inside_ the `scanner` container running BASH.
+
+Lets use the Linux `ip addr` command to see what our IP address on this network is:
+
+[source, console]
+----
+root@7b6d733cc03a:/# ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: tunl0@NONE: <NOARP> mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+3: sit0@NONE: <NOARP> mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+165: eth0@if166: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:14:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.20.0.2/16 brd 172.20.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+----
+
+We care about the `eth0` device, so as you can see on my machine the address is `172.20.0.2`.
+We will use nmap's ping scan to search for any device within the last 8 bits of our IP address (`/24`).
+You may notice that we are actually on a `/16` subnet, but by limiting ourselves to `/24` the scan will go _much_ faster.
+
+[source, console]
+----
+root@7b6d733cc03a:/# nmap -sP 172.20.0.0/24
+Starting Nmap 7.70 ( https://nmap.org ) at 2021-09-22 20:25 UTC
+Nmap scan report for 172.20.0.1
+Host is up (0.000076s latency).
+MAC Address: 02:42:A6:CA:0D:77 (Unknown)
+Nmap scan report for nmap_victim_1.nmap_default (172.20.0.3)
+Host is up (0.000070s latency).
+MAC Address: 02:42:AC:14:00:03 (Unknown)
+Nmap scan report for 7b6d733cc03a (172.20.0.2)
+Host is up.
+Nmap done: 256 IP addresses (3 hosts up) scanned in 5.78 seconds
+----
+
+In this instance we found three other machines on the network.
+One of which is conveniently named victim.
+
+[IMPORTANT.deliverable]
+====
+https://nmap.org/book/man-host-discovery.html[Read the nmap documentation for host discovery.]
+What other types of scans could you use if a host does not respond to an ICMP ping packet?
+====
+
+Now lets do a full scan on on the victim machine.
+Docker Compose does a nice job of resolving DNS requests for sensible names in the `docker-compose.yml` file so we can refer to the host we want to scan as `victim`.
+
+[source, console]
+----
+root@7b6d733cc03a:/# nmap victim
+Starting Nmap 7.70 ( https://nmap.org ) at 2021-09-22 20:37 UTC
+Nmap scan report for victim (172.20.0.3)
+Host is up (0.000018s latency).
+rDNS record for 172.20.0.3: nmap_victim_1.nmap_default
+Not shown: 999 closed ports
+PORT   STATE SERVICE
+21/tcp open  ftp
+MAC Address: 02:42:AC:14:00:03 (Unknown)
+
+Nmap done: 1 IP address (1 host up) scanned in 1.84 seconds
+----
+
+By default, nmap uses a https://www.techtarget.com/searchnetworking/definition/SYN-scanning[SYN] scan against well known ports.
+This type of scan is harder to detect (as it does not fully open a connection) and can be run quickly.
+
+[IMPORTANT.deliverable]
+====
+What ports are open on the victim machine? Why is _this_ particular protocol insecure?
+====
+
+nmap is capable of much more than just simple port scanning.
+nmap includes version detection and OS fingerprinting (among other things).
+To get a much better picture of what exactly `victim` is running, you can use the `-A` option:
+
+[source, console]
+----
+root@7b6d733cc03a:/# nmap -A victim
+Starting Nmap 7.70 ( https://nmap.org ) at 2021-09-22 20:44 UTC
+Nmap scan report for victim (172.20.0.3)
+Host is up (0.000096s latency).
+rDNS record for 172.20.0.3: nmap_victim_1.nmap_default
+Not shown: 999 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     ProFTPD
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_drwxr-xr-x   1 ftp      users        4096 Sep 22 20:11 incoming
+MAC Address: 02:42:AC:14:00:03 (Unknown)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.70%E=4%D=9/22%OT=21%CT=1%CU=44136%PV=Y%DS=1%DC=D%G=Y%M=0242AC%T
+OS:M=614B95AE%P=x86_64-pc-linux-gnu)SEQ(SP=103%GCD=1%ISR=109%TI=Z%CI=Z%TS=A
+OS:)OPS(O1=M5B4ST11NW7%O2=M5B4ST11NW7%O3=M5B4NNT11NW7%O4=M5B4ST11NW7%O5=M5B
+OS:4ST11NW7%O6=M5B4ST11)WIN(W1=FE88%W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88
+OS:)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4NNSNW7%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+
+OS:%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)
+OS:T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A
+OS:=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%D
+OS:F=N%T=40%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=4
+OS:0%CD=S)
+
+Network Distance: 1 hop
+
+TRACEROUTE
+HOP RTT     ADDRESS
+1   0.10 ms nmap_victim_1.nmap_default (172.20.0.3)
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 28.39 seconds
+----
+
+[IMPORTANT.deliverable]
+====
+What additional information did you learn from the `-A` option?
+How do you think this could be exploited?
+====
+
+Now, using the `scanner` container you are currently on see what you can find out about `victim`.
+https://linux.die.net/man/1/ftp[This man page may be of some help.]
+
+[IMPORTANT.deliverable]
+====
+BONUS: Remembering what you learned in the _Hash it Out_ lab, what is the root password on the victim machine?
+====
+
+[IMPORTANT.deliverable]
+====
+BONUS: How can you test to see if you got it right? What does this say about how ProFTP is configured on `victim`?
+====
+--
