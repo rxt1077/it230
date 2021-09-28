@@ -7,22 +7,50 @@ Protocols exist for both hardware and software and have been developed via indiv
 Early networking protocols were often developed on mailing lists using Requests for Comments (RFCs).
 You may still see RFCs being crafted, referred to, or actively worked on.
 https://datatracker.ietf.org/doc/html/rfc2616[Some of the earliest web protocols are detailed in RFCs.]
-More often than not, large protocols have working groups and associations developing, such as the 802.11 group at the Institute of Electrical and Electronics Engineers which handles WiFi protocols.
+More often than not, large protocols have working groups and associations developing, such as the 802.11 group at the https://www.ieee.org/[Institute of Electrical and Electronics Engineers (IEEE)] which handles WiFi protocols.
 These groups publish papers detailing how the protocols work.
 
-== Link Layer Protocols
+This chapter will give a brief description of important protocols following the TCP/IP layering model.
+It is important to note that some of these protocols may reach across layers to accomplish tasks.
+In this case they will be grouped according to which layer they largely function within.
+
+== Network Access Layer
 
 === ARP
 
 Address Resolution Protocol (ARP) is used on the local ethernet segment to resolve IP addresses to MAC addresses.
 Since this protocol functions at the ethernet segment level, security was not a primary concern.
 Unfortunately this means that ARP communications can be easily spoofed to cause a MitM scenario.
-A malicious actor simply sends out several ARP packets, _gratuitous arp_ saying that traffic for a certain IP address should be sent to them.
-Since the MAC to IP address table is cached in several places, it can take a long time to resolve an issue caused by malicious ARP frames.
+A malicious actor simply sends out several ARP packets, _gratuitous arp_, saying that traffic for a certain IP address should be sent to them.
+Since the MAC to IP address table is cached in several places, it can take a long time for all the caches to invalidate and resolve an issue caused by malicious ARP frames.
 
 There is a protocol designed to mitigate the issues with ARP.
 Dynamic ARP Inspection (DAI) reaches across layers to work with the DHCP lease database and drop packets that are not using the MAC address used when a DHCP lease was granted.
 While this can solve many of the issues associated with ARP it is also a good practice to use secure higher-level protocols such as HTTPS just in case.
+
+=== Wifi
+
+The Wifi protocols we are most concerned with are the security standards used to encrypt data.
+By the nature of a wireless protocol, information sent on the network is available to anyone with an antenna.
+These Wifi security standards are the only thing protecting your network traffic from being viewing by anyone within your transmitting range.
+There are currently four standards:
+
+WEP::
+    Wireless Equivalent Privacy (WEP) is depreceated and should not be used.
+    It was developed in 1999 and uses an RC4 stream and 24-bit encryption.
+    Several attacks have been developed that can crack WEP within a matter of seconds.
+
+WPA::
+    Wifi Protected Access (WPA) utilized Temporal Key Integrity Protocol (TKIP) to change the keys being used.
+    This 128-bit encryption method has also been cracked and the protocol should not be used.
+
+WPA2::
+    Wifi Protected Access 2 (WPA2) makes use of AES encryption and is currently the most popular standard.
+    WPA2 is still considered secure.
+
+WPA3::
+    Wifi Protected Access 3 (WPA3) was developed in 2018 and is currently considered state-of-the-art.
+    Many networks are beginning the transition from WPA2 to WPA3.
 
 == Internet Layer Protocols
 
@@ -30,10 +58,10 @@ While this can solve many of the issues associated with ARP it is also a good pr
 
 IP stands for internet protocol and it was devised to allow creating a network of networks.
 The network of networks that uses it primarily is the Internet, although you could use IP in other scenarios as well.
-IP is primarily concerned with _routing_ traffic across and to networks.
-The protocol was first detailed by the IEEE in 1974 and comes from the Advanced Research Projects Agency Network (ARPANET) project, which created the first large packet switched network.
+IP is largely concerned with _routing_ traffic across and to networks.
+The protocol was first detailed by the IEEE in 1974 and comes from the Advanced Research Projects Agency Network (ARPANET) project, which created the first large, packet-switched network.
 
-Most people are familiar with IP in terms of IP addresses, the unique number given to a host participating in an IP network.
+Most people are familiar with IP addresses, the unique number given to a host participating in an IP network.
 Currently there are two main versions of the IP protocol, IPv4 and IPv6, and one of the major differences is in how many IP addresses are available.
 IPv4 supports 32 bit addresses and IPv6 supports 128 bit addresses.
 To give an idea of how big of a change that is, we have currently allocated all possible IPv4 addresses, but with IPv6 we could give an address to every grain of sand on the beaches of earth and still not run out.
@@ -42,13 +70,13 @@ To give an idea of how big of a change that is, we have currently allocated all 
 ****
 From a security standpoint, the way addresses are used in IPv4 vs IPv6 has big consequences.
 Since there aren't enough IPv4 addresses a typical internet user is assigned a local address that gets translated to an external IPv4 address when they route their packets through their router.
-This is refered to as Network Address Translation (NAT) and is usually handled by an all-in-one device that also makes sure external entities cannot connect to the internal network.
+This is referred to as Network Address Translation (NAT) and is usually handled by an all-in-one device that also makes sure external entities cannot connect to the internal network.
 
 With IPv6 addresses each host on that same _internal_ network can be given an external IPv6 address.
 A _basic_ IPv6 router may simply pass the packets to the network without blocking connections to the internal network.
 If the machines are not hardened or a firewall is not put in place/enabled the machines could be subject to attack.
 
-As a computer security specialist it is important to test not only IPv4 connectivity, but also IPv6 to ensure that your network is configured approriately.
+As a computer security specialist it is important to test not only IPv4 connectivity, but also IPv6 to ensure that your network is configured appropriately.
 ****
 
 === ICMP
@@ -86,7 +114,7 @@ Network engineers use ICMP to troubleshoot their own networks, but it would be a
 As such, do not expect all external hosts to respond to pings.
 They may still be up, but you'll need to figure out https://nmap.org/book/man-host-discovery.html[another way to detect them.]
 
-== NAT
+=== NAT
 
 [svgbob, nat, width=500, float=left]
 ....
@@ -127,7 +155,7 @@ Transmission Control Protocol (TCP) is at the heart of most networks.
 It provides for reliable communication via a three way hand shake, breaks large data segments into packets, ensures data integrity, and provides flow control for those packets.
 This all comes at a cost of course, and this connection-oriented protocol typically has higher latency than its counterparts.
 Given the complex nature of TCP is has often been targeted for attacks.
-TCP stacks are constantly adapting and changing (within the paramters of the protocol) to avoid DoS and MitM attacks.footnote:[For an interesting example of how you can change but still follow a protocol, check out https://en.wikipedia.org/wiki/SYN_cookies[SYN cookies].]
+TCP stacks are constantly adapting and changing (within the parameters of the protocol) to avoid DoS and MitM attacks.footnote:[For an interesting example of how you can change but still follow a protocol, check out https://en.wikipedia.org/wiki/SYN_cookies[SYN cookies].]
 
 === UDP
 
@@ -142,8 +170,8 @@ UDP does still employ checksums so you can be sure of the integrity of any UDP p
 Port numbers are used in a transport layer connection to specify which service to connect to.
 This allows a single host to have multiple services running on it.
 Ports 0 to 1023 are _well-known ports_ and typically support a commonly used service.
-In most operating systems it takes administrative priveleges to bind to a Well-known port and listen for connections.
-Registered ports range from 1024 to 49151 and do not require administrative priveleges to run a service on.
+In most operating systems it takes administrative privileges to bind to a Well-known port and listen for connections.
+Registered ports range from 1024 to 49151 and do not require administrative privileges to run a service on.
 You may find many things listening on these ports as any user can have a service on them.
 Lastly ports 49152 to 65535 are used dynamically by applications as needed.
 
@@ -187,7 +215,7 @@ DHCP servers can also give information about proxies, Domain Name Servers (DNS),
 Given the dynamic nature of modern networks, with clients coming and going, DHCP is the standard.
 From a security standpoint someone impersonating a DHCP server can wreak havoc on a network.
 These rogue DHCP servers can cause traffic to be redirected to initiate MitM attacks or cause DoS attacks.
-DHCP relies on broadcast Address Resolution Protocol (ARP) messages and does not make use of authentication, meaning that once an attacker is on the same ethernet segment as the victim machines all bets are off.
+DHCP relies on broadcast Address Resolution Protocol (ARP) messages and does not make use of authentication, meaning that once an attacker is on the same Ethernet segment as the victim machines all bets are off.
 
 === HTTP
 
@@ -218,6 +246,8 @@ Unencrypted HTTP traffic is sent over port 80 and is vulnerable to attack as all
 
 === SSL/TLS
 
+[.float-group]
+--
 [svgbob, tls, width=250, float=left]
 ....
 .--------.                 .--------.
@@ -254,12 +284,13 @@ Some protocols typically wrapped in TLS include HTTP, SMTP, IMAP, VoIP, and many
 TLS uses a handshake to exchange certificate information as shown in the diagram.
 It should be noted that at the time of writing TLS 1.3 is the most current version, but only half of websites support it.
 TLS 1.2, the most common version, is still considered safe if best practices are followed and TLS 1.1 or lower is considered depreciated.
+--
 
 === HTTPS
 
-image::https.png[float=right, width=400, link=https://commons.wikimedia.org/wiki/File:HTTPS_icon.png]
+image::https.png[float=right, width=300, link=https://commons.wikimedia.org/wiki/File:HTTPS_icon.png]
 
-Hypertext Transer Protocol Secure (HTTPS) solves the problem of unecrypted traffic by wrapping HTTP requests in TLS.
+Hypertext Transfer Protocol Secure (HTTPS) solves the problem of unencrypted traffic by wrapping HTTP requests in TLS.
 HTTPS traffic uses port 443 and is typically signified in a browser with a lock icon in the upper left-hand corner.
 By clicking on the icon users can learn more about the certificates being used for communication.
 Utilizing a robust PKI HTTPS allows for safe HTTP communication between client and server.
@@ -288,7 +319,7 @@ SSH uses TCP on port 22.
 
 === LDAP
 
-[svgbob, ldap, width=200, float=right]
+[svgbob, ldap, width=400, float=right]
 ....
                              +-------+
                              | Root  |
@@ -314,14 +345,14 @@ Lightweight directory access protocol (LDAP) is used for accessing and maintaini
 It's primary use is with Windows Active Directory (AD) where it can be used to obtain information regarding users and resources from an AD server.
 Clients can authenticate through the server and obtain privileges to read or read/write certain entries.
 LDAP did not originally support encryption, so LDAP over SSL (LDAPS) was developed.
-LDAP uses TCP and UPD over prot 389 and LDAPS uses TCP over port 636.
+LDAP uses TCP and UPD over port 389 and LDAPS uses TCP over port 636.
 
 === DNS
 
 Domain Name System (DNS) is used to resolve domain names to IP addresses.
 Domain names are the simple names people are accustomed to for websites, such as `njit.edu` as opposed to `54.83.189.142`.
 Names are significantly easier for people to remember than IP addresses.
-Inorder for a computer to resolve a name, it first queries a local cache, then its primary DNS server.
+In order for a computer to resolve a name, it first queries a local cache, then its primary DNS server.
 Assuming the DNS server cannot find the name it will query a Root server for a Top Level Domain (TLD) server, which maintains a listing of Authoritative Nameservers for that particular domain (edu, com, net, org, gov, etc.).
 Finally once an authoritative nameserver is found it will respond with the IP address for that particular hostname which will be cached and sent back through the user's primary DNS server to the user.
 
@@ -339,6 +370,63 @@ While this is certainly helpful, it is important to note that DNSSEC does not pr
 DNS resolutions can still be monitored by anyone who has access to the traffic.
 
 === IMAP/POP3
+
+Internet Message Access Protocol (IMAP) and Post Office Protocol 3 (POP3) are two protocols used to retrieve email from a server.
+IMAP is the more recent protocol which supports saving mail on the sever and folders.
+POP3 is more primitive, supporting only the retrieval (and subsequent deletion from the server) of emails.
+Both protocols use cleartext and are now commonly run over TLS.
+POP3 defaults to TCP port 110 or 995 if using TLS.
+IMAP defaults to TCP port 143 or 993 if using TLS.
+In the age of webmail it is easy to forget about these protocols, but a security specialist must keep them in mind as they may still be used in support of corporate devices.
+
+=== SMTP
+
+Simple Mail Transfer Protocol is used for sending/forwarding email.
+As it states, it is a simple protocol consisting of lines of text.
+Basic SMTP used TCP on port 25.
+SMTP was later expanded to support authentication and finally wrapped in TLS still using TCP on port 587.
+SMTP servers accept outgoing mail from (hopefully) authenticated clients, route mail to other SMTP servers based on the Mail Exchange (MX) information in DNS records, and accept mail for their domain from other SMTP servers.
+Various checks have been implemented in SMTP servers to ensure that messages from domains _actually_ come from those domains.
+This is largely used to combat spam, which continues to be a problem.
+
+=== NTP
+
+Network Time Protocol uses UDP over port 123 to sync the system time with a time server.
+NTP servers are layered in stratums, with the lowest stratums being closest to the most accurate sources of time, atomic clocks, GPS, etc.
+NTP is important as many protocols, including several key exchanges, require system clocks to be in sync.
+System clocks are also used to check when certificates expire and used in logs to indicate when something happened.
+Without an accurate, synchronized system clock many things will fail in surprising ways.
+
+=== FTP
+
+File Transfer Protocol is a relatively simple, text-based protocol for sending files between machines.
+FTP uses TCP on port 21 and traditionally establishes two channels: one for protocol messages, and one binary channel for data.
+The interesting thing about this setup is that the FTP server would initiate the connection of the data channel from server to client, meaning that in many NAT situations where the client couldn't be easily reached behind a firewall it would fail.
+The solution to this problem was passive FTP which uses one channel established by the client.
+
+Despite this initial shortcoming, FTP has proven to be incredibly popular and is still used in many corporate environments.
+You may see FTP being used to transmit bulk data for import to systems or used to update firmware in embedded systems.
+You can use FTP with a commandline client, `ftp`, a graphical client such as Filezilla or SecureFX, or even in most web browsers with the `ftp://` URL scheme.
+
+Unfortunately FTP does not support authentication systems other than passwords and the passwords are sent in plaintext.
+As such Secure FTP (SFTP) is recommended.
+SFTP uses an SSH connection to send and receive files over an encrypted channel.
+SFTP also supports all SSH authentication methods.
+
+=== SNMP
+
+[.float-group]
+--
+image::snmp.png[float=left, link=https://commons.wikimedia.org/wiki/File:SNMP_TRAFFIC1.png, width=400]
+
+Simple Network Management Protocol is used for gathering information about the workings of a network.
+It is broken into two groups: clients using UDP port 161 (TLS 10161) and a manager using UDP port 162 (TLS 10162).
+The manager collects messages from the clients regarding the operations of the network and uses this information to take actions as necessary.
+SNMP can be used to pass information about the temperature of a machine, how many connections it currently has, the channel capacity currently being utilized, etc.
+SNMP is currently up to version 3 which is encrypted and requires authentication.
+This is particularly important because SNMP is a very powerful protocol which exchanges information that could potentially be very valuable to an attacker.
+Access to SNMP should be limited and its usage on a network should be monitored.
+--
 
 == Review
 
@@ -598,3 +686,11 @@ When you are all done poking around, you can exit the shell and run `docker-comp
 --
 
 === Questions
+
+[qanda]
+Compare and contrast SSH and Telnet. If you had to make a recommendation for which one to use, what would you choose and why?::
+    {empty}
+What are some security concerns associated with ARP? What steps can be taken to mitigate them?::
+    {empty}
+Describe three protocols used to send or receive email.::
+    {empty}
