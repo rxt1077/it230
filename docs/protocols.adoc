@@ -436,57 +436,8 @@ Access to SNMP should be limited and its usage on a network should be monitored.
 [lab]
 --
 For this lab we will start by downloading and extracting the files required.
-You can do this easily from the terminal in Windows via PowerShell:
-
-[source, console]
-----
-PS C:\Users\rxt1077\temp> Invoke-WebRequest -Uri https://github.com/rxt1077/it230/raw/main/labs/nmap.zip -OutFile nmap.zip
-PS C:\Users\rxt1077\temp> Expand-Archive nmap.zip
-PS C:\Users\rxt1077\temp> cd nmap
-PS C:\Users\rxt1077\temp\nmap> ls
-
-
-    Directory: C:\Users\rxt1077\temp\nmap
-
-
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
-d-----         9/22/2021   3:58 PM                scanner
-d-----         9/22/2021   3:58 PM                victim
--a----         9/22/2021   2:34 PM             75 docker-compose.yml
-----
-
-Or via BASH/zsh on a Mac:
-
-[source, console]
-----
-ryan@R90VJ3MK:/tmp$ wget https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
---2021-09-22 16:00:37--  https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
-Resolving github.com (github.com)... 140.82.112.4
-Connecting to github.com (github.com)|140.82.112.4|:443... connected.
-HTTP request sent, awaiting response... 302 Found
-Location: https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip [following]
---2021-09-22 16:00:37--  https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 1233 (1.2K) [application/zip]
-Saving to: ‘nmap.zip’
-
-nmap.zip                               100%[============================================================================>]   1.20K  --.-KB/s    in 0s
-
-2021-09-22 16:00:37 (51.8 MB/s) - ‘nmap.zip’ saved [1233/1233]
-
-ryan@R90VJ3MK:/tmp$ unzip nmap.zip
-  inflating: nmap/docker-compose.yml
-  inflating: nmap/scanner/Dockerfile
-  inflating: nmap/victim/bad.conf
-  inflating: nmap/victim/Dockerfile
-ryan@R90VJ3MK:/tmp$ cd nmap/
-ryan@R90VJ3MK:/tmp/nmap$ ls
-docker-compose.yml  scanner  victim
-----
-
+Download https://github.com/rxt1077/it230/raw/main/labs/nmap.zip[nmap.zip] and extract it to a directory you can access from the shell.
+Open a shell in that directory (it should have a `docker-compose.yml` in it and a `victim` and `scanner` directory).  
 Since we will be simulating multiple machines in this lab, we will make use of Docker Compose which was already installed with Docker.
 Docker Compose reads a `docker-compose.yml` file which should already be in your `nmap` directory.
 Run `docker-compose up --build --detach` to build and run the images in the background:

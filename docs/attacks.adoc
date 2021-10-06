@@ -1,0 +1,179 @@
+= Attacks
+
+== Interception Attacks
+
+Interception attacks rely on the ability to intercept network communications.
+This may be due to the nature of the network being used or sometimes other methods may leveraged to better position the attacker.
+These attacks generally involve forging fictitious messages, recording transmitted data, or altering the contents of messages while on a network.
+This family of attacks places all parts of the CIA triad at risk.
+
+=== MitM
+
+[svgbob, mitm, float=right, width=400]
+....
+.-----------.                         .------------.
+|   User    | <- - - - - X - - - - -> | Web Server |
+'-----------'     "Old Connection"    '------------'
+     ^                                       ^
+     |         .-------------------.         |
+     +-------> | Man in the Middle | <-------+
+               '-------------------'
+                   New Connection
+....
+
+A man in the middle attack is a blanket term applied when an attacker is intercepting communication.
+A typical attack involves eavesdropping and possibly modifying messages between two parties.
+Encryption can be used to mitigate the attack, making it impossible for an attacker to decrypt the messages they are intercepting.
+That being said, particular attention must be paid to the handshaking/key exchange protocol to be sure that an attacker does not gain access to the key(s) being used.
+What follows is an example of MitM being used to intercept and modify the public key exchange:
+
+[svgbob, mitm-keys, width=500, align=center]
+....
+.-----.                                                 .-----.
+| Bob |                                                 |Alice|
+'--+--'                                                 '--+--'
+   |    Send me your public key so I can send a secret     |
+   |------------------------------------------------------>|
+   |                                                       |
+   | My public key is WXGZ .------.  My public key is ABCD |
+   |<----------------------| MitM |<-----------------------+
+   |                       '---+--'                        |
+   |"Secret (encrypted w/WXGZ)"|"Secret (encrypted w/ABCD)"|
+   |-------------------------->|-------------------------->|
+....
+
+In the above example the MitM allows the first message to pass unmolested, but tampers with the exchange of the public key.
+By passing it's own public key to Bob, the MitM has to ability to decrypt the messages that Bob sends and can still use Alice's public key to re-encrypt the messages at pass them to her.
+You can see how if two public keys are exchanged in this manner it would be possible to set up a MitM attack where despite encryption all messages can be seen.
+
+=== MitB
+
+MitB stands for man in the browser and is typically caused by a trojan installing malware that allows the attacker to intercept/modify communications between the browser and the server.
+This can be used to capture data on forms, modify input, or modify the response from the server.
+Often the software used in MitB attacks lays dormant until the victim browses to a targeted website.
+What follows is an example of how a MitB attack can be used to modify an online banking request to send money:
+
+[plantuml, mitb, svg, width=900, align=center]
+....
+@startuml
+skinparam Shadowing false
+skinparam RectangleBackgroundColor White
+skinparam RectangleBorderColor White
+skinparam defaultTextAlignment center
+skinparam componentArrowColor Black
+
+!include <tupadr3/common>
+!include <tupadr3/font-awesome/server>
+!include <tupadr3/font-awesome/user>
+!include <tupadr3/font-awesome/laptop>
+!include <tupadr3/font-awesome/chrome>
+!include <tupadr3/font-awesome/user_secret>
+
+FA_USER(user, User)
+FA_LAPTOP(workstation, Workstation)
+FA_CHROME(browser, Browser)
+FA_USER_SECRET(attacker, Attacker)
+FA_SERVER(server, Web Server)
+
+user -> workstation: malware downloaded to workstation
+attacker <--> browser
+browser -> workstation: approved $1,000
+workstation -> browser: transfer $1,000
+browser -> server: transfer $10,000 to Attacker
+server -> browser: approved $10,000 to Attacker
+@enduml
+....
+
+As you can see the attacker ended up with $10,000 and the victim simply thought they authorized a payment of $1,000 to someone else.
+These attacks can be difficult to detect because they take place within the browser and are opportunistic.
+
+=== Replay Attacks
+
+This family of attacks typically involves a MitM making a copy of the transmission and _replaying_ it to impersonate the victim.
+Logon credentials, simple hashes, and specific commands are sometimes susceptible to this type of attack.
+The solution is to use timestamps, nonces, rotating keys, or a counter to make sure commands cannot be executed outside of context.
+
+.One-time Passwords
+****
+To help mitigate replay attacks, an online banking application may require that client use a one-time password (OTP) when submitting transactions.
+An OTP is a frequently changing value that is known to both the client and the server.
+Several one-time password schemes exist, most of which make use of a cryptographic hash function with a shared seed between client and server.
+Periodically the client and server update to a new hash based on the seed and without the seed it is impossible to know what the next hash will be.
+By using an OTP anyone who intercepts the traffic will not be able to perform a replay attack as the password will not be current.
+****
+
+=== SSL Circumvention
+
+.MitM preventing HTTPS upgrade and skimming passwords
+[svgbob, ssl-mitm, width=500, float=right]
+....
+.--------.                   .----------.                  .---------.
+| Victim |                   | Attacker |                  | "Server"|
+'---+----'                   '-----+----'                  '----+----'
+    |                              |                            |
+    |    "GET http://njit.edu"     |                            |
+    |----------------------------->|                            |
+    |                              |   "GET http://njit.edu"    |
+    |                              |--------------------------->|
+    |                              |                            |
+    |                              |        "301 Moved"         |
+    |                              |<---------------------------|
+    |                              |                            |
+    |                              |   "GET https://njit.edu"   |
+    |                              |--------------------------->|
+    |                              |                            |
+    |                              |       "200 OK (HTTPS)"     |
+    |                              |<---------------------------|
+    |        "200 OK (HTTP)"       |                            |
+    |<-----------------------------|                            |
+    |                              |                            |
+    |    "POST http://njit.edu"    |                            |
+    |       "username=admin"       |                            |
+    |       "password=admin"       |                            |
+    |----------------------------->|                            |
+    |                              |   "POST https://njit.edu"  |
+    |                              |       "username=admin"     |
+    |                              |       "password=admin"     |
+    |                              |--------------------------->|
+    |                              |                            |
+    |                              |<---------------------------|
+    |                              |                            |
+    |<-----------------------------|                            |
+....
+
+If you think about the intercepted key exchange given in the above MitM example, a similar attack can allow attackers to view SSL traffic.
+The attacker gives the victim a bogus certificate authority (CA) certificate which the victim installs.
+This is often accomplished via a trojan.
+Then the attacker places themselves in the middle of an uninitiated secure connection.
+During the key exchange the attacker creates a custom certificate signed by a bogus CA for the connection between attacker and victim.
+The attacker also makes an actual HTTPS connection to the service and proxies data for the victim.
+All of the victims data will show up in plaintext for the attacker but the connection will appear to be secure for the victim. 
+This is used in the https://www.telerik.com/fiddler[Fiddler] debugging proxy to decrypt HTTPS traffic and is also used in some network appliances that perform deep packet inspection.
+
+Another MitM attack on SSL is simply to maintain or downgrade to an HTTP connection with the victim and proxy data to an actual HTTPS connection with the server.
+Most servers will upgrade an insecure connection, but by intercepting that exchange the attacker can continue to monitor the victim's traffic.
+
+== Layer 2 Attacks
+
+=== MAC Spoofing/MAC Cloning
+
+Most networks expect that a MAC address will correspond to the unique numbers on a NIC, but it is actually quite easy to change.
+Virtual networking necessitates the ability to use a different MAC address and this feature is built into most modern operating systems.
+MAC spoofing is when an attacker sets their MAC address to the MAC address of another machine on the network in an effort to initiate an attack.
+For example, them may set themselves up as a gateway to launch a MitM attack.
+
+=== MAC Flooding
+
+Switches are tasked with keeping track of which MAC addresses correspond to which ports on the switch.
+They use this to make sure that traffic is only routed where it needs to go.
+Given that MAC addresses can be changed, an attacker could flood a switch with packets from many different MAC addresses and possibly overflow the MAC-port routing table.
+Some switches may default to hub-like functionality and send frames to all ports in an effort to keep traffic flowing.
+This then allows an attacker to capture traffic from other machines on the network.
+
+=== ARP Poisoning
+
+image::arp.svg[width=500, float=left]
+
+An attacker may also use ARP packets to impersonate another machine on the network, such as a gateway router.
+By repeatedly sending out ARP packets, _gratuitous arp_, redirecting packets bound for the gateway's IP to the attackers MAC address an attacker can set up a MitM scenario.
+This is particularly difficult because depending on the TTL of the ARP cache it may take up to 20 minutes for normal network operations to resume.

@@ -11,8 +11,6 @@ Ryan Tolboom <Ryan.Tolboom@njit.edu>
 ++++
 ////
 
-
-
 ifdef::backend-html5[]
 
 image::cover.svg[width=50%, align=center]
@@ -34,3 +32,5 @@ include::crypto.adoc[]
 include::malware.adoc[]
 
 include::protocols.adoc[]
+
+include::attacks.adoc[]

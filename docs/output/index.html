@@ -133,35 +133,22 @@ table {
 </li>
 <li><a href="#_malware">3. Malware</a>
 <ul class="sectlevel2">
-<li><a href="#_purpose">3.1. Purpose</a></li>
-<li><a href="#_zero_days">3.2. Zero Days</a></li>
-<li><a href="#_ransomware">3.3. Ransomware</a></li>
-<li><a href="#_spyware">3.4. Spyware</a></li>
-<li><a href="#_agent_tesla">3.5. Agent Tesla</a></li>
-<li><a href="#_fileless_malware">3.6. Fileless Malware</a></li>
-<li><a href="#_trojan">3.7. Trojan</a></li>
-<li><a href="#_cryptojacking">3.8. Cryptojacking</a></li>
-<li><a href="#_rootkit">3.9. Rootkit</a></li>
-<li><a href="#_worm">3.10. Worm</a></li>
-<li><a href="#_botnet">3.11. Botnet</a></li>
-<li><a href="#_rat">3.12. RAT</a></li>
-<li><a href="#_adware">3.13. Adware</a></li>
-<li><a href="#_virus">3.14. Virus</a></li>
-<li><a href="#_potentially_unwanted_programs_pup">3.15. Potentially Unwanted Programs (PUP)</a></li>
-<li><a href="#_indicators_of_compromise_ioc">3.16. Indicators of Compromise (IoC)</a></li>
-<li><a href="#_cyber_killchain">3.17. Cyber Killchain</a></li>
-<li><a href="#_delivery_of_malware">3.18. Delivery of Malware</a></li>
-<li><a href="#_review_3">3.19. Review</a></li>
+<li><a href="#_review_3">3.1. Review</a></li>
 </ul>
 </li>
 <li><a href="#_protocols">4. Protocols</a>
 <ul class="sectlevel2">
 <li><a href="#_network_access_layer">4.1. Network Access Layer</a></li>
 <li><a href="#_internet_layer_protocols">4.2. Internet Layer Protocols</a></li>
-<li><a href="#_nat">4.3. NAT</a></li>
-<li><a href="#_transport_layer_protocols">4.4. Transport Layer Protocols</a></li>
-<li><a href="#_application_layer_protocols">4.5. Application Layer Protocols</a></li>
-<li><a href="#_review_4">4.6. Review</a></li>
+<li><a href="#_transport_layer_protocols">4.3. Transport Layer Protocols</a></li>
+<li><a href="#_application_layer_protocols">4.4. Application Layer Protocols</a></li>
+<li><a href="#_review_4">4.5. Review</a></li>
+</ul>
+</li>
+<li><a href="#_attacks">5. Attacks</a>
+<ul class="sectlevel2">
+<li><a href="#_interception_attacks">5.1. Interception Attacks</a></li>
+<li><a href="#_layer_2_attacks">5.2. Layer 2 Attacks</a></li>
 </ul>
 </li>
 </ul>
@@ -275,7 +262,7 @@ What would happen if an attacker could arbitrarily change delivery addresses sto
 Packages could be routed to improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.</p>
 </div>
 <div class="paragraph">
-<p><em>Availability</em> means that a system should remain up an running to ensure that valid users have access to the data when needed.
+<p><em>Availability</em> means that a system should remain up and running to ensure that valid users have access to the data when needed.
 In the simplest sense, you could ensure confidentiality and integrity by simply taking the system off line and not allowing any access.
 Such a system would be useless and this final principle addresses that.
 Systems are designed to be accessible and part of your security plan should be ensuring that they are.
@@ -1585,148 +1572,9 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 <h2 id="_malware">3. Malware</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_purpose">3.1. Purpose</h3>
+<h3 id="_review_3">3.1. Review</h3>
 <div class="sect3">
-<h4 id="_what_is_malware">3.1.1. What is malware?</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_what_does_malware_affect">3.1.2. What does malware affect?</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_zero_days">3.2. Zero Days</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_ransomware">3.3. Ransomware</h3>
-<div class="sect3">
-<h4 id="_ryuk">3.3.1. RYUK</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_spyware">3.4. Spyware</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_agent_tesla">3.5. Agent Tesla</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_fileless_malware">3.6. Fileless Malware</h3>
-<div class="sect3">
-<h4 id="_astaroth">3.6.1. Astaroth</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_trojan">3.7. Trojan</h3>
-<div class="sect3">
-<h4 id="_emotet">3.7.1. Emotet</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_cryptojacking">3.8. Cryptojacking</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_rootkit">3.9. Rootkit</h3>
-<div class="sect3">
-<h4 id="_sony_2005_rootkit">3.9.1. Sony 2005 Rootkit</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_worm">3.10. Worm</h3>
-<div class="sect3">
-<h4 id="_stuxnet">3.10.1. Stuxnet</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_botnet">3.11. Botnet</h3>
-<div class="sect3">
-<h4 id="_zeus_malware">3.11.1. ZeuS Malware</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_rat">3.12. RAT</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_adware">3.13. Adware</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_virus">3.14. Virus</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_potentially_unwanted_programs_pup">3.15. Potentially Unwanted Programs (PUP)</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_indicators_of_compromise_ioc">3.16. Indicators of Compromise (IoC)</h3>
-
-</div>
-<div class="sect2">
-<h3 id="_cyber_killchain">3.17. Cyber Killchain</h3>
-<div class="sect3">
-<h4 id="_recon">3.17.1. Recon</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_weaponization">3.17.2. Weaponization</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_delivery">3.17.3. Delivery</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_exploitation">3.17.4. Exploitation</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_installation">3.17.5. Installation</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_command_and_control_c2c">3.17.6. Command and Control (C2C)</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_exfiltration_actions_objectives">3.17.7. Exfiltration / Actions &amp; Objectives</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_delivery_of_malware">3.18. Delivery of Malware</h3>
-<div class="sect3">
-<h4 id="_phishing">3.18.1. Phishing</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_spam">3.18.2. SPAM</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_dumpster_diving">3.18.3. Dumpster Diving</h4>
-
-</div>
-<div class="sect3">
-<h4 id="_shoulder_surfing">3.18.4. Shoulder Surfing</h4>
-
-</div>
-</div>
-<div class="sect2">
-<h3 id="_review_3">3.19. Review</h3>
-<div class="sect3">
-<h4 id="_labs_3">3.19.1. Labs</h4>
+<h4 id="_labs_3">3.1.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Malware Analysis</div>
 <div class="content">
@@ -1815,7 +1663,7 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_questions_3">3.19.2. Questions</h4>
+<h4 id="_questions_3">3.1.2. Questions</h4>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -1847,12 +1695,13 @@ Protocols exist for both hardware and software and have been developed via indiv
 Early networking protocols were often developed on mailing lists using Requests for Comments (RFCs).
 You may still see RFCs being crafted, referred to, or actively worked on.
 <a href="https://datatracker.ietf.org/doc/html/rfc2616">Some of the earliest web protocols are detailed in RFCs.</a>
-More often than not, large protocols have working groups and associations developing, such as the 802.11 group at the Institute of Electrical and Electronics Engineers which handles WiFi protocols.
+More often than not, large protocols have working groups and associations developing, such as the 802.11 group at the <a href="https://www.ieee.org/">Institute of Electrical and Electronics Engineers (IEEE)</a> which handles WiFi protocols.
 These groups publish papers detailing how the protocols work.</p>
 </div>
 <div class="paragraph">
 <p>This chapter will give a brief description of important protocols following the TCP/IP layering model.
-It is important to note that some of these protocols may reach across layers to accomplish tasks in which case they will be grouped according to which layer the largely function within.</p>
+It is important to note that some of these protocols may reach across layers to accomplish tasks.
+In this case they will be grouped according to which layer they largely function within.</p>
 </div>
 <div class="sect2">
 <h3 id="_network_access_layer">4.1. Network Access Layer</h3>
@@ -1862,8 +1711,8 @@ It is important to note that some of these protocols may reach across layers to 
 <p>Address Resolution Protocol (ARP) is used on the local ethernet segment to resolve IP addresses to MAC addresses.
 Since this protocol functions at the ethernet segment level, security was not a primary concern.
 Unfortunately this means that ARP communications can be easily spoofed to cause a MitM scenario.
-A malicious actor simply sends out several ARP packets, <em>gratuitous arp</em> saying that traffic for a certain IP address should be sent to them.
-Since the MAC to IP address table is cached in several places, it can take a long time to resolve an issue caused by malicious ARP frames.</p>
+A malicious actor simply sends out several ARP packets, <em>gratuitous arp</em>, saying that traffic for a certain IP address should be sent to them.
+Since the MAC to IP address table is cached in several places, it can take a long time for all the caches to invalidate and resolve an issue caused by malicious ARP frames.</p>
 </div>
 <div class="paragraph">
 <p>There is a protocol designed to mitigate the issues with ARP.
@@ -1884,7 +1733,7 @@ There are currently four standards:</p>
 <dt class="hdlist1">WEP</dt>
 <dd>
 <p>Wireless Equivalent Privacy (WEP) is depreceated and should not be used.
-It was developed in 1999 and used an RC4 stream and 24-bit encryption.
+It was developed in 1999 and uses an RC4 stream and 24-bit encryption.
 Several attacks have been developed that can crack WEP within a matter of seconds.</p>
 </dd>
 <dt class="hdlist1">WPA</dt>
@@ -1913,11 +1762,11 @@ Many networks are beginning the transition from WPA2 to WPA3.</p>
 <div class="paragraph">
 <p>IP stands for internet protocol and it was devised to allow creating a network of networks.
 The network of networks that uses it primarily is the Internet, although you could use IP in other scenarios as well.
-IP is primarily concerned with <em>routing</em> traffic across and to networks.
-The protocol was first detailed by the IEEE in 1974 and comes from the Advanced Research Projects Agency Network (ARPANET) project, which created the first large packet switched network.</p>
+IP is largely concerned with <em>routing</em> traffic across and to networks.
+The protocol was first detailed by the IEEE in 1974 and comes from the Advanced Research Projects Agency Network (ARPANET) project, which created the first large, packet-switched network.</p>
 </div>
 <div class="paragraph">
-<p>Most people are familiar with IP in terms of IP addresses, the unique number given to a host participating in an IP network.
+<p>Most people are familiar with IP addresses, the unique number given to a host participating in an IP network.
 Currently there are two main versions of the IP protocol, IPv4 and IPv6, and one of the major differences is in how many IP addresses are available.
 IPv4 supports 32 bit addresses and IPv6 supports 128 bit addresses.
 To give an idea of how big of a change that is, we have currently allocated all possible IPv4 addresses, but with IPv6 we could give an address to every grain of sand on the beaches of earth and still not run out.</p>
@@ -1928,7 +1777,7 @@ To give an idea of how big of a change that is, we have currently allocated all 
 <div class="paragraph">
 <p>From a security standpoint, the way addresses are used in IPv4 vs IPv6 has big consequences.
 Since there aren&#8217;t enough IPv4 addresses a typical internet user is assigned a local address that gets translated to an external IPv4 address when they route their packets through their router.
-This is refered to as Network Address Translation (NAT) and is usually handled by an all-in-one device that also makes sure external entities cannot connect to the internal network.</p>
+This is referred to as Network Address Translation (NAT) and is usually handled by an all-in-one device that also makes sure external entities cannot connect to the internal network.</p>
 </div>
 <div class="paragraph">
 <p>With IPv6 addresses each host on that same <em>internal</em> network can be given an external IPv6 address.
@@ -1936,7 +1785,7 @@ A <em>basic</em> IPv6 router may simply pass the packets to the network without 
 If the machines are not hardened or a firewall is not put in place/enabled the machines could be subject to attack.</p>
 </div>
 <div class="paragraph">
-<p>As a computer security specialist it is important to test not only IPv4 connectivity, but also IPv6 to ensure that your network is configured approriately.</p>
+<p>As a computer security specialist it is important to test not only IPv4 connectivity, but also IPv6 to ensure that your network is configured appropriately.</p>
 </div>
 </div>
 </div>
@@ -1988,9 +1837,8 @@ As such, do not expect all external hosts to respond to pings.
 They may still be up, but you&#8217;ll need to figure out <a href="https://nmap.org/book/man-host-discovery.html">another way to detect them.</a></p>
 </div>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_nat">4.3. NAT</h3>
+<div class="sect3">
+<h4 id="_nat">4.2.3. NAT</h4>
 <div class="imageblock left">
 <div class="content">
 <img src="images/nat.svg" alt="nat" width="500" height="192">
@@ -2001,8 +1849,9 @@ They may still be up, but you&#8217;ll need to figure out <a href="https://nmap.
 Given the lack of IPv4 address space many devices have to share a single address.
 As mentioned when discussing IPv6, NAT routers often also include security features such as a stateful firewall as the complexity of the hardware required to perform NAT is equivalent to what would be needed for a firewall.</p>
 </div>
+</div>
 <div class="sect3">
-<h4 id="_ipsec">4.3.1. IPsec</h4>
+<h4 id="_ipsec">4.2.4. IPsec</h4>
 <div class="paragraph">
 <p>Internet Protocol Security (IPsec) is used to set up a point-to-point encryption tunnel to secure data in transit across IP networks.
 IPsec is used primarily in dedicated VPN links and makes use of three main parts: SA, ESP, and AH:</p>
@@ -2026,19 +1875,19 @@ AH simply ensures that a packet hasn&#8217;t been tampered with.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_transport_layer_protocols">4.4. Transport Layer Protocols</h3>
+<h3 id="_transport_layer_protocols">4.3. Transport Layer Protocols</h3>
 <div class="sect3">
-<h4 id="_tcp">4.4.1. TCP</h4>
+<h4 id="_tcp">4.3.1. TCP</h4>
 <div class="paragraph">
 <p>Transmission Control Protocol (TCP) is at the heart of most networks.
 It provides for reliable communication via a three way hand shake, breaks large data segments into packets, ensures data integrity, and provides flow control for those packets.
 This all comes at a cost of course, and this connection-oriented protocol typically has higher latency than its counterparts.
 Given the complex nature of TCP is has often been targeted for attacks.
-TCP stacks are constantly adapting and changing (within the paramters of the protocol) to avoid DoS and MitM attacks.<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnotedef_3" title="View footnote.">3</a>]</sup></p>
+TCP stacks are constantly adapting and changing (within the parameters of the protocol) to avoid DoS and MitM attacks.<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnotedef_3" title="View footnote.">3</a>]</sup></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_udp">4.4.2. UDP</h4>
+<h4 id="_udp">4.3.2. UDP</h4>
 <div class="paragraph">
 <p>User Datagram Protocol (UDP) is a connectionless protocol designed for instances where TCP may have too much latency.
 UDP achieves this performance boost by not having handshaking or flow control.
@@ -2048,13 +1897,13 @@ UDP does still employ checksums so you can be sure of the integrity of any UDP p
 </div>
 </div>
 <div class="sect3">
-<h4 id="_common_ports_and_services">4.4.3. Common Ports and Services</h4>
+<h4 id="_common_ports_and_services">4.3.3. Common Ports and Services</h4>
 <div class="paragraph">
 <p>Port numbers are used in a transport layer connection to specify which service to connect to.
 This allows a single host to have multiple services running on it.
 Ports 0 to 1023 are <em>well-known ports</em> and typically support a commonly used service.
-In most operating systems it takes administrative priveleges to bind to a Well-known port and listen for connections.
-Registered ports range from 1024 to 49151 and do not require administrative priveleges to run a service on.
+In most operating systems it takes administrative privileges to bind to a Well-known port and listen for connections.
+Registered ports range from 1024 to 49151 and do not require administrative privileges to run a service on.
 You may find many things listening on these ports as any user can have a service on them.
 Lastly ports 49152 to 65535 are used dynamically by applications as needed.</p>
 </div>
@@ -2176,9 +2025,9 @@ When scanning a machine, only necessary ports should be open.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_application_layer_protocols">4.5. Application Layer Protocols</h3>
+<h3 id="_application_layer_protocols">4.4. Application Layer Protocols</h3>
 <div class="sect3">
-<h4 id="_dhcp">4.5.1. DHCP</h4>
+<h4 id="_dhcp">4.4.1. DHCP</h4>
 <div class="paragraph">
 <p>Dynamic Host Configuration Protocol (DHCP) is used to allow new clients on a network to obtain an IP address and information about services provided.
 IPv4 addresses can be thought of as being in two groups: static addresses and dynamic addresses.
@@ -2190,11 +2039,11 @@ DHCP servers can also give information about proxies, Domain Name Servers (DNS),
 <p>Given the dynamic nature of modern networks, with clients coming and going, DHCP is the standard.
 From a security standpoint someone impersonating a DHCP server can wreak havoc on a network.
 These rogue DHCP servers can cause traffic to be redirected to initiate MitM attacks or cause DoS attacks.
-DHCP relies on broadcast Address Resolution Protocol (ARP) messages and does not make use of authentication, meaning that once an attacker is on the same ethernet segment as the victim machines all bets are off.</p>
+DHCP relies on broadcast Address Resolution Protocol (ARP) messages and does not make use of authentication, meaning that once an attacker is on the same Ethernet segment as the victim machines all bets are off.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_http">4.5.2. HTTP</h4>
+<h4 id="_http">4.4.2. HTTP</h4>
 <div class="paragraph">
 <p>Hypertext Transfer Protocol (HTTP) is a text based protocol that governs how web traffic moves.
 It is built on the concept of a <em>request</em> and a <em>response</em>.
@@ -2260,7 +2109,7 @@ Unencrypted HTTP traffic is sent over port 80 and is vulnerable to attack as all
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ssltls">4.5.3. SSL/TLS</h4>
+<h4 id="_ssltls">4.4.3. SSL/TLS</h4>
 <div class="openblock float-group">
 <div class="content">
 <div class="imageblock left">
@@ -2280,21 +2129,21 @@ TLS 1.2, the most common version, is still considered safe if best practices are
 </div>
 </div>
 <div class="sect3">
-<h4 id="_https">4.5.4. HTTPS</h4>
+<h4 id="_https">4.4.4. HTTPS</h4>
 <div class="imageblock right">
 <div class="content">
 <a class="image" href="https://commons.wikimedia.org/wiki/File:HTTPS_icon.png"><img src="images/https.png" alt="https" width="300"></a>
 </div>
 </div>
 <div class="paragraph">
-<p>Hypertext Transer Protocol Secure (HTTPS) solves the problem of unecrypted traffic by wrapping HTTP requests in TLS.
+<p>Hypertext Transfer Protocol Secure (HTTPS) solves the problem of unencrypted traffic by wrapping HTTP requests in TLS.
 HTTPS traffic uses port 443 and is typically signified in a browser with a lock icon in the upper left-hand corner.
 By clicking on the icon users can learn more about the certificates being used for communication.
 Utilizing a robust PKI HTTPS allows for safe HTTP communication between client and server.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_rdp">4.5.5. RDP</h4>
+<h4 id="_rdp">4.4.5. RDP</h4>
 <div class="paragraph">
 <p>Remote Desktop Protocol (RDP) is build into Windows and is typically used to control a machine remotely.
 It works over port 3389 via TCP or UDP.
@@ -2303,7 +2152,7 @@ RDP use in ransomware attacks is on the rise as ransomware programs may use RDP 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_telnet">4.5.6. Telnet</h4>
+<h4 id="_telnet">4.4.6. Telnet</h4>
 <div class="paragraph">
 <p>Telnet is an antiquated remote administration tool that gives access to a shell via a cleartext channel.
 Telnet runs on port 23 and while still occasionally in use it should largely be phased out.
@@ -2313,7 +2162,7 @@ For example, you can use a telnet client to submit HTTP requests or send email v
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ssh">4.5.7. SSH</h4>
+<h4 id="_ssh">4.4.7. SSH</h4>
 <div class="paragraph">
 <p>Secure Shell (SSH) is the most widely deployed remote administration tool.
 SSH provides access to a shell via an encrypted connection.
@@ -2322,7 +2171,7 @@ SSH uses TCP on port 22.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ldap">4.5.8. LDAP</h4>
+<h4 id="_ldap">4.4.8. LDAP</h4>
 <div class="imageblock right">
 <div class="content">
 <img src="images/ldap.svg" alt="ldap" width="400" height="304">
@@ -2333,16 +2182,16 @@ SSH uses TCP on port 22.</p>
 It&#8217;s primary use is with Windows Active Directory (AD) where it can be used to obtain information regarding users and resources from an AD server.
 Clients can authenticate through the server and obtain privileges to read or read/write certain entries.
 LDAP did not originally support encryption, so LDAP over SSL (LDAPS) was developed.
-LDAP uses TCP and UPD over prot 389 and LDAPS uses TCP over port 636.</p>
+LDAP uses TCP and UPD over port 389 and LDAPS uses TCP over port 636.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_dns">4.5.9. DNS</h4>
+<h4 id="_dns">4.4.9. DNS</h4>
 <div class="paragraph">
 <p>Domain Name System (DNS) is used to resolve domain names to IP addresses.
 Domain names are the simple names people are accustomed to for websites, such as <code>njit.edu</code> as opposed to <code>54.83.189.142</code>.
 Names are significantly easier for people to remember than IP addresses.
-Inorder for a computer to resolve a name, it first queries a local cache, then its primary DNS server.
+In order for a computer to resolve a name, it first queries a local cache, then its primary DNS server.
 Assuming the DNS server cannot find the name it will query a Root server for a Top Level Domain (TLD) server, which maintains a listing of Authoritative Nameservers for that particular domain (edu, com, net, org, gov, etc.).
 Finally once an authoritative nameserver is found it will respond with the IP address for that particular hostname which will be cached and sent back through the user&#8217;s primary DNS server to the user.</p>
 </div>
@@ -2355,7 +2204,7 @@ DNS operates via UDP (and occasionally TCP) on port 53.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_dnssec">4.5.10. DNSSEC</h4>
+<h4 id="_dnssec">4.4.10. DNSSEC</h4>
 <div class="paragraph">
 <p>Domain Name System Security Extensions (DNSSEC) is a suite of extension specifications designed to authenticate responses to domain name lookups.
 This can help prevent MitM attacks by checking the digital signature of the responding server.
@@ -2364,11 +2213,11 @@ DNS resolutions can still be monitored by anyone who has access to the traffic.<
 </div>
 </div>
 <div class="sect3">
-<h4 id="_imappop3">4.5.11. IMAP/POP3</h4>
+<h4 id="_imappop3">4.4.11. IMAP/POP3</h4>
 <div class="paragraph">
 <p>Internet Message Access Protocol (IMAP) and Post Office Protocol 3 (POP3) are two protocols used to retrieve email from a server.
 IMAP is the more recent protocol which supports saving mail on the sever and folders.
-POP3 is more primative, supporting only the retrieval (and subsequent deletion from the server) of emails.
+POP3 is more primitive, supporting only the retrieval (and subsequent deletion from the server) of emails.
 Both protocols use cleartext and are now commonly run over TLS.
 POP3 defaults to TCP port 110 or 995 if using TLS.
 IMAP defaults to TCP port 143 or 993 if using TLS.
@@ -2376,7 +2225,7 @@ In the age of webmail it is easy to forget about these protocols, but a security
 </div>
 </div>
 <div class="sect3">
-<h4 id="_smtp">4.5.12. SMTP</h4>
+<h4 id="_smtp">4.4.12. SMTP</h4>
 <div class="paragraph">
 <p>Simple Mail Transfer Protocol is used for sending/forwarding email.
 As it states, it is a simple protocol consisting of lines of text.
@@ -2388,7 +2237,7 @@ This is largely used to combat spam, which continues to be a problem.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ntp">4.5.13. NTP</h4>
+<h4 id="_ntp">4.4.13. NTP</h4>
 <div class="paragraph">
 <p>Network Time Protocol uses UDP over port 123 to sync the system time with a time server.
 NTP servers are layered in stratums, with the lowest stratums being closest to the most accurate sources of time, atomic clocks, GPS, etc.
@@ -2398,7 +2247,7 @@ Without an accurate, synchronized system clock many things will fail in surprisi
 </div>
 </div>
 <div class="sect3">
-<h4 id="_ftp">4.5.14. FTP</h4>
+<h4 id="_ftp">4.4.14. FTP</h4>
 <div class="paragraph">
 <p>File Transfer Protocol is a relatively simple, text-based protocol for sending files between machines.
 FTP uses TCP on port 21 and traditionally establishes two channels: one for protocol messages, and one binary channel for data.
@@ -2418,7 +2267,7 @@ SFTP also supports all SSH authentication methods.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_snmp">4.5.15. SNMP</h4>
+<h4 id="_snmp">4.4.15. SNMP</h4>
 <div class="openblock float-group">
 <div class="content">
 <div class="imageblock left">
@@ -2440,68 +2289,17 @@ Access to SNMP should be limited and its usage on a network should be monitored.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review_4">4.6. Review</h3>
+<h3 id="_review_4">4.5. Review</h3>
 <div class="sect3">
-<h4 id="_labs_4">4.6.1. Labs</h4>
+<h4 id="_labs_4">4.5.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Scanning with nmap</div>
 <div class="content">
 <div class="paragraph">
 <p>For this lab we will start by downloading and extracting the files required.
-You can do this easily from the terminal in Windows via PowerShell:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\temp&gt; Invoke-WebRequest -Uri https://github.com/rxt1077/it230/raw/main/labs/nmap.zip -OutFile nmap.zip
-PS C:\Users\rxt1077\temp&gt; Expand-Archive nmap.zip
-PS C:\Users\rxt1077\temp&gt; cd nmap
-PS C:\Users\rxt1077\temp\nmap&gt; ls
-
-
-    Directory: C:\Users\rxt1077\temp\nmap
-
-
-Mode                 LastWriteTime         Length Name
-----                 -------------         ------ ----
-d-----         9/22/2021   3:58 PM                scanner
-d-----         9/22/2021   3:58 PM                victim
--a----         9/22/2021   2:34 PM             75 docker-compose.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Or via BASH/zsh on a Mac:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-console" data-lang="console">ryan@R90VJ3MK:/tmp$ wget https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
---2021-09-22 16:00:37--  https://github.com/rxt1077/it230/raw/main/labs/nmap.zip
-Resolving github.com (github.com)... 140.82.112.4
-Connecting to github.com (github.com)|140.82.112.4|:443... connected.
-HTTP request sent, awaiting response... 302 Found
-Location: https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip [following]
---2021-09-22 16:00:37--  https://raw.githubusercontent.com/rxt1077/it230/main/labs/nmap.zip
-Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
-Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 1233 (1.2K) [application/zip]
-Saving to: ‘nmap.zip’
-
-nmap.zip                               100%[============================================================================&gt;]   1.20K  --.-KB/s    in 0s
-
-2021-09-22 16:00:37 (51.8 MB/s) - ‘nmap.zip’ saved [1233/1233]
-
-ryan@R90VJ3MK:/tmp$ unzip nmap.zip
-  inflating: nmap/docker-compose.yml
-  inflating: nmap/scanner/Dockerfile
-  inflating: nmap/victim/bad.conf
-  inflating: nmap/victim/Dockerfile
-ryan@R90VJ3MK:/tmp$ cd nmap/
-ryan@R90VJ3MK:/tmp/nmap$ ls
-docker-compose.yml  scanner  victim</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Since we will be simulating multiple machines in this lab, we will make use of Docker Compose which was already installed with Docker.
+Download <a href="https://github.com/rxt1077/it230/raw/main/labs/nmap.zip">nmap.zip</a> and extract it to a directory you can access from the shell.
+Open a shell in that directory (it should have a <code>docker-compose.yml</code> in it and a <code>victim</code> and <code>scanner</code> directory).
+Since we will be simulating multiple machines in this lab, we will make use of Docker Compose which was already installed with Docker.
 Docker Compose reads a <code>docker-compose.yml</code> file which should already be in your <code>nmap</code> directory.
 Run <code>docker-compose up --build --detach</code> to build and run the images in the background:</p>
 </div>
@@ -2763,8 +2561,158 @@ How do you think this could be exploited?</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_questions_4">4.6.2. Questions</h4>
-
+<h4 id="_questions_4">4.5.2. Questions</h4>
+<div class="qlist qanda">
+<ol>
+<li>
+<p><em>Compare and contrast SSH and Telnet. If you had to make a recommendation for which one to use, what would you choose and why?</em></p>
+<p></p>
+</li>
+<li>
+<p><em>What are some security concerns associated with ARP? What steps can be taken to mitigate them?</em></p>
+<p></p>
+</li>
+<li>
+<p><em>Describe three protocols used to send or receive email.</em></p>
+<p></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_attacks">5. Attacks</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_interception_attacks">5.1. Interception Attacks</h3>
+<div class="paragraph">
+<p>Interception attacks rely on the ability to intercept network communications.
+This may be due to the nature of the network being used or sometimes other methods may leveraged to better position the attacker.
+These attacks generally involve forging fictitious messages, recording transmitted data, or altering the contents of messages while on a network.
+This family of attacks places all parts of the CIA triad at risk.</p>
+</div>
+<div class="sect3">
+<h4 id="_mitm">5.1.1. MitM</h4>
+<div class="imageblock right">
+<div class="content">
+<img src="images/mitm.svg" alt="mitm" width="400" height="144">
+</div>
+</div>
+<div class="paragraph">
+<p>A man in the middle attack is a blanket term applied when an attacker is intercepting communication.
+A typical attack involves eavesdropping and possibly modifying messages between two parties.
+Encryption can be used to mitigate the attack, making it impossible for an attacker to decrypt the messages they are intercepting.
+That being said, particular attention must be paid to the handshaking/key exchange protocol to be sure that an attacker does not gain access to the key(s) being used.
+What follows is an example of MitM being used to intercept and modify the public key exchange:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/mitm-keys.svg" alt="mitm keys" width="500" height="192">
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example the MitM allows the first message to pass unmolested, but tampers with the exchange of the public key.
+By passing it&#8217;s own public key to Bob, the MitM has to ability to decrypt the messages that Bob sends and can still use Alice&#8217;s public key to re-encrypt the messages at pass them to her.
+You can see how if two public keys are exchanged in this manner it would be possible to set up a MitM attack where despite encryption all messages can be seen.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mitb">5.1.2. MitB</h4>
+<div class="paragraph">
+<p>MitB stands for man in the browser and is typically caused by a trojan installing malware that allows the attacker to intercept/modify communications between the browser and the server.
+This can be used to capture data on forms, modify input, or modify the response from the server.
+Often the software used in MitB attacks lays dormant until the victim browses to a targeted website.
+What follows is an example of how a MitB attack can be used to modify an online banking request to send money:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/mitb.svg" alt="mitb" width="900" height="242">
+</div>
+</div>
+<div class="paragraph">
+<p>As you can see the attacker ended up with $10,000 and the victim simply thought they authorized a payment of $1,000 to someone else.
+These attacks can be difficult to detect because they take place within the browser and are opportunistic.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_replay_attacks">5.1.3. Replay Attacks</h4>
+<div class="paragraph">
+<p>This family of attacks typically involves a MitM making a copy of the transmission and <em>replaying</em> it to impersonate the victim.
+Logon credentials, simple hashes, and specific commands are sometimes susceptible to this type of attack.
+The solution is to use timestamps, nonces, rotating keys, or a counter to make sure commands cannot be executed outside of context.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">One-time Passwords</div>
+<div class="paragraph">
+<p>To help mitigate replay attacks, an online banking application may require that client use a one-time password (OTP) when submitting transactions.
+An OTP is a frequently changing value that is known to both the client and the server.
+Several one-time password schemes exist, most of which make use of a cryptographic hash function with a shared seed between client and server.
+Periodically the client and server update to a new hash based on the seed and without the seed it is impossible to know what the next hash will be.
+By using an OTP anyone who intercepts the traffic will not be able to perform a replay attack as the password will not be current.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ssl_circumvention">5.1.4. SSL Circumvention</h4>
+<div class="imageblock right">
+<div class="content">
+<img src="images/ssl-mitm.svg" alt="ssl mitm" width="500" height="528">
+</div>
+<div class="title">Figure 2. MitM preventing HTTPS upgrade and skimming passwords</div>
+</div>
+<div class="paragraph">
+<p>If you think about the intercepted key exchange given in the above MitM example, a similar attack can allow attackers to view SSL traffic.
+The attacker gives the victim a bogus certificate authority (CA) certificate which the victim installs.
+This is often accomplished via a trojan.
+Then the attacker places themselves in the middle of an uninitiated secure connection.
+During the key exchange the attacker creates a custom certificate signed by a bogus CA for the connection between attacker and victim.
+The attacker also makes an actual HTTPS connection to the service and proxies data for the victim.
+All of the victims data will show up in plaintext for the attacker but the connection will appear to be secure for the victim.
+This is used in the <a href="https://www.telerik.com/fiddler">Fiddler</a> debugging proxy to decrypt HTTPS traffic and is also used in some network appliances that perform deep packet inspection.</p>
+</div>
+<div class="paragraph">
+<p>Another MitM attack on SSL is simply to maintain or downgrade to an HTTP connection with the victim and proxy data to an actual HTTPS connection with the server.
+Most servers will upgrade an insecure connection, but by intercepting that exchange the attacker can continue to monitor the victim&#8217;s traffic.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_layer_2_attacks">5.2. Layer 2 Attacks</h3>
+<div class="sect3">
+<h4 id="_mac_spoofingmac_cloning">5.2.1. MAC Spoofing/MAC Cloning</h4>
+<div class="paragraph">
+<p>Most networks expect that a MAC address will correspond to the unique numbers on a NIC, but it is actually quite easy to change.
+Virtual networking necessitates the ability to use a different MAC address and this feature is built into most modern operating systems.
+MAC spoofing is when an attacker sets their MAC address to the MAC address of another machine on the network in an effort to initiate an attack.
+For example, them may set themselves up as a gateway to launch a MitM attack.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mac_flooding">5.2.2. MAC Flooding</h4>
+<div class="paragraph">
+<p>Switches are tasked with keeping track of which MAC addresses correspond to which ports on the switch.
+They use this to make sure that traffic is only routed where it needs to go.
+Given that MAC addresses can be changed, an attacker could flood a switch with packets from many different MAC addresses and possibly overflow the MAC-port routing table.
+Some switches may default to hub-like functionality and send frames to all ports in an effort to keep traffic flowing.
+This then allows an attacker to capture traffic from other machines on the network.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_arp_poisoning">5.2.3. ARP Poisoning</h4>
+<div class="imageblock left">
+<div class="content">
+<img src="images/arp.svg" alt="arp" width="500">
+</div>
+</div>
+<div class="paragraph">
+<p>An attacker may also use ARP packets to impersonate another machine on the network, such as a gateway router.
+By repeatedly sending out ARP packets, <em>gratuitous arp</em>, redirecting packets bound for the gateway&#8217;s IP to the attackers MAC address an attacker can set up a MitM scenario.
+This is particularly difficult because depending on the TTL of the ARP cache it may take up to 20 minutes for normal network operations to resume.</p>
+</div>
 </div>
 </div>
 </div>
@@ -2784,7 +2732,7 @@ How do you think this could be exploited?</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-22 20:52:59 UTC
+Last updated 2021-10-04 21:26:37 UTC
 </div>
 </div>
 </body>

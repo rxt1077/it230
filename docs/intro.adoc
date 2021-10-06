@@ -53,7 +53,7 @@ Imagine that e-commerce site again.
 What would happen if an attacker could arbitrarily change delivery addresses stored in the system?
 Packages could be routed to improper addresses and stolen and honest customers would not receive what they ordered, all because of an integrity violation.
 
-_Availability_ means that a system should remain up an running to ensure that valid users have access to the data when needed.
+_Availability_ means that a system should remain up and running to ensure that valid users have access to the data when needed.
 In the simplest sense, you could ensure confidentiality and integrity by simply taking the system off line and not allowing any access.
 Such a system would be useless and this final principle addresses that.
 Systems are designed to be accessible and part of your security plan should be ensuring that they are.
