@@ -1,0 +1,5 @@
+server:
+  listen_address: 0.0.0.0:22
+ssh_proto:
+  version: SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.2
+  banner:

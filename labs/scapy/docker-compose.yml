@@ -1,0 +1,22 @@
+networks:
+  testnet:
+    ipam:
+        config:
+            - subnet: 172.20.0.0/24
+services:
+  server:
+    build: server/
+    networks:
+      testnet:
+        ipv4_address: 172.20.0.5
+  victim:
+    build: victim/ 
+    networks:
+      testnet:
+        ipv4_address: 172.20.0.6
+  attacker:
+    build: attacker/
+    networks:
+      testnet:
+        ipv4_address: 172.20.0.7
+    privileged: true

