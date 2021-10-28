@@ -63,6 +63,15 @@ body {
   font-style: normal;
 }
 
+.lab img {
+  border: 1px solid #dedede;
+}
+
+.lab table {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 /* Deliverable admonitions */
 .admonitionblock.deliverable td.icon .icon-important:before {
   content:"\f15b";

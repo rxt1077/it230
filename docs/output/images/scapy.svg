@@ -22,20 +22,17 @@
         </marker>
     </defs>
     <rect class='backdrop' height='352' width='656' x='0' y='0'/>
-    <text x='106' y='12'>Terminal</text>
-    <text x='178' y='12'>1</text>
     <line class='solid' x1='272' x2='280' y1='40' y2='40'/>
     <text x='290' y='44'>X</text>
-    <text x='458' y='12'>Terminal</text>
-    <text x='530' y='12'>2</text>
     <line class='solid' x1='608' x2='616' y1='40' y2='40'/>
     <text x='626' y='44'>X</text>
-    <text x='282' y='188'>Terminal</text>
-    <text x='354' y='188'>3</text>
     <line class='solid' x1='432' x2='440' y1='216' y2='216'/>
     <text x='450' y='220'>X</text>
+    <text x='82' y='12'>docker-compose up</text>
+    <text x='458' y='12'>victim</text>
     <text x='18' y='92'>$ docker-compose up</text>
     <text x='354' y='92'>$ ssh server</text>
+    <text x='274' y='188'>attacker</text>
     <text x='178' y='268'>$ scapy</text>
     <text x='178' y='284'>&gt;&gt;&gt;</text>
     <g>

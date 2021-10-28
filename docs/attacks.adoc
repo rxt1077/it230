@@ -1,4 +1,4 @@
-= Attacks
+= Attacks (WIP)
 
 == Interception Attacks
 
@@ -209,13 +209,13 @@ It is also assumed that the attacker is on the local network.
 Lastly victim has been poorly configured to ignore changes to the host key.
 This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file when prompted anyway.
 
-Start by downloading the scapy.zip file which contains the Docker Compose configuration we will be using.
+Start by downloading the https://github.com/rxt1077/it230/raw/main/labs/scapy.zip[scapy.zip] file which contains the Docker Compose configuration we will be using.
 Uncompress it to a directory where you have write access.
 This lab will require us to use three terminal windows/tabs: one for the `docker-compose up` command which will show the output of everything running in the background, one for the victim which will show an SSH session with the server, and one for the attacker which we will use to make the attack.
 
 [svgbob, scapy, width=800, align=center]
 ....
-             Terminal 1                                  Terminal 2
+          "docker-compose up"                            "victim" 
 .-------------------------------------.   .-------------------------------------.
 |                                 - X |   |                                 - X |
 +-------------------------------------+   +-------------------------------------+
@@ -226,7 +226,7 @@ This lab will require us to use three terminal windows/tabs: one for the `docker
 |                                     |   |                                     |
 '-------------------------------------'   '-------------------------------------'
 
-                                   Terminal 3
+                                  "attacker"
                     .-------------------------------------.
                     |                                 - X |
                     +-------------------------------------+
@@ -564,15 +564,27 @@ attacker_1  | 2021/10/07 01:21:41 [172.20.0.6:60252] authentication for user "ro
 
 [IMPORTANT.deliverable]
 ====
+
 [qanda]
 How would you create an ARP packet in scapy to reverse the change you made previously and fix the route?::
     {empty}
 Would using keys instead of passwords help prevent this kind of attack? Why or why not?::
     {empty}
-How would managing host keys correctly prevent this kind of attack?::
-    {emtpy}
+How would https://www.ssh.com/academy/ssh/host-key[managing host keys correctly] prevent this kind of attack?::
+    {empty}
+
 ====
 
 To stop the running containers, you can type Ctrl-C in the terminal running `docker-compose up`, exit out of the victim, and exit out of the attacker.
 
 --
+
+=== Questions
+
+[qanda]
+What can MAC address spoofing allow an attacker to do? What steps can be taken to mitigate this risk?::
+    {empty}
+What is the difference between horizontal and vertical privilege escalation? Give an example of each.::
+    {empty}
+What is XSS and how can it be used in an attack?::
+    {empty}

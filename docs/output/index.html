@@ -73,6 +73,15 @@ body {
   font-style: normal;
 }
 
+.lab img {
+  border: 1px solid #dedede;
+}
+
+.lab table {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 /* Deliverable admonitions */
 .admonitionblock.deliverable td.icon .icon-important:before {
   content:"\f15b";
@@ -131,7 +140,7 @@ table {
 <li><a href="#_review_2">2.11. Review</a></li>
 </ul>
 </li>
-<li><a href="#_malware">3. Malware</a>
+<li><a href="#_malware_wip">3. Malware (WIP)</a>
 <ul class="sectlevel2">
 <li><a href="#_review_3">3.1. Review</a></li>
 </ul>
@@ -145,11 +154,17 @@ table {
 <li><a href="#_review_4">4.5. Review</a></li>
 </ul>
 </li>
-<li><a href="#_attacks">5. Attacks</a>
+<li><a href="#_attacks_wip">5. Attacks (WIP)</a>
 <ul class="sectlevel2">
 <li><a href="#_interception_attacks">5.1. Interception Attacks</a></li>
 <li><a href="#_layer_2_attacks">5.2. Layer 2 Attacks</a></li>
 <li><a href="#_review_5">5.3. Review</a></li>
+</ul>
+</li>
+<li><a href="#_solutions_wip">6. Solutions (WIP)</a></li>
+<li><a href="#_permissions_wip">7. Permissions (WIP)</a>
+<ul class="sectlevel2">
+<li><a href="#_review_6">7.1. Review</a></li>
 </ul>
 </li>
 </ul>
@@ -1570,7 +1585,7 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 </div>
 </div>
 <div class="sect1">
-<h2 id="_malware">3. Malware</h2>
+<h2 id="_malware_wip">3. Malware (WIP)</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_review_3">3.1. Review</h3>
@@ -2584,7 +2599,7 @@ How do you think this could be exploited?</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_attacks">5. Attacks</h2>
+<h2 id="_attacks_wip">5. Attacks (WIP)</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_interception_attacks">5.1. Interception Attacks</h3>
@@ -2724,19 +2739,13 @@ This is particularly difficult because depending on the TTL of the ARP cache it 
 <h3 id="_review_5">5.3. Review</h3>
 <div class="sect3">
 <h4 id="_labs_5">5.3.1. Labs</h4>
-<div class="openblock labs">
+<div class="openblock lab">
 <div class="title">Getting Scrapy with Scapy</div>
 <div class="content">
 <div class="paragraph">
 <p>In this lab we will use a fake SSH server, <a href="https://github.com/jaksi/sshesame">sshesame</a>, and an interactive packet manipulation program, <a href="https://scapy.net/">scapy</a>, to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.</p>
 </div>
-<div class="paragraph">
-<p>For this lab our IP addresses are configured statically and are known to the attacker.
-It is also assumed that the attacker is on the local network.
-Lastly victim has been poorly configured to ignore changes to the host key.
-This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file when prompted anyway.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
+<table class="tableblock frame-all grid-all right" style="width: 50%;">
 <caption class="title">Table 1. IP Addresses Used</caption>
 <colgroup>
 <col style="width: 50%;">
@@ -2764,7 +2773,13 @@ This is not entirely unreasonable as many users just ignore the warnings and cle
 </tbody>
 </table>
 <div class="paragraph">
-<p>Start by downloading the scapy.zip file which contains the Docker Compose configuration we will be using.
+<p>For this lab our IP addresses are configured statically and are known to the attacker.
+It is also assumed that the attacker is on the local network.
+Lastly victim has been poorly configured to ignore changes to the host key.
+This is not entirely unreasonable as many users just ignore the warnings and clear out the known_hosts file when prompted anyway.</p>
+</div>
+<div class="paragraph">
+<p>Start by downloading the <a href="https://github.com/rxt1077/it230/raw/main/labs/scapy.zip">scapy.zip</a> file which contains the Docker Compose configuration we will be using.
 Uncompress it to a directory where you have write access.
 This lab will require us to use three terminal windows/tabs: one for the <code>docker-compose up</code> command which will show the output of everything running in the background, one for the victim which will show an SSH session with the server, and one for the attacker which we will use to make the attack.</p>
 </div>
@@ -3201,8 +3216,8 @@ Take a look at the output from the terminal running <code>docker-compose up</cod
 <p></p>
 </li>
 <li>
-<p><em>How would managing host keys correctly prevent this kind of attack?</em></p>
-<p>{emtpy}</p>
+<p><em>How would <a href="https://www.ssh.com/academy/ssh/host-key">managing host keys correctly</a> prevent this kind of attack?</em></p>
+<p></p>
 </li>
 </ol>
 </div>
@@ -3212,6 +3227,282 @@ Take a look at the output from the terminal running <code>docker-compose up</cod
 </div>
 <div class="paragraph">
 <p>To stop the running containers, you can type Ctrl-C in the terminal running <code>docker-compose up</code>, exit out of the victim, and exit out of the attacker.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_questions_5">5.3.2. Questions</h4>
+<div class="qlist qanda">
+<ol>
+<li>
+<p><em>What can MAC address spoofing allow an attacker to do? What steps can be taken to mitigate this risk?</em></p>
+<p></p>
+</li>
+<li>
+<p><em>What is the difference between horizontal and vertical privilege escalation? Give an example of each.</em></p>
+<p></p>
+</li>
+<li>
+<p><em>What is XSS and how can it be used in an attack?</em></p>
+<p></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_solutions_wip">6. Solutions (WIP)</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_permissions_wip">7. Permissions (WIP)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_review_6">7.1. Review</h3>
+<div class="sect3">
+<h4 id="_labs_6">7.1.1. Labs</h4>
+<div class="openblock lab">
+<div class="title">Linux File Permissions</div>
+<div class="content">
+<div class="paragraph">
+<p>In this lab we are going to explore UNIX style file permissions and determine what they can do and why they are limited.
+Finally we will see how Linux ACLs provide more flexibility in assigning permissions.</p>
+</div>
+<div class="paragraph">
+<p>We will be working in a vanilla Ubuntu container and installing software and adding users manually.
+Let&#8217;s start up the container, install the packages we need, and add some users to work with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">C:\Users\rxt1077\it230\docs&gt;docker run -it ubuntu bash
+root@11ce9e5ee80e:/# apt-get update
+&lt;snip&gt;
+root@11ce9e5ee80e:/# apt-get install acl
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  acl
+0 upgraded, 1 newly installed, 0 to remove and 4 not upgraded.
+Need to get 37.8 kB of archives.
+After this operation, 197 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 acl amd64 2.2.53-6 [37.8 kB]
+Fetched 37.8 kB in 0s (94.1 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package acl.
+(Reading database ... 4127 files and directories currently installed.)
+Preparing to unpack .../acl_2.2.53-6_amd64.deb ...
+Unpacking acl (2.2.53-6) ...
+Setting up acl (2.2.53-6) ...
+root@11ce9e5ee80e:/# useradd alice
+root@11ce9e5ee80e:/# useradd bob
+root@11ce9e5ee80e:/# useradd carol
+root@11ce9e5ee80e:/# useradd dave</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Traditional UNIX file permissions support user and group ownership of a file.
+Rread, write, and execute permissions for a file can be set for the user, group, or others.
+You can view the permissions of a file with the <code>ls -l</code> command.
+Let&#8217;s make home directories for alice, bob, and carol and view the default permissions:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/# cd home
+root@11ce9e5ee80e:/home# mkdir alice bob carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwxr-xr-x 2 root root 4096 Oct 28 01:28 alice
+drwxr-xr-x 2 root root 4096 Oct 28 01:28 bob
+drwxr-xr-x 2 root root 4096 Oct 28 01:28 carol</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The text <code>drwxr-xr-x</code> tells us that these files are directories, the owner has read/write/execute permission, the group has read/execute permission, and other users have read/execute permission.
+It is important to note that execute permissions are required for viewing the contents of a directory.</p>
+</div>
+<div class="paragraph">
+<p>Files owners and a groups are set with the <code>chown</code> command, following the format <code>chown &lt;user&gt;.&lt;group&gt; &lt;filename&gt;</code>.
+Let&#8217;s try to use this command to make the home directories of alice, bob, and carol private:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/home# chown alice.alice alice
+root@11ce9e5ee80e:/home# chown bob.bob bob
+root@11ce9e5ee80e:/home# chown carol.carol carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwxr-xr-x 2 alice alice 4096 Oct 28 01:28 alice
+drwxr-xr-x 2 bob   bob   4096 Oct 28 01:28 bob
+drwxr-xr-x 2 carol carol 4096 Oct 28 01:28 carol</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When a user is added to a UNIX system with the <code>useradd</code> command a group with their name is created.
+This allows us to pass a group to <code>chown</code> that only they will have access to.
+While this is a good start, others still have the ability to read and execute these directories, meaning <em>anyone</em> can view the contents.
+To prove this, lets assume the role of dave and try doing an <code>ls</code> on each of the directories:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/home# su dave <i class="conum" data-value="1"></i><b>(1)</b>
+$ ls alice
+$ ls bob
+$ ls carol
+$ exit</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td><code>su</code> allows us to assume the role of anyone, often it is used to assume the role of the <em>superuser</em></td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>ls</code> command was successful even though there were no files to look at.
+If we weren&#8217;t able to view the contents, we would have received a permission denied error.
+The <code>chmod</code> command is used to modify file permissions for a User (<code>u</code>), Group (<code>g</code>), Others (<code>o</code>), or All (<code>a</code>).
+<code>chmod</code> can remove a permission with <code>-</code>, add a permission with <code>+</code>, or set a permission (removing others) with <code>=</code>.
+Let&#8217;s use <code>chmod</code> to actually make these home directories private:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/home# chmod u=rwx,g=,o= alice
+root@11ce9e5ee80e:/home# chmod u=rwx,g=,o= bob
+root@11ce9e5ee80e:/home# chmod u=rwx,g=,o= carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwx------ 2 alice alice 4096 Oct 28 01:28 alice
+drwx------ 2 bob   bob   4096 Oct 28 01:28 bob
+drwx------ 2 carol carol 4096 Oct 28 01:28 carol</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Things look much better, but let&#8217;s test it and see if dave can view any of the directories:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/home# su dave
+$ ls alice
+ls: cannot open directory 'alice': Permission denied
+$ ls bob
+ls: cannot open directory 'bob': Permission denied
+$ ls carol
+ls: cannot open directory 'carol': Permission denied
+$ exit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lastly, lets make sure that alice can view the contents of her home directory:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/home# su alice
+$ ls alice
+$ exit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Looks good!</p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Using your first name (all lowercase) add yourself as a user and create a home directory for yourself.
+Set the permissions such that only you can view the contents.
+Show the permissions of the home directory and demonstrate that another users <em>cannot</em> view its contents.
+Take a screenshot showing all of this and submit this as one of your deliverables.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Unfortunately traditional UNIX file permissions often do not provide the granularity needed in a modern system.
+For example, lets assume that we wanted a web server to be able to view the contents of alice, bob, and carol&#8217;s home directories.
+This is typically done to allow users to place a <code>public_html</code> directory in their home directory and set up a personal web space.
+We could do this by making their home directories viewable by others, but then we have the same issue we started with.
+We could also do this by changing the group ownership of their home directories to a group that the web server is part of, but then we open up the home directories to any other users or services that are part of that group.</p>
+</div>
+<div class="paragraph">
+<p>The solution to this problem is to use Linux ACLs, which allow you to fine tune permissions.
+Two commands, <code>setfacl</code> and <code>getfacl</code> are used to adjust Linux ACLs.
+As an example let&#8217;s add an http user, use the <code>setfacl</code> command to explicitly give the http user read and execute permissions to all three directories, list the new permissions, and list the new ACLs:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-text" data-lang="text">root@11ce9e5ee80e:/home# useradd http
+root@11ce9e5ee80e:/home# setfacl -m u:http:rx alice bob carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwxr-x---+ 2 alice alice 4096 Oct 28 01:28 alice <i class="conum" data-value="1"></i><b>(1)</b>
+drwxr-x---+ 2 bob   bob   4096 Oct 28 01:28 bob
+drwxr-x---+ 2 carol carol 4096 Oct 28 01:28 carol
+root@11ce9e5ee80e:/home# getfacl alice bob carol
+# file: alice
+# owner: alice
+# group: alice
+user::rwx
+user:http:r-x
+group::---
+mask::r-x
+other::---
+
+# file: bob
+# owner: bob
+# group: bob
+user::rwx
+user:http:r-x
+group::---
+mask::r-x
+other::---
+
+# file: carol
+# owner: carol
+# group: carol
+user::rwx
+user:http:r-x
+group::---
+mask::r-x
+other::---</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Notice the <code>+</code> sign indicating there are extra permissions</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Take a screenshot showing that the http user has access to each directory.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>When you are done, you can type exit to exit bash and stop the container.</p>
 </div>
 </div>
 </div>
@@ -3234,7 +3525,7 @@ Take a look at the output from the terminal running <code>docker-compose up</cod
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-04 21:26:37 UTC
+Last updated 2021-10-28 02:17:44 UTC
 </div>
 </div>
 </body>

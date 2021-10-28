@@ -34,3 +34,7 @@ include::malware.adoc[]
 include::protocols.adoc[]
 
 include::attacks.adoc[]
+
+include::solutions.adoc[]
+
+include::permissions.adoc[]
