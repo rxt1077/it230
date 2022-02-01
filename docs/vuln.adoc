@@ -1,0 +1,47 @@
+= Vulnerability Management and Compliance
+
+== Review
+
+=== Labs
+
+.Scanning with Nessus
+[lab]
+--
+
+In this lab we will be downloading the Nessus vulnerability scanner and using it to scan a machine.
+https://www.tenable.com/products/nessus/nessus-essentials[Click here to register for an activation code and receive a link to download Nessus essentials.]
+Once you have installed the latest version of Nessus for your OS and completed the registration move on to the next steps.
+
+WARNING: Nessus runs a web interface on localhost with a self-signed certificate, so you will need to accept it to continue.
+
+Run `ipconfig` on a Windows device or `ifconfig` on a Mac to find your Wifi adapter IP address.
+Exchange IP addresses with a friend (you will scan each other) and put your friend's IP into the _Welcome to Nessus Essentials_ dialog.
+When you click _Next_ Nessus will begin the host discovery step, making sure that the IP address you put in actually corresponds to an active host.
+Click the checkbox next to the host once it shows up in _Host Discovery_ and run the scan.
+You'll notice the status is _Running_ while the scan is being performed.
+
+
+[IMPORTANT.deliverable]
+====
+Once the scan is complete, take a look at the summary of vulnerabilities in the _Hosts_ tab.
+How many non-info vulnerabilities are there in each category (Low, Medium, High, Critical)?
+====
+
+[IMPORTANT.deliverable]
+====
+Take a screenshot of the _Vulnerabilities_ tab once the scan is complete.
+====
+
+[IMPORTANT.deliverable]
+====
+Pick two vulnerabilities and describe them _in your own words_.
+What mitigation steps could you take to eliminate these vulnerabilities?
+====
+
+[IMPORTANT.deliverable]
+====
+In the _VPR Top Threats_ tab what is the assessed threat level?
+What is _predictive prioritization_ and why does Nessus use it?
+====
+
+--

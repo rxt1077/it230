@@ -474,7 +474,7 @@ Start by running a BASH shell on an Ubuntu Linux container:
 ryan@R90VJ3MK:/windir/c/Users/rxt1077/it230/docs$ docker run -it ubuntu bash <1>
 root@8e0962021f85:/# <2>
 ----
-<1> Here we are using the Docker run command to interactively (-it) run bash on the Ubuntu
+<1> Here we are using the Docker run command to interactively (-it) run bash on Ubuntu
 <2> Notice the new prompt showing that we are root on this container
 
 MD5 is a message-digest algorithm that produces significantly better hashes than our Anagram algorithm.

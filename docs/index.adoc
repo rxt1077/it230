@@ -38,3 +38,5 @@ include::attacks.adoc[]
 include::solutions.adoc[]
 
 include::permissions.adoc[]
+
+include::vuln.adoc[]

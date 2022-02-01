@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.16">
+<meta name="generator" content="Asciidoctor 2.0.17">
 <meta name="author" content="Ryan Tolboom">
 <title>Computer Systems Security: Planning for Success</title>
 <style>
@@ -142,7 +142,10 @@ table {
 </li>
 <li><a href="#_malware_wip">3. Malware (WIP)</a>
 <ul class="sectlevel2">
-<li><a href="#_review_3">3.1. Review</a></li>
+<li><a href="#_what_is_malware">3.1. What is malware?</a></li>
+<li><a href="#_malware_targets">3.2. Malware Targets</a></li>
+<li><a href="#_types_of_malware">3.3. Types of Malware</a></li>
+<li><a href="#_review_3">3.4. Review</a></li>
 </ul>
 </li>
 <li><a href="#_protocols">4. Protocols</a>
@@ -165,6 +168,11 @@ table {
 <li><a href="#_permissions_wip">7. Permissions (WIP)</a>
 <ul class="sectlevel2">
 <li><a href="#_review_6">7.1. Review</a></li>
+</ul>
+</li>
+<li><a href="#_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</a>
+<ul class="sectlevel2">
+<li><a href="#_review_7">8.1. Review</a></li>
 </ul>
 </li>
 </ul>
@@ -1241,7 +1249,7 @@ root@8e0962021f85:/<i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Here we are using the Docker run command to interactively (-it) run bash on the Ubuntu</td>
+<td>Here we are using the Docker run command to interactively (-it) run bash on Ubuntu</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -1588,9 +1596,171 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 <h2 id="_malware_wip">3. Malware (WIP)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_review_3">3.1. Review</h3>
+<h3 id="_what_is_malware">3.1. What is malware?</h3>
+<div class="paragraph">
+<p>Malware is a portmanteau of the words <em>malicious</em> and <em>software</em>.
+The term is used to describe many different types of <em>intentionally malicious</em> programs.
+Malware damages or exploits computer systems.
+It often spies on, spams, or otherwise damages target or host machines.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_malware_targets">3.2. Malware Targets</h3>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<img src="images/malware.png" alt="malware" width="500" height="480">
+</div>
+<div class="title">Figure 2. Malware Distribution by OS (Q1 2020)</div>
+</div>
+<div class="paragraph">
+<p>The most popular target for malware is the Windows OS by quite a large margin.
+This is due largely to its popularity as a desktop operating system.
+The second largest target is web browsers, which afford malware a unique cross-platform reach.
+The third largest target is the Android mobile operating system, which while technically Linux runs mostly on mobile phones.
+Both Linux and Mac do not receive as much malware attention.
+While this may be partially due to the open-source nature of Linux and the BSD kernel used by Macs, it is also partially due to the lack of popularity of each of these operating systems.
+Malware is often widely distributed, meaning it can target only the most popular/possibly weakest links and still be successful.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Zero Days</div>
+<div class="paragraph">
+<p>Modern operating systems employ layers of security to ensure that programs do not have access to sensitive information or applications.
+This typically means that for malware to be effective, it needs to elevate its privileges.
+The most effective malware can perform privilege escalation without requiring user interaction.
+To do this malware may rely on new/undocumented exploits or vulnerabilities.
+These new exploits that have been disclosed for "zero days" are hence are referred to as <em>zero days</em>.
+Zero days are incredibly powerful and may be hoarded by APTs/criminal groups or sold for millions of dollars on the Dark Web.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_types_of_malware">3.3. Types of Malware</h3>
+<div class="paragraph">
+<p>The definition of malware is so broad and new malware is being created daily.
+This can make it difficult to classify malware.
+As we go through some basic types, please keep in mind that there is significant overlap.
+For example, you may encounter ransomeware distributed as a virus <em>or</em> ransomeware distributed as a trojan.
+The fact that it is ransomeware does not preclude it from being some other type of malware as well.</p>
+</div>
 <div class="sect3">
-<h4 id="_labs_3">3.1.1. Labs</h4>
+<h4 id="_worms_viruses_and_trojans">3.3.1. Worms, Viruses, and Trojans</h4>
+<div class="paragraph">
+<p>Worms are self-propagating programs that spread without user interaction.
+Their code is typically stored within an independent object, such as a hidden executable file.
+Worms often do not severely damage their host, as they are concerned with rapid, exponential spreading.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 3. Stuxnet</div>
+<div class="content">
+<div class="paragraph">
+<p>Stuxnet was a 2010 worm that specifically targeted Iranian nuclear facilities.
+The worm used an unprecedented four zero-day attacks and was designed to spread via USB flash drives and Remote Procedure Calls (RPCs).
+In this way it didn&#8217;t just rely on networks to propagate.
+Ultimately Stuxnet&#8217;s payload targeted the code used to program PLC devices that control motors and make them spin too fast, destroying the centrifuges.
+Stuxnet also employed an impressive rootkit to cover its tracks.
+Given the level of sophistication Stuxnet is believed to have been developed by the US and Israel.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Viruses typically require user interaction, such as copying and infected file from one machine to another, and store their code inside another file on a machine.
+An executable file may be infected by having the virus code added a separate page that executes before the standard program code.
+Viruses can be quite damaging to the host as they may take significant resources to spread locally.
+The term virus is also an unfortunately overloaded one.
+Due to it&#8217;s popularity it is often used by some lower-skill threat actors to refer to many different types of malware.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 4. Concept Virus</div>
+<div class="content">
+<div class="paragraph">
+<p>The Concept virus was the first example of a Microsoft Word macro virus.
+The virus hid itself inside Microsoft Word files and used Word&#8217;s embedded macro language to perform its replication tasks.
+Viruses were later created for Excel and other programs that had sufficiently sophisticated yet ultimately insecure internal scripting languages.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>A trojan is a form of malware that disguises itself as legitimate software.
+It does not have to rely on a software exploit as much as it exploits users into installing, running, or giving extra privileges to the malicious code.
+Trojans are the most popular kind of malware as they can be used as an attack vector for many other payloads.
+The name comes from Greek mythology, where a Trojan horse was disguised as a gift and given to a besieged town.
+Within the large horse were secret troops who came out in the middle of the night and opened the town gates.</p>
+</div>
+<div class="exampleblock">
+<div class="title">Example 5. Emotet</div>
+<div class="content">
+<div class="paragraph">
+<p>Emotet is a banking trojan from 2014 that spread through emails.
+It made use of malicious links or macro-enabled documents to make the user download its code.
+Emotet has been one of the most costly and destructive pieces of malware currently averaging about one million in incident remediation.
+It continues to be adapted to avoid detection and make use of even more sophisticated malware.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_ransomware">3.3.2. Ransomware</h4>
+<div class="imageblock right">
+<div class="content">
+<img src="images/wannacry.png" alt="wannacry" width="400">
+</div>
+</div>
+<div class="paragraph">
+<p>Ransomware is a type of malware that encrypts files and demands a ransom to unencrypt them.
+Modern ransomware uses symmetric encryption to the files quickly and then encrypts the symmetric key asymmetrically using a hard-coded public key for which the threat actor has the corresponding private key.
+When the ransom is paid, typically via cryptocurrency, the threat actor can decrypt the symmetric key using their private key and the user can use the symmetric key to decrypt the files.</p>
+</div>
+<div class="paragraph">
+<p>Ransomware is considered a data breach in the data is often exfiltrated as well.
+It is also worth noting that when the ransom is paid, there is no guarantee that the threat actor will actually begin the decryption process.
+Typical targets of ransomware include corporate infrastructure and health care systems although ransomware may also be spread indeterminately.
+The payout of ransoms can be a large money-making enterprise so many APTs or criminal groups may employ its use.
+Ransomware is considered the biggest threat to cyber stability today.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_spyware">3.3.3. Spyware</h4>
+<div class="paragraph">
+<p>Malware specifically designed for espionage/data theft is known as spyware.
+Like ransomware, spyware can also have a monitary payoff for the threat actor.
+Actors may use extortion to demand payment or the data will be <em>leaked</em>.
+This typically means either sold on the dark web or publically posted.
+Once again, given the possibility of monitary gain, spyware is often associated with criminal groups.
+APTs may use spyware as well to obtain secrets of national importance.</p>
+</div>
+<div class="paragraph">
+<p>Customer data, trade secrets, proprietary data, and government secrets are all targets of spyware.
+Even outside of governments systems, in the corporate setting, spyware is still a major threat.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Fileless Malware</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/fileless.svg" alt="fileless" width="776" height="272">
+</div>
+</div>
+<div class="paragraph">
+<p>Malware is often detected by scanning storage for files that match a particular hash or by looking in files to see if they contain patterns.
+Both of these detection techniques rely on the malware being stored in a file.
+Fileless malware attempts to avoid detection by leaving no footprint in the filesystem.
+This type of malware uses legitimate processes to load itself into memory, often with a registry key created to reload every time the machine is restarted.
+This creates a persitent, hard-to-detect type of malware that is often used by sophisticated threat actors such as APTs and criminal groups.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review_3">3.4. Review</h3>
+<div class="sect3">
+<h4 id="_labs_3">3.4.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Malware Analysis</div>
 <div class="content">
@@ -1606,9 +1776,9 @@ Follow the prompts and watch how the process tree changes.
 Feel free to take your time, even after the time expires you will still be able to look at the running processes and analyze HTTP Requests, Connections, DNS Requests, and Threats.</p>
 </div>
 <div class="paragraph">
-<p>For this lab we are going to look at an example of <a href="https://blog.malwarebytes.com/detections/backdoor-avemaria/">Backdoor.AveMaria</a>, a family of Remote Access Trojans (RATs) which taget Windows systems.
-On the left-hand side of the Any Run site, click on <em>Public Submissions</em> and search for the <code>avemaria</code> tag.
-Choose <em>one</em> of the examples (there are hundreds) and look through the screenshots to get an idea of how the malware is run.
+<p>For this lab we are going to look at an example of <a href="https://www.malwarebytes.com/emotet">Emotet</a>, a banking Trojan discovered in 2014.
+On the left-hand side of the Any Run site, click on <em>Public tasks</em> and search for the md5 sum <code>0e106000b2ef3603477cb460f2fc1751</code>.
+Choose <em>one</em> of the examples (there are three) and look through the screenshots to get an idea of how the malware is run.
 It may also help to glance at the network traffic processes.</p>
 </div>
 <div class="paragraph">
@@ -1650,7 +1820,7 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 <p></p>
 </li>
 <li>
-<p><em>Why is malware often put inside an archive file instead of being distrubuted as a simple executable?</em></p>
+<p><em>Why is malware often put inside an archive file instead of being distributed as a simple executable?</em></p>
 <p></p>
 </li>
 <li>
@@ -1679,7 +1849,7 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_questions_3">3.1.2. Questions</h4>
+<h4 id="_questions_3">3.4.2. Questions</h4>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -2678,7 +2848,7 @@ By using an OTP anyone who intercepts the traffic will not be able to perform a 
 <div class="content">
 <img src="images/ssl-mitm.svg" alt="ssl mitm" width="500" height="528">
 </div>
-<div class="title">Figure 2. MitM preventing HTTPS upgrade and skimming passwords</div>
+<div class="title">Figure 3. MitM preventing HTTPS upgrade and skimming passwords</div>
 </div>
 <div class="paragraph">
 <p>If you think about the intercepted key exchange given in the above MitM example, a similar attack can allow attackers to view SSL traffic.
@@ -3510,6 +3680,105 @@ other::---</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_review_7">8.1. Review</h3>
+<div class="sect3">
+<h4 id="_labs_7">8.1.1. Labs</h4>
+<div class="openblock lab">
+<div class="title">Scanning with Nessus</div>
+<div class="content">
+<div class="paragraph">
+<p>In this lab we will be downloading the Nessus vulnerability scanner and using it to scan a machine.
+<a href="https://www.tenable.com/products/nessus/nessus-essentials">Click here to register for an activation code and receive a link to download Nessus essentials.</a>
+Once you have installed the latest version of Nessus for your OS and completed the registration move on to the next steps.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Nessus runs a web interface on localhost with a self-signed certificate, so you will need to accept it to continue.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Run <code>ipconfig</code> on a Windows device or <code>ifconfig</code> on a Mac to find your Wifi adapter IP address.
+Exchange IP addresses with a friend (you will scan each other) and put your friend&#8217;s IP into the <em>Welcome to Nessus Essentials</em> dialog.
+When you click <em>Next</em> Nessus will begin the host discovery step, making sure that the IP address you put in actually corresponds to an active host.
+Click the checkbox next to the host once it shows up in <em>Host Discovery</em> and run the scan.
+You&#8217;ll notice the status is <em>Running</em> while the scan is being performed.</p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Once the scan is complete, take a look at the summary of vulnerabilities in the <em>Hosts</em> tab.
+How many non-info vulnerabilities are there in each category (Low, Medium, High, Critical)?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Take a screenshot of the <em>Vulnerabilities</em> tab once the scan is complete.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Pick two vulnerabilities and describe them <em>in your own words</em>.
+What mitigation steps could you take to eliminate these vulnerabilities?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>In the <em>VPR Top Threats</em> tab what is the assessed threat level?
+What is <em>predictive prioritization</em> and why does Nessus use it?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footnotes">
 <hr>
@@ -3525,7 +3794,7 @@ other::---</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-28 02:17:44 UTC
+Last updated 2022-01-31 22:07:09 UTC
 </div>
 </div>
 </body>
