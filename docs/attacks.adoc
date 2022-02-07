@@ -650,7 +650,7 @@ Using this setup we can show how log4j can be used to leak sensitive information
 We will use it to leak the value of the environment variable `DB_PASSWORD`.
 As it isn't uncommon to store secrets in environment variables on running containers, this should suffice to see just how devastating this exploit can be.
 
-Start by downloading the zip archive of this lab and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you've done that, you can bring the lab up by typing `docker-compose up` in that directory. Output should look similar to what you see below:
+Start by downloading https://github.com/rxt1077/it230/blob/main/labs/log4j.zip?raw=true[the zip archive of this lab] and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you've done that, you can bring the lab up by typing `docker-compose up` in that directory. Output should look similar to what you see below:
 
 [source, console]
 ----
