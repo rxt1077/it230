@@ -1,0 +1,5 @@
+services:
+    target:
+        build: target
+    attacker:
+        build: attacker

