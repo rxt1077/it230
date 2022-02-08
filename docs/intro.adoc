@@ -238,29 +238,30 @@ Encryption::
     Often, encryption and backups complement each other and fill in the use cases that each lacks individually.
     As such, encryption will show up multiple times and in multiple ways in an average security plan.
 
-== Review
+== Lab: Think Like a Hacker
 
-=== Labs
-
-.Think Like a Hacker
-[lab]
---
-For this lab, we will be engaging in a though experiment.
+For this lab, we will be engaging in a thought experiment.
 Imagine you are at a university that is having a student appreciation breakfast.
 At the entrance to the cafeteria an attendant has a clipboard with all of the student IDs listed.
 Students line up, show their ID, and their ID number is crossed off of the list.
 
 Thinking like a hacker, how would you exploit this system to get extra free breakfasts?
 Feel free to think outside the box and make multiple plans depending on the circumstances you would encounter when go the breakfast.
-Come up with at least five different ways of getting free breakfasts and then see if you can map them to real-world information security attacks.
 
 Here is an example that you _can not_ use:
 
+****
 I would tell the attendant that I forgot my ID, but I know my number and then give someone elses number.
 This is very similar to logging in to systems by claiming the user has forgotten their password and then knowing the answers to the security questions required to change the password.
---
+****
 
-=== Questions
+[IMPORTANT.deliverable]
+====
+Come up with at least five different ways of getting free breakfasts and map them to real-world information security attacks.
+If you are unfamiliar with _any_ information security attacks, you may want to start by researching attacks and then mapping them to free breakfast ideas.
+====
+
+== Review Questions
 
 [qanda]
 In terms of information security, what does CIA stand for? What do each of the principles mean?::

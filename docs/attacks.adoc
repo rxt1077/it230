@@ -183,13 +183,7 @@ This is particularly difficult because depending on the TTL of the ARP cache it 
 
 --
 
-== Review
-
-=== Labs
-
-.Getting Scrapy with Scapy
-[lab]
---
+== Lab: MitM with Scapy
 
 In this lab we will use a fake SSH server, https://github.com/jaksi/sshesame[sshesame], and an interactive packet manipulation program, https://scapy.net/[scapy], to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.
 
@@ -577,11 +571,7 @@ How would https://www.ssh.com/academy/ssh/host-key[managing host keys correctly]
 
 To stop the running containers, you can type Ctrl-C in the terminal running `docker-compose up`, exit out of the victim, and exit out of the attacker.
 
---
-
-.Exploiting log4j
-[lab]
---
+== Lab: Exploiting log4j
 
 In this lab we will examine the log4j vulnerability, https://nvd.nist.gov/vuln/detail/CVE-2021-44228[CVE-2021-44228].
 This vulnerability takes advantage of a flaw in a common logging library used by many Java applications, including Apache, neo4j, Steam, iCloud, and Minecraft. 
@@ -722,9 +712,8 @@ What is the database password?
 ====
 What steps would you take to mitigate the risk of a deployed application having this vulnerability?
 ====
---
 
-=== Questions
+== Review Questions
 
 [qanda]
 What can MAC address spoofing allow an attacker to do? What steps can be taken to mitigate this risk?::

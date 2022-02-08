@@ -36,7 +36,7 @@ th{background-color: var(--tertiarycolor);color:var(--white) !important;}
 #toc.toc2.a{color:white;}
 #toctitle{color:#E95420;}
 
-/* Lab blocks */
+/* Lab blocks
 body {
     counter-reset: labnum;
 }
@@ -70,9 +70,17 @@ body {
 .lab table {
   margin-left: 1em;
   margin-right: 1em;
-}
+} */
 
 /* Deliverable admonitions */
+.admonitionblock.deliverable {
+  background-color: #fffef7;
+}
+
+.admonitionblock.deliverable table {
+  border: dashed;
+}
+
 .admonitionblock.deliverable td.icon .icon-important:before {
   content:"\f15b";
   color:#000;

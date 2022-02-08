@@ -46,7 +46,7 @@ th{background-color: var(--tertiarycolor);color:var(--white) !important;}
 #toc.toc2.a{color:white;}
 #toctitle{color:#E95420;}
 
-/* Lab blocks */
+/* Lab blocks
 body {
     counter-reset: labnum;
 }
@@ -66,7 +66,7 @@ body {
 
 .lab > .title {
   color: #7a2518;
-  margin-top: 0;
+  margin-top: 2em;
   text-align: center;
   font-size: 1.3em;
   font-family: "Ubuntu",sans-serif;
@@ -80,9 +80,17 @@ body {
 .lab table {
   margin-left: 1em;
   margin-right: 1em;
-}
+} */
 
 /* Deliverable admonitions */
+.admonitionblock.deliverable {
+  background-color: #fffef7;
+}
+
+.admonitionblock.deliverable table {
+  border: dashed;
+}
+
 .admonitionblock.deliverable td.icon .icon-important:before {
   content:"\f15b";
   color:#000;
@@ -122,7 +130,8 @@ table {
 <li><a href="#_threat_actors">1.4. Threat Actors</a></li>
 <li><a href="#_security_plans">1.5. Security Plans</a></li>
 <li><a href="#_tools_of_the_trade">1.6. Tools of the Trade</a></li>
-<li><a href="#_review">1.7. Review</a></li>
+<li><a href="#_lab_think_like_a_hacker">1.7. Lab: Think Like a Hacker</a></li>
+<li><a href="#_review_questions">1.8. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_cryptography">2. Cryptography</a>
@@ -137,7 +146,8 @@ table {
 <li><a href="#_stream_ciphers">2.8. Stream Ciphers</a></li>
 <li><a href="#_block_ciphers">2.9. Block Ciphers</a></li>
 <li><a href="#_encryption_examples">2.10. Encryption Examples</a></li>
-<li><a href="#_review_2">2.11. Review</a></li>
+<li><a href="#_lab_hash_it_out">2.11. Lab: Hash it Out</a></li>
+<li><a href="#_review_questions_2">2.12. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_malware_wip">3. Malware (WIP)</a>
@@ -147,7 +157,8 @@ table {
 <li><a href="#_types_of_malware">3.3. Types of Malware</a></li>
 <li><a href="#_indicators_of_compromise">3.4. Indicators of Compromise</a></li>
 <li><a href="#_delivery_of_malware">3.5. Delivery of Malware</a></li>
-<li><a href="#_review_3">3.6. Review</a></li>
+<li><a href="#_lab_malware_analysis">3.6. Lab: Malware Analysis</a></li>
+<li><a href="#_review_questions_3">3.7. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_protocols">4. Protocols</a>
@@ -156,25 +167,28 @@ table {
 <li><a href="#_internet_layer_protocols">4.2. Internet Layer Protocols</a></li>
 <li><a href="#_transport_layer_protocols">4.3. Transport Layer Protocols</a></li>
 <li><a href="#_application_layer_protocols">4.4. Application Layer Protocols</a></li>
-<li><a href="#_review_4">4.5. Review</a></li>
+<li><a href="#_lab_scanning_with_nmap">4.5. Lab: Scanning with nmap</a></li>
+<li><a href="#_review_questions_4">4.6. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_attacks_wip">5. Attacks (WIP)</a>
 <ul class="sectlevel2">
 <li><a href="#_interception_attacks">5.1. Interception Attacks</a></li>
 <li><a href="#_layer_2_attacks">5.2. Layer 2 Attacks</a></li>
-<li><a href="#_review_5">5.3. Review</a></li>
+<li><a href="#_lab_mitm_with_scapy">5.3. Lab: MitM with Scapy</a></li>
+<li><a href="#_lab_exploiting_log4j">5.4. Lab: Exploiting log4j</a></li>
+<li><a href="#_review_questions_5">5.5. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_solutions_wip">6. Solutions (WIP)</a></li>
 <li><a href="#_permissions_wip">7. Permissions (WIP)</a>
 <ul class="sectlevel2">
-<li><a href="#_review_6">7.1. Review</a></li>
+<li><a href="#_review">7.1. Review</a></li>
 </ul>
 </li>
 <li><a href="#_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</a>
 <ul class="sectlevel2">
-<li><a href="#_review_7">8.1. Review</a></li>
+<li><a href="#_review_2">8.1. Review</a></li>
 </ul>
 </li>
 </ul>
@@ -522,35 +536,46 @@ As such, encryption will show up multiple times and in multiple ways in an avera
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review">1.7. Review</h3>
-<div class="sect3">
-<h4 id="_labs">1.7.1. Labs</h4>
-<div class="openblock lab">
-<div class="title">Think Like a Hacker</div>
-<div class="content">
+<h3 id="_lab_think_like_a_hacker">1.7. Lab: Think Like a Hacker</h3>
 <div class="paragraph">
-<p>For this lab, we will be engaging in a though experiment.
+<p>For this lab, we will be engaging in a thought experiment.
 Imagine you are at a university that is having a student appreciation breakfast.
 At the entrance to the cafeteria an attendant has a clipboard with all of the student IDs listed.
 Students line up, show their ID, and their ID number is crossed off of the list.</p>
 </div>
 <div class="paragraph">
 <p>Thinking like a hacker, how would you exploit this system to get extra free breakfasts?
-Feel free to think outside the box and make multiple plans depending on the circumstances you would encounter when go the breakfast.
-Come up with at least five different ways of getting free breakfasts and then see if you can map them to real-world information security attacks.</p>
+Feel free to think outside the box and make multiple plans depending on the circumstances you would encounter when go the breakfast.</p>
 </div>
 <div class="paragraph">
 <p>Here is an example that you <em>can not</em> use:</p>
 </div>
+<div class="sidebarblock">
+<div class="content">
 <div class="paragraph">
 <p>I would tell the attendant that I forgot my ID, but I know my number and then give someone elses number.
 This is very similar to logging in to systems by claiming the user has forgotten their password and then knowing the answers to the security questions required to change the password.</p>
 </div>
 </div>
 </div>
+<div class="admonitionblock important deliverable">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Come up with at least five different ways of getting free breakfasts and map them to real-world information security attacks.
+If you are unfamiliar with <em>any</em> information security attacks, you may want to start by researching attacks and then mapping them to free breakfast ideas.</p>
 </div>
-<div class="sect3">
-<h4 id="_questions">1.7.2. Questions</h4>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_review_questions">1.8. Review Questions</h3>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -566,7 +591,6 @@ This is very similar to logging in to systems by claiming the user has forgotten
 <p></p>
 </li>
 </ol>
-</div>
 </div>
 </div>
 </div>
@@ -1165,12 +1189,7 @@ This makes it more difficult for tools to find them when searching storage.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review_2">2.11. Review</h3>
-<div class="sect3">
-<h4 id="_labs_2">2.11.1. Labs</h4>
-<div class="openblock lab">
-<div class="title">Hash it Out</div>
-<div class="content">
+<h3 id="_lab_hash_it_out">2.11. Lab: Hash it Out</h3>
 <div class="paragraph">
 <p>A <em>hash</em> is a one-way cryptographic function that produces a <em>unique</em> set of characters for a given <em>message</em>.
 In a perfect world, given a hash you should <em>not</em> be able to determine what the original message was, but given a hash and the original message you can check that the hash matches the message.
@@ -1570,10 +1589,8 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 </table>
 </div>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_questions_2">2.11.2. Questions</h4>
+<div class="sect2">
+<h3 id="_review_questions_2">2.12. Review Questions</h3>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -1589,7 +1606,6 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 <p></p>
 </li>
 </ol>
-</div>
 </div>
 </div>
 </div>
@@ -1879,12 +1895,7 @@ Attackers may also use stolen credentials to make their messages appear official
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review_3">3.6. Review</h3>
-<div class="sect3">
-<h4 id="_labs_3">3.6.1. Labs</h4>
-<div class="openblock lab">
-<div class="title">Malware Analysis</div>
-<div class="content">
+<h3 id="_lab_malware_analysis">3.6. Lab: Malware Analysis</h3>
 <div class="paragraph">
 <p>The website <a href="https://any.run">Any Run</a> offers free interactive malware analysis.
 We will be using this site to avoid the complications of running malware in a VM.</p>
@@ -1967,10 +1978,8 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 </table>
 </div>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_questions_3">3.6.2. Questions</h4>
+<div class="sect2">
+<h3 id="_review_questions_3">3.7. Review Questions</h3>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -1986,7 +1995,6 @@ Finally open notepad on the VM, type in your name, and take a unique screenshot.
 <p></p>
 </li>
 </ol>
-</div>
 </div>
 </div>
 </div>
@@ -2596,12 +2604,7 @@ Access to SNMP should be limited and its usage on a network should be monitored.
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review_4">4.5. Review</h3>
-<div class="sect3">
-<h4 id="_labs_4">4.5.1. Labs</h4>
-<div class="openblock lab">
-<div class="title">Scanning with nmap</div>
-<div class="content">
+<h3 id="_lab_scanning_with_nmap">4.5. Lab: Scanning with nmap</h3>
 <div class="paragraph">
 <p>For this lab we will start by downloading and extracting the files required.
 Download <a href="https://github.com/rxt1077/it230/raw/main/labs/nmap.zip">nmap.zip</a> and extract it to a directory you can access from the shell.
@@ -2865,10 +2868,8 @@ How do you think this could be exploited?</p>
 <p>When you are all done poking around, you can exit the shell and run <code>docker-compose down</code> to stop <code>victim</code> from running in the background.</p>
 </div>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_questions_4">4.5.2. Questions</h4>
+<div class="sect2">
+<h3 id="_review_questions_4">4.6. Review Questions</h3>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -2884,7 +2885,6 @@ How do you think this could be exploited?</p>
 <p></p>
 </li>
 </ol>
-</div>
 </div>
 </div>
 </div>
@@ -3027,12 +3027,7 @@ This is particularly difficult because depending on the TTL of the ARP cache it 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review_5">5.3. Review</h3>
-<div class="sect3">
-<h4 id="_labs_5">5.3.1. Labs</h4>
-<div class="openblock lab">
-<div class="title">Getting Scrapy with Scapy</div>
-<div class="content">
+<h3 id="_lab_mitm_with_scapy">5.3. Lab: MitM with Scapy</h3>
 <div class="paragraph">
 <p>In this lab we will use a fake SSH server, <a href="https://github.com/jaksi/sshesame">sshesame</a>, and an interactive packet manipulation program, <a href="https://scapy.net/">scapy</a>, to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.</p>
 </div>
@@ -3520,10 +3515,8 @@ Take a look at the output from the terminal running <code>docker-compose up</cod
 <p>To stop the running containers, you can type Ctrl-C in the terminal running <code>docker-compose up</code>, exit out of the victim, and exit out of the attacker.</p>
 </div>
 </div>
-</div>
-<div class="openblock lab">
-<div class="title">Exploiting log4j</div>
-<div class="content">
+<div class="sect2">
+<h3 id="_lab_exploiting_log4j">5.4. Lab: Exploiting log4j</h3>
 <div class="paragraph">
 <p>In this lab we will examine the log4j vulnerability, <a href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228">CVE-2021-44228</a>.
 This vulnerability takes advantage of a flaw in a common logging library used by many Java applications, including Apache, neo4j, Steam, iCloud, and Minecraft.
@@ -3623,7 +3616,7 @@ We will use it to leak the value of the environment variable <code>DB_PASSWORD</
 As it isn&#8217;t uncommon to store secrets in environment variables on running containers, this should suffice to see just how devastating this exploit can be.</p>
 </div>
 <div class="paragraph">
-<p>Start by downloading the zip archive of this lab and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you&#8217;ve done that, you can bring the lab up by typing <code>docker-compose up</code> in that directory. Output should look similar to what you see below:</p>
+<p>Start by downloading <a href="https://github.com/rxt1077/it230/blob/main/labs/log4j.zip?raw=true">the zip archive of this lab</a> and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you&#8217;ve done that, you can bring the lab up by typing <code>docker-compose up</code> in that directory. Output should look similar to what you see below:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3742,10 +3735,8 @@ We will need this since the <code>attacker</code> container will be listening fo
 </table>
 </div>
 </div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_questions_5">5.3.2. Questions</h4>
+<div class="sect2">
+<h3 id="_review_questions_5">5.5. Review Questions</h3>
 <div class="qlist qanda">
 <ol>
 <li>
@@ -3765,7 +3756,6 @@ We will need this since the <code>attacker</code> container will be listening fo
 </div>
 </div>
 </div>
-</div>
 <div class="sect1">
 <h2 id="_solutions_wip">6. Solutions (WIP)</h2>
 <div class="sectionbody">
@@ -3776,9 +3766,9 @@ We will need this since the <code>attacker</code> container will be listening fo
 <h2 id="_permissions_wip">7. Permissions (WIP)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_review_6">7.1. Review</h3>
+<h3 id="_review">7.1. Review</h3>
 <div class="sect3">
-<h4 id="_labs_6">7.1.1. Labs</h4>
+<h4 id="_labs">7.1.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Linux File Permissions</div>
 <div class="content">
@@ -4027,9 +4017,9 @@ other::---</code></pre>
 <h2 id="_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_review_7">8.1. Review</h3>
+<h3 id="_review_2">8.1. Review</h3>
 <div class="sect3">
-<h4 id="_labs_7">8.1.1. Labs</h4>
+<h4 id="_labs_2">8.1.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Scanning with Nessus</div>
 <div class="content">

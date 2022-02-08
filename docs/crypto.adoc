@@ -412,13 +412,8 @@ The hidden data can also be encrypted if an additional layer of security is requ
 In the field of security, malicious code may be hidden inside other files using steganographic techniques.
 This makes it more difficult for tools to find them when searching storage.
 
-== Review
+== Lab: Hash it Out
 
-=== Labs
-
-.Hash it Out
-[lab]
---
 A _hash_ is a one-way cryptographic function that produces a _unique_ set of characters for a given _message_.
 In a perfect world, given a hash you should _not_ be able to determine what the original message was, but given a hash and the original message you can check that the hash matches the message.
 Before we dive into the uses of a hash, lets try to further understand it by looking at a simple and consequently poor hashing algorithm.footnote:[This algorithm is so poor that it may be a stretch even to call it a hashing algorithm. That being said, it is being used as a tool to explain what hashes are.]
@@ -704,9 +699,7 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 Submit a screenshot with your lab showing that the output of the openssl command matches the hash in /etc/shadow
 ====
 
---
-
-=== Questions
+== Review Questions
 
 [qanda]
 What is the difference between symmetric and asymmetric encryption? Give one common use case for each.::

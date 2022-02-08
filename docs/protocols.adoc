@@ -428,13 +428,8 @@ This is particularly important because SNMP is a very powerful protocol which ex
 Access to SNMP should be limited and its usage on a network should be monitored.
 --
 
-== Review
+== Lab: Scanning with nmap
 
-=== Labs
-
-.Scanning with nmap
-[lab]
---
 For this lab we will start by downloading and extracting the files required.
 Download https://github.com/rxt1077/it230/raw/main/labs/nmap.zip[nmap.zip] and extract it to a directory you can access from the shell.
 Open a shell in that directory (it should have a `docker-compose.yml` in it and a `victim` and `scanner` directory).  
@@ -634,9 +629,8 @@ BONUS: How can you test to see if you got it right? What does this say about how
 ====
 
 When you are all done poking around, you can exit the shell and run `docker-compose down` to stop `victim` from running in the background.
---
 
-=== Questions
+== Review Questions
 
 [qanda]
 Compare and contrast SSH and Telnet. If you had to make a recommendation for which one to use, what would you choose and why?::
