@@ -485,7 +485,7 @@ Starting nmap_scanner_1  ... done
 Recreating nmap_victim_1 ... done
 ----
 
-Now we actually have to containers running, one named `victim` which is our target machine and another named `scanner` which we will use to learn about nmap.
+Now we actually have two containers running, one named `victim` which is our target machine and another named `scanner` which we will use to learn about nmap.
 Lets start a BASH shell on `scanner` and work from there:
 
 [source, console]
