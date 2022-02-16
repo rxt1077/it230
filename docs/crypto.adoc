@@ -121,8 +121,8 @@ ciphertext = (72**5)%91 = 11 (encrypted using N and e)
 cleartext = (11**29)%91 = 72 (decrypted using N and d) 
 ----
 
-In order to _crack_ RSA you would need to be able to factor N into it's two prime numbers.
-While it is trivial in our simple example, imagine how difficult it would be for to https://stackoverflow.com/questions/11832022/why-are-large-prime-numbers-used-in-rsa-encryption[factor a number with 1400 decimal digits] the current recommended keysize for RSA.
+In order to _crack_ RSA you would need to be able to factor N into its two prime numbers.
+While it is trivial in our simple example, imagine how difficult it would be to https://stackoverflow.com/questions/11832022/why-are-large-prime-numbers-used-in-rsa-encryption[factor a number with 1400 decimal digits,] the current recommended keysize for RSA.
 You'll notice that the algorithm only requires exponentiation, multiplication, and modulus arithmetic.
 At no point do you ever have to factor a large prime number to generate keys, encrypt, or decrypt.
 You only have to perform that operation if you're trying to work backwards without the keys.

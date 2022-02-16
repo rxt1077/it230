@@ -183,6 +183,62 @@ This is particularly difficult because depending on the TTL of the ARP cache it 
 
 --
 
+== Layer 3 Attacks
+
+=== IP Spoofing
+
+Unfortunately Internet Protocol (IP) was not designed with security in mind.
+This means that by default any IP address can be put in the packet header and the packet will still be forwarded to the network.
+This leads to issues where an IP can be _spoofed_ and malicious packets sent out.
+At this layer there really aren't any good solutions to this problem.
+This means that the sources of packets often need to be authenticated in higher layers and protocols must take into account the fact that the IP layer is fundamentally insecure.
+
+.Smurf Attack
+****
+
+[.float-group]
+--
+
+[link=https://commons.wikimedia.org/wiki/File:Ataque_Smurf_DDoS.png]
+image::smurf.png[width=600, float=right]
+
+The Smurf attack is a great example of how spoofed IP addresses can lead to major problems. 
+The Smurf attack is an early type of Distributed Denial of Service attack.
+An attacker would create an ICMP echo request with the victims IP address as the source address.
+This echo request would be directed at a broadcast IP address for a subnet.
+Many of the clients on the subnet would respond the the echo request, flooding the victim with responses.
+The asymetric nature of this attack, a single packet prompting possibly hundreds of responses, made it particularly hard to deal with.
+Using a Smurf attack, an attacker could keep a victim _pinned down_ with minimal bandwidth required on their end.
+Modern clients no longer respond to ICMP echo requests directed at the broadcast, mitigating the risk of this kind of attack.
+
+--
+
+****
+
+== Name Resolution Attacks
+
+=== DNS Cache Poisoning
+
+A DNS resolved can be tricked into caching incorrect information and serving it to other clients.
+In this scenario an attacker assumes the role of the authoratative DNS server by responding to a DNS query with a forged source IP.
+One of the reasons this is possible is because DNS query responses are often single, unauthenticated packets.
+Once the server has the invalid DNS cache entry it will continue to direct users to the incorrect IP address for the TTL of the entry.
+https://cloud.google.com/dns/docs/dnssec[DNSSEC] can be used to mitigate these attacks by forcing authentication on DNS answers. 
+
+=== LLMNR Hijacking
+
+In this scenario an attacker responds to a LLMNR broadcast and impersonates an authentication server.
+The unexpecting victim fills in their credentials, which are promptly stolen.
+This attack can be mitigated by disabling LLMNR on the network.
+
+== Outcomes
+
+=== Remote Code Execution (RCE)
+
+=== Privilege Escalation
+
+=== Denial of Service (DoS)
+
 == Lab: MitM with Scapy
 
 In this lab we will use a fake SSH server, https://github.com/jaksi/sshesame[sshesame], and an interactive packet manipulation program, https://scapy.net/[scapy], to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.
