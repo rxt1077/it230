@@ -1,0 +1,333 @@
+= Access Controls (WIP)
+
+Access controls seek to provide tools for  _identification_, _authentication_, and _authorization_ with regard to a particular resource.
+While individual controls may provide multiple parts of this triad, it is important to understand what each part represents:
+
+Identification:: the act of identifying an actor or _something_ that is used to identify an actor. This could be as simple as a drivers license or as complex as a cryptographic signature that can only be made by the bearer of a private key.
+Authentication:: this step occurs when an identity is confirmed through the use of a specific process. This could be the process through which the private key is used in the above _identification_ scenario or perhaps another biometric process such as reading a fingerprint. In either case the _authentication_ is the method by which we verify identity. 
+Authorization:: lastly authorization is when an actor is given permission to access a resource. In casual conversation we may assume that _authorization_ is a foregone conclusion once an actor has progressed this far, but in actuality authorization relies on the previous steps being completed and may in fact fail. An example of this would be if a system identified who someone was through authentication with a username and password, but that user is not set up to have access to a resource. In this case the authorization step would fail.
+
+== Physical Access
+
+[.float-group]
+--
+
+image::castle.jpg[width=300, float=right]
+
+An organization's building is often a large ongoing investment and can be an unexpected security asset or weakness.
+Most technical security controls can be completely bypassed or disabled if physical security is not taken into account.
+As such, steps must be taken to assure that physical access is limited to protect not only the building and its contents but also the data that is created and stored there.
+
+--
+
+=== Gates
+
+It is easier to manage the physical security of a location when the amount of entry points are limited.
+Convenience and safety dictate that even with such considerations multiple points of ingress are still needed.
+A security gate is the most basic tool available the ensure that only authorized actors gain access.
+
+Security gates can be manned or unmanned and designed to support vehicular or pedestrian traffic.
+In general an unmanned security gate is not going to be as effective as a manned security gate.
+Likewise, vehicular gates will be less effective against foot traffic (especially unmanned vehicular gates) than gates or checkpoints designed for individuals.
+A thorough risk assessment is often the first step in planning where to put gates and what types of gates to use. 
+
+=== Biometrics
+
+[.float-group]
+--
+
+image::biometric.jpg[width=300, float=left]
+
+Biometric security devices identify people based on on or more physical characteristics.
+This has the great advantage of convenience.
+A person may occasionally forget to bring their ID card in to work, but they will never forget to bring their fingertip or iris!
+Similarly, since the items being used for identification are attached to the people that using them, biometric characteristics are difficult to steal or impersonate.
+
+Biometric traits are often broken into two categories: physiological and behavioral.
+Physiological traits can be facial structure, fingerprints, palm prints, hand structure, iris patterns, or even the sequence of someone's DNA.
+Behavioral traits include voice, signature, and even keystroke patterns.
+
+--
+
+=== Key Cards
+
+Many security measures employ key cards for access to rooms.
+A key card uses the same form factor as a credit card, making it easy for employees to carry in their wallets or ID holders.
+Key cards may utilize magnetic stripes or chips (in a similar fashion to credit cards), radio frequency identification (RFID), or near field communication (NFC).
+
+Basic passive keycards are often subject to skimming and cloning attacks.
+Once an attacker can gain access to the unique number stored on the card, they can recreate the card.
+It is important to monitor areas where key cards are being used to make sure additional hardware is not installed by an attacker to read these numbers.
+It is also important to educate users of the system so they do not share their key cards with others and report them if they go missing.
+
+.Proximity Cards
+****
+[svgbob, target=rfid, format=svg, float=right]
+....
+.---------------------------.
+| .-----------------------. | <-Card Edge
+| | .-------------------. | :
+| | |          .------. | | |
+| | |    +-----+----+ | | | |
+| | |    | Capacitor| | | | |
+| | |    |    and   | | | | |
+| | |    |    IC    | | | | |
+| | |    +----------+ | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | |                 | | | |
+| | '-----------------' |   |
+| '---------------------' ^ |
+'-------------------------|-'
+                          |
+                       Antenna
+....
+
+The most ubiquitous RFID card, the proximity or prox card, is vulnerable to a very basic cloning attack.
+The keycard is a _passive_ electronic device, meaning it utilizes a coil as both an antenna _and_ a source of power for its circuit.
+This has the advantage of not requiring a battery only working when the card is placed in an electromagnetic field, like near the reader on a door with an RFID reader.
+The RFID reader will generate a 125 kHz radio frequency field.
+The prox card has a long antenna which spirals around the outside.
+This antenna is designed to be resonant at 125 kHz and when powered by the field created by the reader it charges a capacitor and provides current to an IC.
+The IC then broadcasts the card's ID.
+
+Unfortunately this passive configuration limits the circuitry to very simple operations due to the need for low power consumption.
+All a proximity card can do when activated is broadcast the card's ID.
+An attacker can listen for that number by placing another reader next to the legitimate reader or even carrying a portable reader that will activate the card when close to the user.
+Once the attacker has the 26 bit unique number of the card, they can make their own card with that same number and gain access.
+
+There have been proposals for strengthen RFID systems https://www.iacr.org/archive/ches2004/31560357/31560357.pdf[including using AES].
+It is also possible to require another factor of identification in addition to the keycard.
+Fortunately, many systems seem to be moving to phone applications via NFC which have significantly more processing power to support trustless cryptographic identification.
+****
+
+=== Security Guards
+
+The most versatile assets in any organization are human assets and the same is true of security guards.
+Security guards can be used to verify IDs, enforce rules, stopped forced entry, and take actions as necessary.
+Given the expensive nature of human resources, security guards should be employed in critical locations where risk is high.
+They may also benefit greatly from staff awareness training even if their job description may be different from the other employees you are training. 
+
+=== Cameras
+
+[.float-group]
+--
+
+[link=https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg]
+image::https://upload.wikimedia.org/wikipedia/commons/0/05/CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg[width=200, float=left]
+
+Cameras afford the operator an "always on" view of a location.
+Awareness that all activity is being recorded can persuade attackers to aim for an easier target or not continue with their nefarious actions.
+Even if an attacker persists the camera footage can provide proof of the attack as well as evidence that can be used later to track the attacker or make better security decisions.
+
+The "eye in the sky" seems to have the effect of keeping honest people honest, but is often just seen as an obstacle for those intent on breaking the rules.
+Despite this cameras do have several technological advantages.
+They can work in no/low light conditions, can be remotely controlled and monitored, can store footage remotely, can track motion, and can activate/alert on motion events.
+Cameras are an integral part of most security plans.
+
+--
+
+.CCTV in London
+****
+****
+
+=== Mantraps
+
+== Lab: Linux File Permissions
+
+In this lab we are going to explore UNIX style file permissions and determine what they can do and why they are limited.
+Finally we will see how Linux ACLs provide more flexibility in assigning permissions.
+
+We will be working in a vanilla Ubuntu container and installing software and adding users manually.
+Let's start up the container, install the packages we need, and add some users to work with:
+
+[source, text]
+----
+C:\Users\rxt1077\it230\docs>docker run -it ubuntu bash
+root@11ce9e5ee80e:/# apt-get update
+<snip>
+root@11ce9e5ee80e:/# apt-get install acl
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  acl
+0 upgraded, 1 newly installed, 0 to remove and 4 not upgraded.
+Need to get 37.8 kB of archives.
+After this operation, 197 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 acl amd64 2.2.53-6 [37.8 kB]
+Fetched 37.8 kB in 0s (94.1 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package acl.
+(Reading database ... 4127 files and directories currently installed.)
+Preparing to unpack .../acl_2.2.53-6_amd64.deb ...
+Unpacking acl (2.2.53-6) ...
+Setting up acl (2.2.53-6) ...
+root@11ce9e5ee80e:/# useradd alice
+root@11ce9e5ee80e:/# useradd bob
+root@11ce9e5ee80e:/# useradd carol
+root@11ce9e5ee80e:/# useradd dave
+----
+
+Traditional UNIX file permissions support user and group ownership of a file.
+Rread, write, and execute permissions for a file can be set for the user, group, or others.
+You can view the permissions of a file with the `ls -l` command.
+Let's make home directories for alice, bob, and carol and view the default permissions:
+
+[source, text]
+----
+root@11ce9e5ee80e:/# cd home
+root@11ce9e5ee80e:/home# mkdir alice bob carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwxr-xr-x 2 root root 4096 Oct 28 01:28 alice
+drwxr-xr-x 2 root root 4096 Oct 28 01:28 bob
+drwxr-xr-x 2 root root 4096 Oct 28 01:28 carol
+----
+
+The text `drwxr-xr-x` tells us that these files are directories, the owner has read/write/execute permission, the group has read/execute permission, and other users have read/execute permission.
+It is important to note that execute permissions are required for viewing the contents of a directory.
+
+Files owners and a groups are set with the `chown` command, following the format `chown <user>.<group> <filename>`.
+Let's try to use this command to make the home directories of alice, bob, and carol private:
+
+[source, text]
+----
+root@11ce9e5ee80e:/home# chown alice.alice alice
+root@11ce9e5ee80e:/home# chown bob.bob bob
+root@11ce9e5ee80e:/home# chown carol.carol carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwxr-xr-x 2 alice alice 4096 Oct 28 01:28 alice
+drwxr-xr-x 2 bob   bob   4096 Oct 28 01:28 bob
+drwxr-xr-x 2 carol carol 4096 Oct 28 01:28 carol
+----
+
+When a user is added to a UNIX system with the `useradd` command a group with their name is created.
+This allows us to pass a group to `chown` that only they will have access to.
+While this is a good start, others still have the ability to read and execute these directories, meaning _anyone_ can view the contents.
+To prove this, lets assume the role of dave and try doing an `ls` on each of the directories:
+
+[source, text]
+----
+root@11ce9e5ee80e:/home# su dave <1>
+$ ls alice
+$ ls bob
+$ ls carol
+$ exit
+----
+<1> `su` allows us to assume the role of anyone, often it is used to assume the role of the _superuser_
+
+The `ls` command was successful even though there were no files to look at.
+If we weren't able to view the contents, we would have received a permission denied error.
+The `chmod` command is used to modify file permissions for a User (`u`), Group (`g`), Others (`o`), or All (`a`).
+`chmod` can remove a permission with `-`, add a permission with `+`, or set a permission (removing others) with `=`.
+Let's use `chmod` to actually make these home directories private:
+
+[source, text]
+----
+root@11ce9e5ee80e:/home# chmod u=rwx,g=,o= alice
+root@11ce9e5ee80e:/home# chmod u=rwx,g=,o= bob
+root@11ce9e5ee80e:/home# chmod u=rwx,g=,o= carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwx------ 2 alice alice 4096 Oct 28 01:28 alice
+drwx------ 2 bob   bob   4096 Oct 28 01:28 bob
+drwx------ 2 carol carol 4096 Oct 28 01:28 carol
+----
+
+Things look much better, but let's test it and see if dave can view any of the directories:
+
+[source, text]
+----
+root@11ce9e5ee80e:/home# su dave
+$ ls alice
+ls: cannot open directory 'alice': Permission denied
+$ ls bob
+ls: cannot open directory 'bob': Permission denied
+$ ls carol
+ls: cannot open directory 'carol': Permission denied
+$ exit
+----
+
+Lastly, lets make sure that alice can view the contents of her home directory:
+
+[source, text]
+----
+root@11ce9e5ee80e:/home# su alice
+$ ls alice
+$ exit
+----
+
+Looks good!
+
+[IMPORTANT.deliverable]
+====
+Using your first name (all lowercase) add yourself as a user and create a home directory for yourself.
+Set the permissions such that only you can view the contents.
+Show the permissions of the home directory and demonstrate that another users _cannot_ view its contents.
+Take a screenshot showing all of this and submit this as one of your deliverables.
+====
+
+Unfortunately traditional UNIX file permissions often do not provide the granularity needed in a modern system.
+For example, lets assume that we wanted a web server to be able to view the contents of alice, bob, and carol's home directories.
+This is typically done to allow users to place a `public_html` directory in their home directory and set up a personal web space.
+We could do this by making their home directories viewable by others, but then we have the same issue we started with.
+We could also do this by changing the group ownership of their home directories to a group that the web server is part of, but then we open up the home directories to any other users or services that are part of that group.
+
+The solution to this problem is to use Linux ACLs, which allow you to fine tune permissions.
+Two commands, `setfacl` and `getfacl` are used to adjust Linux ACLs.
+As an example let's add an http user, use the `setfacl` command to explicitly give the http user read and execute permissions to all three directories, list the new permissions, and list the new ACLs:
+
+[source, text]
+----
+root@11ce9e5ee80e:/home# useradd http
+root@11ce9e5ee80e:/home# setfacl -m u:http:rx alice bob carol
+root@11ce9e5ee80e:/home# ls -l
+total 12
+drwxr-x---+ 2 alice alice 4096 Oct 28 01:28 alice <1>
+drwxr-x---+ 2 bob   bob   4096 Oct 28 01:28 bob
+drwxr-x---+ 2 carol carol 4096 Oct 28 01:28 carol
+root@11ce9e5ee80e:/home# getfacl alice bob carol
+# file: alice
+# owner: alice
+# group: alice
+user::rwx
+user:http:r-x
+group::---
+mask::r-x
+other::---
+
+# file: bob
+# owner: bob
+# group: bob
+user::rwx
+user:http:r-x
+group::---
+mask::r-x
+other::---
+
+# file: carol
+# owner: carol
+# group: carol
+user::rwx
+user:http:r-x
+group::---
+mask::r-x
+other::---
+----
+<1> Notice the `+` sign indicating there are extra permissions
+
+[IMPORTANT.deliverable]
+====
+Take a screenshot showing that the http user has access to each directory.
+====
+
+When you are done, you can type exit to exit bash and stop the container.
+
+== Review Questions

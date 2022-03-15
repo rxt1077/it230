@@ -7,4 +7,4 @@ RUN bundle install
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN ~/.cargo/bin/cargo install svgbob_cli
 ENV PATH="~/.cargo/bin:${PATH}"
-RUN ln -s ~/.cargo/bin/svgbob /usr/bin/svgbob
+RUN ln -s ~/.cargo/bin/svgbob_cli /usr/bin/svgbob

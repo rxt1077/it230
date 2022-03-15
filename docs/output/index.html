@@ -174,8 +174,8 @@ table {
 <li><a href="#_attacks_wip">5. Attacks (WIP)</a>
 <ul class="sectlevel2">
 <li><a href="#_interception_attacks">5.1. Interception Attacks</a></li>
-<li><a href="#_layer_2_attacks">5.2. Layer 2 Attacks</a></li>
-<li><a href="#_layer_3_attacks">5.3. Layer 3 Attacks</a></li>
+<li><a href="#_network_layer_attacks">5.2. Network Layer Attacks</a></li>
+<li><a href="#_internet_layer_attacks">5.3. Internet Layer Attacks</a></li>
 <li><a href="#_name_resolution_attacks">5.4. Name Resolution Attacks</a></li>
 <li><a href="#_outcomes">5.5. Outcomes</a></li>
 <li><a href="#_lab_mitm_with_scapy">5.6. Lab: MitM with Scapy</a></li>
@@ -184,14 +184,16 @@ table {
 </ul>
 </li>
 <li><a href="#_solutions_wip">6. Solutions (WIP)</a></li>
-<li><a href="#_permissions_wip">7. Permissions (WIP)</a>
+<li><a href="#_access_controls_wip">7. Access Controls (WIP)</a>
 <ul class="sectlevel2">
-<li><a href="#_review">7.1. Review</a></li>
+<li><a href="#_physical_access">7.1. Physical Access</a></li>
+<li><a href="#_lab_linux_file_permissions">7.2. Lab: Linux File Permissions</a></li>
+<li><a href="#_review_questions_6">7.3. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</a>
 <ul class="sectlevel2">
-<li><a href="#_review_2">8.1. Review</a></li>
+<li><a href="#_review">8.1. Review</a></li>
 </ul>
 </li>
 </ul>
@@ -227,7 +229,7 @@ Use of these names, logos, and brands does not imply endorsement.</p>
 <h2 id="_acknowledgements">Acknowledgements</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The author would like to thank New Jersey Institute of Technology (NJIT) Open Access Textbooks (OAT) project for helping to make this text possible.</p>
+<p>The author would like to thank New Jersey Institute of Technology (NJIT) Open Access Textbooks (OAT) project and the <a href="https://middlesexcc.libguides.com/OTCProject">Open Textbook Collaborative Project (OTC)</a> for making this text possible.</p>
 </div>
 <div class="paragraph">
 <p>The author would also like to acknowledge the contributions and hard work of:</p>
@@ -239,6 +241,12 @@ Use of these names, logos, and brands does not imply endorsement.</p>
 </li>
 <li>
 <p>Jacob Jones, NJIT 2023</p>
+</li>
+<li>
+<p>Raymond Vasquez</p>
+</li>
+<li>
+<p>Justine Krawiec, Instructional Designer NJIT</p>
 </li>
 </ul>
 </div>
@@ -2991,7 +2999,7 @@ Most servers will upgrade an insecure connection, but by intercepting that excha
 </div>
 </div>
 <div class="sect2">
-<h3 id="_layer_2_attacks">5.2. Layer 2 Attacks</h3>
+<h3 id="_network_layer_attacks">5.2. Network Layer Attacks</h3>
 <div class="sect3">
 <h4 id="_mac_spoofingmac_cloning">5.2.1. MAC Spoofing/MAC Cloning</h4>
 <div class="paragraph">
@@ -3030,9 +3038,16 @@ This is particularly difficult because depending on the TTL of the ARP cache it 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_layer_3_attacks">5.3. Layer 3 Attacks</h3>
+<h3 id="_internet_layer_attacks">5.3. Internet Layer Attacks</h3>
 <div class="sect3">
 <h4 id="_ip_spoofing">5.3.1. IP Spoofing</h4>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<img src="images/ip-header.svg" alt="ip header" width="500" height="336">
+</div>
+</div>
 <div class="paragraph">
 <p>Unfortunately Internet Protocol (IP) was not designed with security in mind.
 This means that by default any IP address can be put in the packet header and the packet will still be forwarded to the network.
@@ -3040,12 +3055,12 @@ This leads to issues where an IP can be <em>spoofed</em> and malicious packets s
 At this layer there really aren&#8217;t any good solutions to this problem.
 This means that the sources of packets often need to be authenticated in higher layers and protocols must take into account the fact that the IP layer is fundamentally insecure.</p>
 </div>
+</div>
+</div>
 <div class="sidebarblock">
 <div class="content">
 <div class="title">Smurf Attack</div>
-<div class="openblock float-group">
-<div class="content">
-<div class="imageblock right">
+<div class="imageblock text-center">
 <div class="content">
 <a class="image" href="https://commons.wikimedia.org/wiki/File:Ataque_Smurf_DDoS.png"><img src="images/smurf.png" alt="smurf" width="600"></a>
 </div>
@@ -3055,12 +3070,10 @@ This means that the sources of packets often need to be authenticated in higher 
 The Smurf attack is an early type of Distributed Denial of Service attack.
 An attacker would create an ICMP echo request with the victims IP address as the source address.
 This echo request would be directed at a broadcast IP address for a subnet.
-Many of the clients on the subnet would respond the the echo request, flooding the victim with responses.
-The asymetric nature of this attack, a single packet prompting possibly hundreds of responses, made it particularly hard to deal with.
+Many of the clients on the subnet would respond the echo request, flooding the victim with responses.
+The asymmetric nature of this attack, a single packet prompting possibly hundreds of responses, made it particularly hard to deal with.
 Using a Smurf attack, an attacker could keep a victim <em>pinned down</em> with minimal bandwidth required on their end.
 Modern clients no longer respond to ICMP echo requests directed at the broadcast, mitigating the risk of this kind of attack.</p>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -3072,7 +3085,7 @@ Modern clients no longer respond to ICMP echo requests directed at the broadcast
 <h4 id="_dns_cache_poisoning">5.4.1. DNS Cache Poisoning</h4>
 <div class="paragraph">
 <p>A DNS resolved can be tricked into caching incorrect information and serving it to other clients.
-In this scenario an attacker assumes the role of the authoratative DNS server by responding to a DNS query with a forged source IP.
+In this scenario an attacker assumes the role of the authoritative DNS server by responding to a DNS query with a forged source IP.
 One of the reasons this is possible is because DNS query responses are often single, unauthenticated packets.
 Once the server has the invalid DNS cache entry it will continue to direct users to the incorrect IP address for the TTL of the entry.
 <a href="https://cloud.google.com/dns/docs/dnssec">DNSSEC</a> can be used to mitigate these attacks by forcing authentication on DNS answers.</p>
@@ -3091,11 +3104,44 @@ This attack can be mitigated by disabling LLMNR on the network.</p>
 <h3 id="_outcomes">5.5. Outcomes</h3>
 <div class="sect3">
 <h4 id="_remote_code_execution_rce">5.5.1. Remote Code Execution (RCE)</h4>
-
+<div class="paragraph">
+<p>One of the most dangerous outcomes of an attack is Remote or Arbitrary Code Execution.
+RCE gives the attacker the ability to execute any instructions they want on the compromised machine.
+Often the attacker will start a shell with administrative privileges so they can do whatever they want.
+Imagine SSHing into a remote Linux machine and elevating your privileges to root.
+This is essentially the type of power that can result from RCE.
+Attackers may also use the RCE to attack the availability of a computing resource by causing a program to terminate.
+In this situation the RCE is being used as part of a denial of service (DoS) attack.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_privilege_escalation">5.5.2. Privilege Escalation</h4>
-
+<div class="quoteblock">
+<blockquote>
+There is no elevator to root, you have to use an exploit.
+</blockquote>
+<div class="attribution">
+&#8212; Judy B. Haxor
+</div>
+</div>
+<div class="imageblock left">
+<div class="content">
+<img src="images/escalation.svg" alt="escalation" width="200" height="224">
+</div>
+</div>
+<div class="paragraph">
+<p>Privilege escalation involves gaining access to protected resources through unintended means.
+An example would be <a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-4034">CVE-2021-4034</a>, a local privilege escalation vulnerability recently discovered in the Linux <code>pkexec</code> command.
+<code>pkexec</code> runs with elevated privileges and does not safely parse command line arguments.
+As such it can be exploited to give a regular user a root shell.
+This would be an example of local, vertical privilege escalation.</p>
+</div>
+<div class="paragraph">
+<p>Privilege escalation is typically broken into two categories: horizontal and vertical.
+Horizontal privilege escalation gives similar access to resources, ie. moving from one user account to another.
+Vertical privilege escalation gives higher level access, ie. moving from a user account to an admin account.
+The five main ways privilege escalation is achieved are credential exploitation, vulnerabilities/exploits, misconfigurations, malware, and social engineering.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="_denial_of_service_dos">5.5.3. Denial of Service (DoS)</h4>
@@ -3839,15 +3885,170 @@ We will need this since the <code>attacker</code> container will be listening fo
 </div>
 </div>
 <div class="sect1">
-<h2 id="_permissions_wip">7. Permissions (WIP)</h2>
+<h2 id="_access_controls_wip">7. Access Controls (WIP)</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Access controls seek to provide tools for  <em>identification</em>, <em>authentication</em>, and <em>authorization</em> with regard to a particular resource.
+While individual controls may provide multiple parts of this triad, it is important to understand what each part represents:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Identification</dt>
+<dd>
+<p>the act of identifying an actor or <em>something</em> that is used to identify an actor. This could be as simple as a drivers license or as complex as a cryptographic signature that can only be made by the bearer of a private key.</p>
+</dd>
+<dt class="hdlist1">Authentication</dt>
+<dd>
+<p>this step occurs when an identity is confirmed through the use of a specific process. This could be the process through which the private key is used in the above <em>identification</em> scenario or perhaps another biometric process such as reading a fingerprint. In either case the <em>authentication</em> is the method by which we verify identity.</p>
+</dd>
+<dt class="hdlist1">Authorization</dt>
+<dd>
+<p>lastly authorization is when an actor is given permission to access a resource. In casual conversation we may assume that <em>authorization</em> is a foregone conclusion once an actor has progressed this far, but in actuality authorization relies on the previous steps being completed and may in fact fail. An example of this would be if a system identified who someone was through authentication with a username and password, but that user is not set up to have access to a resource. In this case the authorization step would fail.</p>
+</dd>
+</dl>
+</div>
 <div class="sect2">
-<h3 id="_review">7.1. Review</h3>
-<div class="sect3">
-<h4 id="_labs">7.1.1. Labs</h4>
-<div class="openblock lab">
-<div class="title">Linux File Permissions</div>
+<h3 id="_physical_access">7.1. Physical Access</h3>
+<div class="openblock float-group">
 <div class="content">
+<div class="imageblock right">
+<div class="content">
+<img src="images/castle.jpg" alt="castle" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>An organization&#8217;s building is often a large ongoing investment and can be an unexpected security asset or weakness.
+Most technical security controls can be completely bypassed or disabled if physical security is not taken into account.
+As such, steps must be taken to assure that physical access is limited to protect not only the building and its contents but also the data that is created and stored there.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gates">7.1.1. Gates</h4>
+<div class="paragraph">
+<p>It is easier to manage the physical security of a location when the amount of entry points are limited.
+Convenience and safety dictate that even with such considerations multiple points of ingress are still needed.
+A security gate is the most basic tool available the ensure that only authorized actors gain access.</p>
+</div>
+<div class="paragraph">
+<p>Security gates can be manned or unmanned and designed to support vehicular or pedestrian traffic.
+In general an unmanned security gate is not going to be as effective as a manned security gate.
+Likewise, vehicular gates will be less effective against foot traffic (especially unmanned vehicular gates) than gates or checkpoints designed for individuals.
+A thorough risk assessment is often the first step in planning where to put gates and what types of gates to use.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_biometrics">7.1.2. Biometrics</h4>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<img src="images/biometric.jpg" alt="biometric" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Biometric security devices identify people based on on or more physical characteristics.
+This has the great advantage of convenience.
+A person may occasionally forget to bring their ID card in to work, but they will never forget to bring their fingertip or iris!
+Similarly, since the items being used for identification are attached to the people that using them, biometric characteristics are difficult to steal or impersonate.</p>
+</div>
+<div class="paragraph">
+<p>Biometric traits are often broken into two categories: physiological and behavioral.
+Physiological traits can be facial structure, fingerprints, palm prints, hand structure, iris patterns, or even the sequence of someone&#8217;s DNA.
+Behavioral traits include voice, signature, and even keystroke patterns.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_key_cards">7.1.3. Key Cards</h4>
+<div class="paragraph">
+<p>Many security measures employ key cards for access to rooms.
+A key card uses the same form factor as a credit card, making it easy for employees to carry in their wallets or ID holders.
+Key cards may utilize magnetic stripes or chips (in a similar fashion to credit cards), radio frequency identification (RFID), or near field communication (NFC).</p>
+</div>
+<div class="paragraph">
+<p>Basic passive keycards are often subject to skimming and cloning attacks.
+Once an attacker can gain access to the unique number stored on the card, they can recreate the card.
+It is important to monitor areas where key cards are being used to make sure additional hardware is not installed by an attacker to read these numbers.
+It is also important to educate users of the system so they do not share their key cards with others and report them if they go missing.</p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">Proximity Cards</div>
+<div class="imageblock right">
+<div class="content">
+<img src="images/rfid.svg" alt="rfid" width="336" height="368">
+</div>
+</div>
+<div class="paragraph">
+<p>The most ubiquitous RFID card, the proximity or prox card, is vulnerable to a very basic cloning attack.
+The keycard is a <em>passive</em> electronic device, meaning it utilizes a coil as both an antenna <em>and</em> a source of power for its circuit.
+This has the advantage of not requiring a battery only working when the card is placed in an electromagnetic field, like near the reader on a door with an RFID reader.
+The RFID reader will generate a 125 kHz radio frequency field.
+The prox card has a long antenna which spirals around the outside.
+This antenna is designed to be resonant at 125 kHz and when powered by the field created by the reader it charges a capacitor and provides current to an IC.
+The IC then broadcasts the card&#8217;s ID.</p>
+</div>
+<div class="paragraph">
+<p>Unfortunately this passive configuration limits the circuitry to very simple operations due to the need for low power consumption.
+All a proximity card can do when activated is broadcast the card&#8217;s ID.
+An attacker can listen for that number by placing another reader next to the legitimate reader or even carrying a portable reader that will activate the card when close to the user.
+Once the attacker has the 26 bit unique number of the card, they can make their own card with that same number and gain access.</p>
+</div>
+<div class="paragraph">
+<p>There have been proposals for strengthen RFID systems <a href="https://www.iacr.org/archive/ches2004/31560357/31560357.pdf">including using AES</a>.
+It is also possible to require another factor of identification in addition to the keycard.
+Fortunately, many systems seem to be moving to phone applications via NFC which have significantly more processing power to support trustless cryptographic identification.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_security_guards">7.1.4. Security Guards</h4>
+<div class="paragraph">
+<p>The most versatile assets in any organization are human assets and the same is true of security guards.
+Security guards can be used to verify IDs, enforce rules, stopped forced entry, and take actions as necessary.
+Given the expensive nature of human resources, security guards should be employed in critical locations where risk is high.
+They may also benefit greatly from staff awareness training even if their job description may be different from the other employees you are training.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_cameras">7.1.5. Cameras</h4>
+<div class="openblock float-group">
+<div class="content">
+<div class="imageblock left">
+<div class="content">
+<a class="image" href="https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg" alt="CCTV camera and iFacility IP Audio speaker on a pole"></a>
+</div>
+</div>
+<div class="paragraph">
+<p>Cameras afford the operator an "always on" view of a location.
+Awareness that all activity is being recorded can persuade attackers to aim for an easier target or not continue with their nefarious actions.
+Even if an attacker persists the camera footage can provide proof of the attack as well as evidence that can be used later to track the attacker or make better security decisions.</p>
+</div>
+<div class="paragraph">
+<p>The "eye in the sky" seems to have the effect of keeping honest people honest, but is often just seen as an obstacle for those intent on breaking the rules.
+Despite this cameras do have several technological advantages.
+They can work in no/low light conditions, can be remotely controlled and monitored, can store footage remotely, can track motion, and can activate/alert on motion events.
+Cameras are an integral part of most security plans.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">CCTV in London</div>
+
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_mantraps">7.1.6. Mantraps</h4>
+
+</div>
+</div>
+<div class="sect2">
+<h3 id="_lab_linux_file_permissions">7.2. Lab: Linux File Permissions</h3>
 <div class="paragraph">
 <p>In this lab we are going to explore UNIX style file permissions and determine what they can do and why they are limited.
 Finally we will see how Linux ACLs provide more flexibility in assigning permissions.</p>
@@ -4084,8 +4285,9 @@ other::---</code></pre>
 <p>When you are done, you can type exit to exit bash and stop the container.</p>
 </div>
 </div>
-</div>
-</div>
+<div class="sect2">
+<h3 id="_review_questions_6">7.3. Review Questions</h3>
+
 </div>
 </div>
 </div>
@@ -4093,9 +4295,9 @@ other::---</code></pre>
 <h2 id="_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_review_2">8.1. Review</h3>
+<h3 id="_review">8.1. Review</h3>
 <div class="sect3">
-<h4 id="_labs_2">8.1.1. Labs</h4>
+<h4 id="_labs">8.1.1. Labs</h4>
 <div class="openblock lab">
 <div class="title">Scanning with Nessus</div>
 <div class="content">
@@ -4203,7 +4405,7 @@ What is <em>predictive prioritization</em> and why does Nessus use it?</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-01-31 22:07:09 UTC
+Last updated 2022-03-14 13:06:16 UTC
 </div>
 </div>
 </body>
