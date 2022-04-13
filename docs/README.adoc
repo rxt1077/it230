@@ -1,5 +1,8 @@
 = Computer Systems Security: Planning for Success
 
+This text is intented to be viewed as a website via a web browser.
+It is currently hosted at https://web.njit.edu/~rxt1077/security
+
 This text uses the https://asciidoctor.org/[AsciiDoctor] text publishing toolchain to generate HTML5 output.
 https://docs.asciidoctor.org/diagram-extension/latest/[Asciidoctor-diagram] is also used to generate many of the diagrams used throughout the text.
 Finally, https://www.docker.com/[Docker] is used to provide the build environment.
