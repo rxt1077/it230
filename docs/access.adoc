@@ -1,11 +1,38 @@
 = Access Controls (WIP)
 
-Access controls seek to provide tools for  _identification_, _authentication_, and _authorization_ with regard to a particular resource.
-While individual controls may provide multiple parts of this triad, it is important to understand what each part represents:
+Access controls seek to provide tools for  _identification_, _authentication_, _authorization_, and _accounting_ with regard to a particular resource.
+While individual controls may provide multiple parts, it is still important to understand what each part represents:
 
-Identification:: the act of identifying an actor or _something_ that is used to identify an actor. This could be as simple as a drivers license or as complex as a cryptographic signature that can only be made by the bearer of a private key.
-Authentication:: this step occurs when an identity is confirmed through the use of a specific process. This could be the process through which the private key is used in the above _identification_ scenario or perhaps another biometric process such as reading a fingerprint. In either case the _authentication_ is the method by which we verify identity. 
-Authorization:: lastly authorization is when an actor is given permission to access a resource. In casual conversation we may assume that _authorization_ is a foregone conclusion once an actor has progressed this far, but in actuality authorization relies on the previous steps being completed and may in fact fail. An example of this would be if a system identified who someone was through authentication with a username and password, but that user is not set up to have access to a resource. In this case the authorization step would fail.
+Identification:: The act of identifying an actor or _something_ that is used to identify an actor. This could be as simple as a drivers license or as complex as a cryptographic signature that can only be made by the bearer of a private key. Example: A delivery driver presenting an employee badge.
+Authentication:: This step occurs when an identity is confirmed through the use of a specific process. This could be the process through which the private key is used or perhaps another biometric process such as reading a fingerprint. In either case the _authentication_ is the method by which we verify identity. Example: Examining the delivery driver's badge. 
+Authorization:: Authorization is when an actor is given permission to access a resource. In casual conversation we may assume that _authorization_ is a foregone conclusion once an actor has progressed this far, but in actuality authorization relies on the previous steps being completed and may in fact fail. A system may have identified who someone was through authentication with a username and password, but that user is not set up to have access to a resource. In this case the _authorization_ step would fail. To continue with our delivery driver example: Allowing the delivery driver to pick up a package.
+Accounting:: Finally accounting is the process through which a record of access to the resource is recorded. Accounting may be a log of users who have signed in an log of what resources they each accessed. In a similar vein, with the delivery driver: A record of the driver's visit is written in the sign-in book at the front desk.
+
+== General Principles and Techniques
+
+=== Least Privilege
+
+The principle of least privilege states that an actor should only be given access to resources as necessary and with the permissions necessary to complete their task.
+These resources may be processes, programs, or even user accounts.
+This principle reduces an attack surface and helps stop the spread of malware as a single compromised account will not have access to all of the resources.
+
+Least privilege is also an important concept for compliance purposes.
+For example, laws may require and audit of all accounts that have Internet access.
+By limiting accounts that have Internet access to only the accounts of actors that require Internet access to complete their tasks, it makes it easier to be in compliance.
+
+=== Multi-factor Authentication (MFA)
+
+Multi-factor authentication is a technique that requires actors to provide two or more pieces of information to be used as identification.
+Some examples of identification would be usernames and passwords, token codes, a physical token, or biometric data.
+Typically it is suggested to use "something you have and something you know" for example the code in an SMS message to your phone (you have your phone) and a password (you know your password).
+
+There are many popular products for MFA, most of which are based on the time based creation of a code.
+Google Authenticator and Authy are each phone applications which generate codes from a cryptographic seed which is synced with the verifying system.
+RSA IDs generate similar codes on a dedicated hardware device.
+
+////
+=== MAC, DAC, RBAC, and ABAC
+////
 
 == Physical Access
 
@@ -132,11 +159,101 @@ Cameras are an integral part of most security plans.
 
 --
 
+////
 .CCTV in London
 ****
 ****
+////
 
 === Mantraps
+
+[svgbob, target=mantrap.svg, format=svg, align=center]
+....
+                                 Door 1 Closes               Keycard Accepted
+     Ready for entry        "Keycard Reader Activated"         Door 2 Opens
+     +-------------+            +-------------+              +-------------+           
+     |             |            |             |              |             |
+     |             |            |             |              |             |
+                    |          |               |            |
+  X ---->           |          |       X       |            |            X ---->
+                    |          |               |            |
+    ||      _      |            |      _      |              |      _      ||
+    ||     | |     |^           |     | |     |              |     | |     ||
+    |+-----+-+-----+|           +-----+-+-----+              +-----+-+-----+|
+            ^       |  
+    ^       |    Door 2  
+    |    Keycard    
+ Door 1   Access
+....
+
+A mantrap is a physical access control that requires one person at a time enter through a door.
+Also known as air locks, sally ports, or access control vestibules, mantraps are used to prevent tailgaiting, or following another person through a secured door.
+These devices are often used with keycards to ensure that only people who are supposed to have access to a building can get in.
+
+== Network Access
+
+=== Active Directory
+
+Active Directory (AD) is a directory service typically used in Windows networks to control and track resources.
+AD is a Microsoft technology that enables centralized network management.
+It has proven to be very scalable and is commonly deployed in the enterprise environment (corporations, universities, schools, etc.)
+
+Active Directory relies upon the Lightweight Directory Access Protocol (LDAP) for its communications.
+While AD is probably the largest deployed user of LDAP other implementations for various operating systems exist, including Apple OpenDirectory, RH Directory Server, and OpenLDAP.
+LDAP is often used by internal applications and process.
+
+The cornerstone of an AD environment is the Domain Controller (DC).
+DCs stores directory information about Users, Groups, Computers, Policies, and more.
+They respond to auth requests for the domain (network) they are supporting.
+A standard network will have multiple DCs with fail-over in place incase something goes wrong.
+
+For many environments, AD is the mechanism used for authentication, authorization, and accounting.
+As many services have migrated to the web, the need to access AD from anywhere has become increasingly important.
+This has kindled the growth of Azure Active Directory, a cloud-based version of active directory.
+Increasingly we are seeing deployments that utilize cloud-based resources instead of local DCs.
+
+=== Privileged Identity Management (PIM)
+
+Privileged Identity Management (PIM) is a method of managing access to resources such as locations, commands, audit reports, and services.
+PIM aims to provide more granular access control.
+By recording more information about access it allows for better reporting regarding suspicious behavior and anomalies.
+PIM is used in the Windows operating system and for many Microsoft Azure services.
+
+=== Privileged Access Management (PAM)
+
+Privileged Access Management (PAM) is a framework for safeguarding identities with advanced capabilities, such as superusers in a *NIX system.
+PAM is common in the Linux world, where it is used to control how administrators log in.
+PAM supports many more features than the older "become root and perform admin tasks" model.
+With PAM passwords can be set to expire, better auditing can be put in place, and privilege escalation can be made temporary.
+
+=== Identity and Access Management (IAM)
+
+Identity and Access Management is a framework for managing digital identities.
+IAM manages the user database, logs when users sign in and out, manages the creation of groups or roles, and allows for the assignment and removal of access privileges.
+Many different groups offer IAM frameworks, the most famous of which may be Amazon Web Systems (AWS) which use it for controlling access to the infrastructure as a service (IaaS) technologies they offer.
+
+IAM often makes use of PIM and PAM to accomplish these goals.
+A well-implemented, thorough IAM framework can work across operating systems and handle many different types of resources.
+
+=== Linux File Permissions
+
+=== Linux ACLs
+
+=== SSH Keys
+
+=== Sessions
+
+=== Cookies
+
+=== Single Sign On (SSO)
+
+=== Security Assertion Markup Language (SAML)
+
+=== OpenID Connect and OAuth
+
+=== Kerberos
+
+=== Tokenization
 
 == Lab: Linux File Permissions
 
@@ -270,7 +387,7 @@ Looks good!
 ====
 Using your first name (all lowercase) add yourself as a user and create a home directory for yourself.
 Set the permissions such that only you can view the contents.
-Show the permissions of the home directory and demonstrate that another users _cannot_ view its contents.
+Show the permissions of the home directory and demonstrate that another user _cannot_ view its contents.
 Take a screenshot showing all of this and submit this as one of your deliverables.
 ====
 

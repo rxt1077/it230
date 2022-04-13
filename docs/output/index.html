@@ -186,9 +186,11 @@ table {
 <li><a href="#_solutions_wip">6. Solutions (WIP)</a></li>
 <li><a href="#_access_controls_wip">7. Access Controls (WIP)</a>
 <ul class="sectlevel2">
-<li><a href="#_physical_access">7.1. Physical Access</a></li>
-<li><a href="#_lab_linux_file_permissions">7.2. Lab: Linux File Permissions</a></li>
-<li><a href="#_review_questions_6">7.3. Review Questions</a></li>
+<li><a href="#_general_principles_and_techniques">7.1. General Principles and Techniques</a></li>
+<li><a href="#_physical_access">7.2. Physical Access</a></li>
+<li><a href="#_network_access">7.3. Network Access</a></li>
+<li><a href="#_lab_linux_file_permissions">7.4. Lab: Linux File Permissions</a></li>
+<li><a href="#_review_questions_6">7.5. Review Questions</a></li>
 </ul>
 </li>
 <li><a href="#_vulnerability_management_and_compliance">8. Vulnerability Management and Compliance</a>
@@ -3888,27 +3890,60 @@ We will need this since the <code>attacker</code> container will be listening fo
 <h2 id="_access_controls_wip">7. Access Controls (WIP)</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Access controls seek to provide tools for  <em>identification</em>, <em>authentication</em>, and <em>authorization</em> with regard to a particular resource.
-While individual controls may provide multiple parts of this triad, it is important to understand what each part represents:</p>
+<p>Access controls seek to provide tools for  <em>identification</em>, <em>authentication</em>, <em>authorization</em>, and <em>accounting</em> with regard to a particular resource.
+While individual controls may provide multiple parts, it is still important to understand what each part represents:</p>
 </div>
 <div class="dlist">
 <dl>
 <dt class="hdlist1">Identification</dt>
 <dd>
-<p>the act of identifying an actor or <em>something</em> that is used to identify an actor. This could be as simple as a drivers license or as complex as a cryptographic signature that can only be made by the bearer of a private key.</p>
+<p>The act of identifying an actor or <em>something</em> that is used to identify an actor. This could be as simple as a drivers license or as complex as a cryptographic signature that can only be made by the bearer of a private key. Example: A delivery driver presenting an employee badge.</p>
 </dd>
 <dt class="hdlist1">Authentication</dt>
 <dd>
-<p>this step occurs when an identity is confirmed through the use of a specific process. This could be the process through which the private key is used in the above <em>identification</em> scenario or perhaps another biometric process such as reading a fingerprint. In either case the <em>authentication</em> is the method by which we verify identity.</p>
+<p>This step occurs when an identity is confirmed through the use of a specific process. This could be the process through which the private key is used or perhaps another biometric process such as reading a fingerprint. In either case the <em>authentication</em> is the method by which we verify identity. Example: Examining the delivery driver&#8217;s badge.</p>
 </dd>
 <dt class="hdlist1">Authorization</dt>
 <dd>
-<p>lastly authorization is when an actor is given permission to access a resource. In casual conversation we may assume that <em>authorization</em> is a foregone conclusion once an actor has progressed this far, but in actuality authorization relies on the previous steps being completed and may in fact fail. An example of this would be if a system identified who someone was through authentication with a username and password, but that user is not set up to have access to a resource. In this case the authorization step would fail.</p>
+<p>Authorization is when an actor is given permission to access a resource. In casual conversation we may assume that <em>authorization</em> is a foregone conclusion once an actor has progressed this far, but in actuality authorization relies on the previous steps being completed and may in fact fail. A system may have identified who someone was through authentication with a username and password, but that user is not set up to have access to a resource. In this case the <em>authorization</em> step would fail. To continue with our delivery driver example: Allowing the delivery driver to pick up a package.</p>
+</dd>
+<dt class="hdlist1">Accounting</dt>
+<dd>
+<p>Finally accounting is the process through which a record of access to the resource is recorded. Accounting may be a log of users who have signed in an log of what resources they each accessed. In a similar vein, with the delivery driver: A record of the driver&#8217;s visit is written in the sign-in book at the front desk.</p>
 </dd>
 </dl>
 </div>
 <div class="sect2">
-<h3 id="_physical_access">7.1. Physical Access</h3>
+<h3 id="_general_principles_and_techniques">7.1. General Principles and Techniques</h3>
+<div class="sect3">
+<h4 id="_least_privilege">7.1.1. Least Privilege</h4>
+<div class="paragraph">
+<p>The principle of least privilege states that an actor should only be given access to resources as necessary and with the permissions necessary to complete their task.
+These resources may be processes, programs, or even user accounts.
+This principle reduces an attack surface and helps stop the spread of malware as a single compromised account will not have access to all of the resources.</p>
+</div>
+<div class="paragraph">
+<p>Least privilege is also an important concept for compliance purposes.
+For example, laws may require and audit of all accounts that have Internet access.
+By limiting accounts that have Internet access to only the accounts of actors that require Internet access to complete their tasks, it makes it easier to be in compliance.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_multi_factor_authentication_mfa">7.1.2. Multi-factor Authentication (MFA)</h4>
+<div class="paragraph">
+<p>Multi-factor authentication is a technique that requires actors to provide two or more pieces of information to be used as identification.
+Some examples of identification would be usernames and passwords, token codes, a physical token, or biometric data.
+Typically it is suggested to use "something you have and something you know" for example the code in an SMS message to your phone (you have your phone) and a password (you know your password).</p>
+</div>
+<div class="paragraph">
+<p>There are many popular products for MFA, most of which are based on the time based creation of a code.
+Google Authenticator and Authy are each phone applications which generate codes from a cryptographic seed which is synced with the verifying system.
+RSA IDs generate similar codes on a dedicated hardware device.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_physical_access">7.2. Physical Access</h3>
 <div class="openblock float-group">
 <div class="content">
 <div class="imageblock right">
@@ -3924,7 +3959,7 @@ As such, steps must be taken to assure that physical access is limited to protec
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gates">7.1.1. Gates</h4>
+<h4 id="_gates">7.2.1. Gates</h4>
 <div class="paragraph">
 <p>It is easier to manage the physical security of a location when the amount of entry points are limited.
 Convenience and safety dictate that even with such considerations multiple points of ingress are still needed.
@@ -3938,7 +3973,7 @@ A thorough risk assessment is often the first step in planning where to put gate
 </div>
 </div>
 <div class="sect3">
-<h4 id="_biometrics">7.1.2. Biometrics</h4>
+<h4 id="_biometrics">7.2.2. Biometrics</h4>
 <div class="openblock float-group">
 <div class="content">
 <div class="imageblock left">
@@ -3961,7 +3996,7 @@ Behavioral traits include voice, signature, and even keystroke patterns.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_key_cards">7.1.3. Key Cards</h4>
+<h4 id="_key_cards">7.2.3. Key Cards</h4>
 <div class="paragraph">
 <p>Many security measures employ key cards for access to rooms.
 A key card uses the same form factor as a credit card, making it easy for employees to carry in their wallets or ID holders.
@@ -4005,7 +4040,7 @@ Fortunately, many systems seem to be moving to phone applications via NFC which 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_security_guards">7.1.4. Security Guards</h4>
+<h4 id="_security_guards">7.2.4. Security Guards</h4>
 <div class="paragraph">
 <p>The most versatile assets in any organization are human assets and the same is true of security guards.
 Security guards can be used to verify IDs, enforce rules, stopped forced entry, and take actions as necessary.
@@ -4014,12 +4049,12 @@ They may also benefit greatly from staff awareness training even if their job de
 </div>
 </div>
 <div class="sect3">
-<h4 id="_cameras">7.1.5. Cameras</h4>
+<h4 id="_cameras">7.2.5. Cameras</h4>
 <div class="openblock float-group">
 <div class="content">
 <div class="imageblock left">
 <div class="content">
-<a class="image" href="https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg" alt="CCTV camera and iFacility IP Audio speaker on a pole"></a>
+<a class="image" href="https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/0/05/CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg" alt="CCTV camera and iFacility IP Audio speaker on a pole" width="200"></a>
 </div>
 </div>
 <div class="paragraph">
@@ -4035,20 +4070,121 @@ Cameras are an integral part of most security plans.</p>
 </div>
 </div>
 </div>
-<div class="sidebarblock">
-<div class="content">
-<div class="title">CCTV in London</div>
-
 </div>
+<div class="sect3">
+<h4 id="_mantraps">7.2.6. Mantraps</h4>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/mantrap.svg.svg" alt="mantrap" width="648" height="256">
+</div>
+</div>
+<div class="paragraph">
+<p>A mantrap is a physical access control that requires one person at a time enter through a door.
+Also known as air locks, sally ports, or access control vestibules, mantraps are used to prevent tailgaiting, or following another person through a secured door.
+These devices are often used with keycards to ensure that only people who are supposed to have access to a building can get in.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_network_access">7.3. Network Access</h3>
+<div class="sect3">
+<h4 id="_active_directory">7.3.1. Active Directory</h4>
+<div class="paragraph">
+<p>Active Directory (AD) is a directory service typically used in Windows networks to control and track resources.
+AD is a Microsoft technology that enables centralized network management.
+It has proven to be very scalable and is commonly deployed in the enterprise environment (corporations, universities, schools, etc.)</p>
+</div>
+<div class="paragraph">
+<p>Active Directory relies upon the Lightweight Directory Access Protocol (LDAP) for its communications.
+While AD is probably the largest deployed user of LDAP other implementations for various operating systems exist, including Apple OpenDirectory, RH Directory Server, and OpenLDAP.
+LDAP is often used by internal applications and process.</p>
+</div>
+<div class="paragraph">
+<p>The cornerstone of an AD environment is the Domain Controller (DC).
+DCs stores directory information about Users, Groups, Computers, Policies, and more.
+They respond to auth requests for the domain (network) they are supporting.
+A standard network will have multiple DCs with fail-over in place incase something goes wrong.</p>
+</div>
+<div class="paragraph">
+<p>For many environments, AD is the mechanism used for authentication, authorization, and accounting.
+As many services have migrated to the web, the need to access AD from anywhere has become increasingly important.
+This has kindled the growth of Azure Active Directory, a cloud-based version of active directory.
+Increasingly we are seeing deployments that utilize cloud-based resources instead of local DCs.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mantraps">7.1.6. Mantraps</h4>
+<h4 id="_privileged_identity_management_pim">7.3.2. Privileged Identity Management (PIM)</h4>
+<div class="paragraph">
+<p>Privileged Identity Management (PIM) is a method of managing access to resources such as locations, commands, audit reports, and services.
+PIM aims to provide more granular access control.
+By recording more information about access it allows for better reporting regarding suspicious behavior and anomalies.
+PIM is used in the Windows operating system and for many Microsoft Azure services.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_privileged_access_management_pam">7.3.3. Privileged Access Management (PAM)</h4>
+<div class="paragraph">
+<p>Privileged Access Management (PAM) is a framework for safeguarding identities with advanced capabilities, such as superusers in a *NIX system.
+PAM is common in the Linux world, where it is used to control how administrators log in.
+PAM supports many more features than the older "become root and perform admin tasks" model.
+With PAM passwords can be set to expire, better auditing can be put in place, and privilege escalation can be made temporary.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_identity_and_access_management_iam">7.3.4. Identity and Access Management (IAM)</h4>
+<div class="paragraph">
+<p>Identity and Access Management is a framework for managing digital identities.
+IAM manages the user database, logs when users sign in and out, manages the creation of groups or roles, and allows for the assignment and removal of access privileges.
+Many different groups offer IAM frameworks, the most famous of which may be Amazon Web Systems (AWS) which use it for controlling access to the infrastructure as a service (IaaS) technologies they offer.</p>
+</div>
+<div class="paragraph">
+<p>IAM often makes use of PIM and PAM to accomplish these goals.
+A well-implemented, thorough IAM framework can work across operating systems and handle many different types of resources.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_linux_file_permissions">7.3.5. Linux File Permissions</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_linux_acls">7.3.6. Linux ACLs</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_ssh_keys">7.3.7. SSH Keys</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_sessions">7.3.8. Sessions</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_cookies">7.3.9. Cookies</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_single_sign_on_sso">7.3.10. Single Sign On (SSO)</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_security_assertion_markup_language_saml">7.3.11. Security Assertion Markup Language (SAML)</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_openid_connect_and_oauth">7.3.12. OpenID Connect and OAuth</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_kerberos">7.3.13. Kerberos</h4>
+
+</div>
+<div class="sect3">
+<h4 id="_tokenization">7.3.14. Tokenization</h4>
 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_lab_linux_file_permissions">7.2. Lab: Linux File Permissions</h3>
+<h3 id="_lab_linux_file_permissions">7.4. Lab: Linux File Permissions</h3>
 <div class="paragraph">
 <p>In this lab we are going to explore UNIX style file permissions and determine what they can do and why they are limited.
 Finally we will see how Linux ACLs provide more flexibility in assigning permissions.</p>
@@ -4202,7 +4338,7 @@ $ exit</code></pre>
 <div class="paragraph">
 <p>Using your first name (all lowercase) add yourself as a user and create a home directory for yourself.
 Set the permissions such that only you can view the contents.
-Show the permissions of the home directory and demonstrate that another users <em>cannot</em> view its contents.
+Show the permissions of the home directory and demonstrate that another user <em>cannot</em> view its contents.
 Take a screenshot showing all of this and submit this as one of your deliverables.</p>
 </div>
 </td>
@@ -4286,7 +4422,7 @@ other::---</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_review_questions_6">7.3. Review Questions</h3>
+<h3 id="_review_questions_6">7.5. Review Questions</h3>
 
 </div>
 </div>

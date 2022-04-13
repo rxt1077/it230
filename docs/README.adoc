@@ -1,0 +1,64 @@
+= Computer Systems Security: Planning for Success
+
+This text uses the https://asciidoctor.org/[AsciiDoctor] text publishing toolchain to generate HTML5 output.
+https://docs.asciidoctor.org/diagram-extension/latest/[Asciidoctor-diagram] is also used to generate many of the diagrams used throughout the text.
+Finally, https://www.docker.com/[Docker] is used to provide the build environment.
+What follows are directions for building the environment, generating the text, previewing the text, and distributing the text:
+
+== Build
+
+These directions assume that Docker is downloaded and installed and the user is familiar with working at the command line.
+
+Start by cloning the git repository to a directory where you have read/write privileges:
+
+[source, console]
+----
+$ git clone https://github.com/rxt1077/it230
+$ cd it230
+----
+
+We can now use Docker Compose to build the `doc-build` container which will have a working Ruby and Rust environment as well as all the dependencies needed to generate the text.
+This step can take a significant amount of time and generate a lot of output (not shown):
+
+[source, console]
+----
+$ docker-compose build
+----
+
+== Generate
+
+All major commands are run through Ruby's Rake system (see `Rakefile` in this directory) and run on the `doc-build` container.
+The default command is to generate the HTML5 text in the `output` directory:
+
+[source, console]
+----
+$ docker-compose run doc-build rake
+Creating docs_doc-build_run ... done
+mkdir -p output/images
+cp images/anonymous.svg images/arp.svg images/biometric.jpg images/btc.svg images/castle.jpg images/cbc.svg images/cc.png images/cover.svg images/ctr.svg images/db-locked
+.svg images/dh.svg images/ecb.svg images/gcm.svg images/hats.png images/https.png images/letsencrypt.svg images/smurf.png images/snmp.png images/wannacry.png output/image
+s
+----
+
+This generates/copies over the images and the single HTML file, `index.html`.
+
+== Preview
+
+Ruby WEBRick can be used to temporarily serve the file through the `server` rake command:
+
+[source, console]
+----
+$ docker-compose run --service-ports doc-build rake server
+Creating docs_doc-build_run ... done
+[2022-04-13 00:33:56] INFO  WEBrick 1.7.0
+[2022-04-13 00:33:56] INFO  ruby 3.1.2 (2022-04-12) [x86_64-linux]
+[2022-04-13 00:33:56] INFO  WEBrick::HTTPServer#start: pid=1 port=8080
+----
+
+You should now be able to go to http://localhost:8080 in a web browser and view the output.
+Once you are done you can type Ctrl-C in the console to stop the server.
+
+== Deploy
+
+The contents of the `output` folder can now be copied to a web server, or you can set up the `deploy` command in `Rakefile` to use rsync to do it automatically.
+Currently the `deploy` command syncs with https://web.njit.edu/~rxt1077/security where the text is hosted.
