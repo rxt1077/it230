@@ -1,3 +1,4 @@
-Compress-Archive -Force -Path nmap/ -DestinationPath nmap.zip
-Compress-Archive -Force -Path scapy/ -DestinationPath scapy.zip
-Compress-Archive -Force -Path log4j/ -DestinationPath log4j.zip
+rm *.zip
+tar.exe -a -c -f nmap.zip nmap
+tar.exe -a -c -f scapy.zip scapy
+tar.exe -a -c -f log4j.zip log4j
