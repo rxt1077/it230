@@ -1,4 +1,6 @@
 require 'asciidoctor'
+require 'asciidoctor-epub3'
+require 'asciidoctor-pdf'
 require 'asciidoctor-diagram'
 require 'webrick'
 
@@ -23,6 +25,31 @@ task :html5 => [:images] do
   )
 end
 
+desc 'Builds the epub3 version of the book'
+task :epub3 => [:dirs] do
+  Asciidoctor.convert_file(
+    'index.adoc',
+    safe: :unsafe,
+    backend: 'epub3',
+    to_file: "#{output}/security.epub"
+  )
+end
+
+desc 'Builds the PDF version of the book'
+task :pdf => [:dirs] do
+  Asciidoctor.convert_file(
+    'index.adoc',
+    safe: :unsafe,
+    backend: 'pdf',
+    to_file: "#{output}/security.pdf",
+  )
+end
+
+desc 'Builds a zip file of the contents of the output directory'
+task :zip do
+  sh "cd #{output}; zip -r security.zip *"
+end
+
 desc "Runs an HTTP server to serve the /docs/#{output} directory"
 task :server do
   server = WEBrick::HTTPServer.new :Port => 8080, :DocumentRoot => "/docs/#{output}"
@@ -35,4 +62,4 @@ task :deploy do
   sh "rsync --delete -av #{output}/ rxt1077@afs22.njit.edu:public_html/security/"
 end
 
-task :default => [:html5]
+task :default => [:html5, :epub3, :pdf, :zip]

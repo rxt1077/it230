@@ -1,12 +1,6 @@
-= Vulnerability Management and Compliance
+= Vulnerability Management and Compliance (WIP)
 
-== Review
-
-=== Labs
-
-.Scanning with Nessus
-[lab]
---
+== Labs: Scanning with Nessus
 
 In this lab we will be downloading the Nessus vulnerability scanner and using it to scan a machine.
 https://www.tenable.com/products/nessus/nessus-essentials[Click here to register for an activation code and receive a link to download Nessus essentials.]
@@ -43,5 +37,3 @@ What mitigation steps could you take to eliminate these vulnerabilities?
 In the _VPR Top Threats_ tab what is the assessed threat level?
 What is _predictive prioritization_ and why does Nessus use it?
 ====
-
---

@@ -1,0 +1,93 @@
+= Virtualization (WIP)
+
+Information Technology has seen massive growth in the adoption of virtualization as the underpinning of dynamic and robust systems.
+This shift from bare-metal resources to virtual resources provides its own unique security challenges and considerations.
+As the field changes, it is important for anyone working in cybersecurity to not only understand how these systems work, but also be able to approach their implementation with a security-first mindset.
+
+== Methods
+
+Virtualization is the act of using virtual computing resources as opposed to the actual resources directly.
+For example, you may run a program on a virtual version of a computer, emulating the processor, memory, etc., instead of running the program directly on the actual hardware.
+This offers some advantages in that you can limit the resources the program uses or run multiple programs in isolated environments without needing to significantly change the program itself.
+There are a few ways that virtual computing is typically accomplished:
+
+=== Virtual Machines
+
+[svgbob, vm, width=200, float=right]
+....
+  +-----------------+
+  | Actual Hardware |
+  |  "(bare metal)" |
+  +-----------------+
+           |
+           V
++---------------------+
+|       Host OS       |
+| +-----------------+ |
+| |    OS Kernel    | |
+| +-----------------+ |
+|          |          |
+|          V          |
+| +-----------------+ |
+| |  OS Userspace   | |
+| +-----------------+ |
++---------------------+
+           |
+           V
+  +-----------------+
+  |   VM Software   |
+  +-----------------+
+           |
+           V
++---------------------+
+|      Guest OS       |
+| +-----------------+ |
+| |    OS Kernel    | |
+| +-----------------+ |
+|          |          |
+|          V          |
+| +-----------------+ |
+| |  OS Userspace   | |
+| +-----------------+ |
++---------------------+
+           |
+           V
+  +-----------------+
+  |   Application   |
+  +-----------------+
+....
+
+A virtual machine is a resource that uses software to _pretend_ to be an entire physical computer.
+Virtual machines emulate hardware on which a _guest_ operating system is installed.
+The operating system of the machine _running_ the virtual machine is referred to as the _host_ operating system.
+
+Virtual machines afford a great deal of flexibility in how something is run.
+The machine can be paused, restarted, or even have snapshots of its current state stored.
+Some virtual machines do not even required elevated privileges to run, meaning you can emulate a privileged environment within an unprivileged one.
+This makes them a great choice for sandboxing untrusted programs.
+
+Unfortunately virtual machines are quite resource intensive due to the fact they require virtualizing the entire operating system.
+This resource use problem and the increasing popularity of virtualization led to the creation of more light-weight solutions such as containers.
+
+=== Containers
+
+=== Container Orchestration Systems
+
+=== IaaS
+
+=== PaaS
+
+=== SaaS
+
+== Cloud Computing
+
+=== Public
+
+=== Private
+
+=== Hybrid
+
+=== Multi-Cloud
+
+== Serverless Solutions
+

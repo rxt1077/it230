@@ -2,6 +2,7 @@
 Ryan Tolboom <Ryan.Tolboom@njit.edu>
 :icons: font
 :imagesdir: images
+:diagram-cachedir: .asciidoctor/diagram
 :toc: left
 :stylesheet: ubuntu.css
 
@@ -14,6 +15,9 @@ Ryan Tolboom <Ryan.Tolboom@njit.edu>
 ifdef::backend-html5[]
 
 image::cover.svg[width=50%, align=center]
+
+[.text-center]
+link:security.epub[ePub] | link:security.pdf[pdf] | link:security.zip[zip]
 
 endif::backend-html5[]
 
@@ -40,3 +44,5 @@ include::solutions.adoc[]
 include::access.adoc[]
 
 include::vuln.adoc[]
+
+include::virt.adoc[]

@@ -146,7 +146,7 @@ They may also benefit greatly from staff awareness training even if their job de
 --
 
 [link=https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg]
-image::https://upload.wikimedia.org/wikipedia/commons/0/05/CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg[width=200, float=left]
+image::cctv.jpg[width=200, float=left]
 
 Cameras afford the operator an "always on" view of a location.
 Awareness that all activity is being recorded can persuade attackers to aim for an easier target or not continue with their nefarious actions.

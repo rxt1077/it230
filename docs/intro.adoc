@@ -2,7 +2,7 @@
 
 == Managing Risk
 
-image::db-locked.svg[width=200, float=left]
+image::db-locked.png[width=200, float=left]
 
 _Information security_ (infosec) is largely the practice of preventing _unauthorized access_ to data.
 Unauthorized access is when an actor gains access to data that they do not have the permissions to access.
