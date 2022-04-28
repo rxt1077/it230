@@ -30,9 +30,61 @@ There are many popular products for MFA, most of which are based on the time bas
 Google Authenticator and Authy are each phone applications which generate codes from a cryptographic seed which is synced with the verifying system.
 RSA IDs generate similar codes on a dedicated hardware device.
 
-////
 === MAC, DAC, RBAC, and ABAC
-////
+
+There are several different authorization models that can be used.
+Mandatory Access Control (MAC) requires all objects (files, directories, devices, etc.) to have a security label that identifies who can access it and how.
+This is a particularly stringent form of access control which requires a great deal of effort to implement and maintain, but results in a high level of security.
+Discretional Access Control (DAC) simplifies things by allowing owners of objects to determine which permissions groups/users should be given to that object.
+This offers great flexibility and ease of implementation, but can result in a less secure environment if the owner of the object is compromised.
+Role-Based Access Control (RBAC) builds off of DAC uses a core set of roles within a system to detemine who has different levels of access to objects.
+RBAC is a common and flexible model which can be intelligently used to implement DAC or MAC.
+Attribute-Based access control (ABAC) is a newer model that builds off of RBAC and uses more general attrbutes instead of just roles.
+ABAC can determine who has different levels of access to objects based on the attributes of the object, the user, the action, or even an external context.
+These attributes can be used together in any way that can be codified into a rule.
+For example, "Give Fred read access to non-classified documents in this folder from 9:00AM to 5:00PM."
+
+.Comparison between DAC, MAC, RBAC, and ABACfootnote:[Khalaf, Emad. (2017). A Survey of Access Control and Data Encryption for Database Security. journal of King Abdulaziz University Engineering Sciences. 28. 19-30. 10.4197/Eng.28-1.2.]
+[cols="1,1,1,1,1"]
+|===
+|Factors |DAC |MAC |RBAC |ABAC
+
+|Access Control to Information
+|Through owner of data
+|Through fixed rules
+|Through roles
+|Through attributes
+
+|Access Control Based on
+|Discretion of owner of data
+|Classification of users and data
+|Classification of roles
+|Evaluation of attributes
+
+|Flexibility fo Accessing Information
+|High
+|Low
+|High
+|Very high
+
+|Access Revocation Complexity
+|Very complex
+|Very easy
+|Very easy
+|Very easy
+
+|Support for Multilevel Database System
+|No
+|Yes
+|Yes
+|Yes
+
+|Used in
+|Initial Unix system
+|The U.S. department of defense
+|ATLAS experiment in CERN
+|The Federal government
+|===
 
 == Physical Access
 
@@ -159,11 +211,20 @@ Cameras are an integral part of most security plans.
 
 --
 
-////
 .CCTV in London
 ****
+The largest deployment of CCTV cameras in the world is currently in London England.
+There are over half a million cameras recording the average Londoner more than 300 times a day.
+This makes London a very interesting case study in the effects of widespread camera use.
+
+It appears that conspicuous cameras can prevent certain types of crime (theft and burglary) but have little effect on crimes of passion (spontaneous and unplanned crimes).
+In aggregate, cameras appear to not have an effect on the overall amount of crime.
+While decreases have occasionally been seen, causation cannot be established.
+
+From a security perspective, we are not only concerned with preventing crimes, but also concerned with tightening our security after a breach has occured.
+The cameras in London have been shown to aid in _solving_ crimes after they have occured.
+This bodes well in a security context where that is a major goal. 
 ****
-////
 
 === Mantraps
 
@@ -235,7 +296,33 @@ Many different groups offer IAM frameworks, the most famous of which may be Amaz
 IAM often makes use of PIM and PAM to accomplish these goals.
 A well-implemented, thorough IAM framework can work across operating systems and handle many different types of resources.
 
-=== Linux File Permissions
+=== Unix File Permissions
+
+From its inception, Unix was designed to be a multi-user environment, and as such, a lot of attention was paid to file permissions.
+Every file in a Unix system has an owner and a group.
+Each file also has permissions for owner, group, and all users.
+Permissions are set using octal numbers where each bit represents read (bit 0: 1), write (bit 1: 2), or execute (bit 2: 4) permission.
+
+[svgbob, target=permissions, format=svg, float=left]
+....
+    Owner         Group         Other
++---+---+---+ +---+---+---+ +---+---+---+
+| r | w | x | | r | w | x | | r | w | x |
++---+---+---+ +---+---+---+ +---+---+---+
+  1   2   4     1   2   4     1   2   4
+ \_________/   \_________/   \_________/
+      '             '             '
+      7             7             7
+....
+
+For example, if you wanted a read and execute permission the number would be 5 (1 + 4).
+Read and write permission would be 3 (1 + 2).
+
+Permissions are specified with the `chmod` command, the first octal number is the permissions for the owner, the second is for the group, and the third is for all user.
+So to change a file to have read, write, and execute permissions for the owner, read permissions for the group, and no permissions for everyone else, the command would be `chmod 710 <filename>` where `<filename>` is the name of your file.
+
+The owner and group of a file can be set with the `chown` command: `chown <owner>.<group> <filename>`.
+If `<group>` is not specified only the owner is changed.
 
 === Linux ACLs
 
