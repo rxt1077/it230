@@ -1,4 +1,4 @@
-= Access Controls (WIP)
+= Access Controls
 
 Access controls seek to provide tools for  _identification_, _authentication_, _authorization_, and _accounting_ with regard to a particular resource.
 While individual controls may provide multiple parts, it is still important to understand what each part represents:
@@ -37,9 +37,9 @@ Mandatory Access Control (MAC) requires all objects (files, directories, devices
 This is a particularly stringent form of access control which requires a great deal of effort to implement and maintain, but results in a high level of security.
 Discretional Access Control (DAC) simplifies things by allowing owners of objects to determine which permissions groups/users should be given to that object.
 This offers great flexibility and ease of implementation, but can result in a less secure environment if the owner of the object is compromised.
-Role-Based Access Control (RBAC) builds off of DAC uses a core set of roles within a system to detemine who has different levels of access to objects.
+Role-Based Access Control (RBAC) builds off of DAC uses a core set of roles within a system to determine who has different levels of access to objects.
 RBAC is a common and flexible model which can be intelligently used to implement DAC or MAC.
-Attribute-Based access control (ABAC) is a newer model that builds off of RBAC and uses more general attrbutes instead of just roles.
+Attribute-Based access control (ABAC) is a newer model that builds off of RBAC and uses more general attributes instead of just roles.
 ABAC can determine who has different levels of access to objects based on the attributes of the object, the user, the action, or even an external context.
 These attributes can be used together in any way that can be codified into a rule.
 For example, "Give Fred read access to non-classified documents in this folder from 9:00AM to 5:00PM."
@@ -81,7 +81,7 @@ For example, "Give Fred read access to non-classified documents in this folder f
 
 |Used in
 |Initial Unix system
-|The U.S. department of defense
+|The U.S. Department of Defense
 |ATLAS experiment in CERN
 |The Federal government
 |===
@@ -93,7 +93,7 @@ For example, "Give Fred read access to non-classified documents in this folder f
 
 image::castle.jpg[width=300, float=right]
 
-An organization's building is often a large ongoing investment and can be an unexpected security asset or weakness.
+An organization's building is a large ongoing investment and is often an unexpected security asset or weakness.
 Most technical security controls can be completely bypassed or disabled if physical security is not taken into account.
 As such, steps must be taken to assure that physical access is limited to protect not only the building and its contents but also the data that is created and stored there.
 
@@ -221,8 +221,8 @@ It appears that conspicuous cameras can prevent certain types of crime (theft an
 In aggregate, cameras appear to not have an effect on the overall amount of crime.
 While decreases have occasionally been seen, causation cannot be established.
 
-From a security perspective, we are not only concerned with preventing crimes, but also concerned with tightening our security after a breach has occured.
-The cameras in London have been shown to aid in _solving_ crimes after they have occured.
+From a security perspective, we are not only concerned with preventing crimes, but also concerned with tightening our security after a breach has occurred.
+The cameras in London have been shown to aid in _solving_ crimes after they have occurred.
 This bodes well in a security context where that is a major goal. 
 ****
 
@@ -248,7 +248,7 @@ This bodes well in a security context where that is a major goal.
 ....
 
 A mantrap is a physical access control that requires one person at a time enter through a door.
-Also known as air locks, sally ports, or access control vestibules, mantraps are used to prevent tailgaiting, or following another person through a secured door.
+Also known as air locks, sally ports, or access control vestibules, mantraps are used to prevent tailgating, or following another person through a secured door.
 These devices are often used with keycards to ensure that only people who are supposed to have access to a building can get in.
 
 == Network Access
@@ -266,7 +266,7 @@ LDAP is often used by internal applications and process.
 The cornerstone of an AD environment is the Domain Controller (DC).
 DCs stores directory information about Users, Groups, Computers, Policies, and more.
 They respond to auth requests for the domain (network) they are supporting.
-A standard network will have multiple DCs with fail-over in place incase something goes wrong.
+A standard network will have multiple DCs with fail-over in place in case something goes wrong.
 
 For many environments, AD is the mechanism used for authentication, authorization, and accounting.
 As many services have migrated to the web, the need to access AD from anywhere has become increasingly important.
@@ -324,23 +324,118 @@ So to change a file to have read, write, and execute permissions for the owner, 
 The owner and group of a file can be set with the `chown` command: `chown <owner>.<group> <filename>`.
 If `<group>` is not specified only the owner is changed.
 
-=== Linux ACLs
+=== ACLs
+
+Access Control Lists (ACL) are used to permit or deny access based on a characteristic.
+They tend to be based on a simple characteristic and either deny access to anyone not on the list, _allowlist_, or deny access to anyone who _is_ on the list, _denylist_.
+
+ACLs used in networking and typically filter based on IP address.
+You can find examples of ACLs in most firewall products as well as in Amazon Web Services (AWS) Virtual Private Cloud (VPC).
+
+Filesystem ACLs apply the same concept to files.
+Linux uses fileystem ACLs to permit or deny access in a more nuanced way than possible with <<Unix File Permissions>>.
 
 === SSH Keys
 
-=== Sessions
+Secure Shell Server (SSH) supports the use of asymmetric encryption keys for authentication.
+Most severs support RSA, DSA, and ECDSA keys, with RSA being the most common.
+An SSH server maintains a list of authorized keys, typically in `~/.ssh/authorized_keys`, that can be used to connect to the server.
+When a client connects, the SSH server issues a challenge asking the client to sign a random piece of data using their private key.
+If the private key matches the public key stored in the `authorized_keys` file, the user is logged in.
 
-=== Cookies
+SSH keys have the advantage of being easier to use as the user doesn't need to remember and type in a password.
+For this reason, keys are often used for authentication when running protocols over SSH such a https://git-scm.com/[git].
+Keys also have the advantage of possibly thwarting MitM attacks.
+While a password can be easily stolen by a malicious actor impersonating an SSH server, authentication via key will only transmit a signed bit of random data.
+This bit of data is useless to the MitM.
+
+=== Sessions and Cookies
+
+HTTP sessions can also be used to control access to a resource.
+This is often employed in web applications.
+Upon successful sign-in, a user is given a cookie with a cryptographically tamper-resistant session ID.
+Every request the user makes to that site will include that cookie.
+Eventually the session will time out and the user will make a request that is denied based on their session ID no longer being valid.
+Typically the website will redirect them from the protected resource to a login page where they can log in again.
+
+Website cookies may also be used to store user preferences or the current state of the application.
+A cookie could list the items currently in a users shopping cart or specify whether or not the user prefers dark mode.
+Cookies have been a target of scrutiny as they can be used in attacks.
+If cookies can be accessed by an outside application or by a separate malicious tab in a web browser, then can be used to gain access to a users session.
 
 === Single Sign On (SSO)
 
-=== Security Assertion Markup Language (SAML)
+Given the ubiquitous nature of web applications, maintaining separate usernames and passwords can be difficult for users.
+A recent trend has been to support Single Sign On, where one identity provider is used to confirm that users are who they claim to be.
+There are a few protocols that make this possible, including SAML and OAuth.
 
-=== OpenID Connect and OAuth
+SAML stands for Security Assertion Markup Language and is an XML based Single Sign On solution.
+The SAML workflow centers around the SAML identity provider or IDP.
+The following steps take place to grant access to a resource via SAML:
+
+. User accesses a sevice
+. User is redirected to SAML IDP with SAML request
+. User logs in
+. Credentials are verified
+. SAML IDP sends credentials to the service
+
+OpenID is another protocol that allows users to authenticated using a third-party identity provider in a similar fashion to SAML.
+One of the main differences is that OpenID was designed to be decentralized, allowing for multiple IDPs for users to choose from.
+In February 2014 OpenID introduced OpenID Connect (OIDC), a more modern system that allows IDPs to provide information about users via a REST API.
+This move was largely in response to the popularity of OAuth.
+
+OAuth is a method for allowing websites to access parts of a user's profile with the user's permission.
+OAuth is not _technically_ a full-fledged authentication protocol, but it is often used as part of one.
+The following diagram highlights the differences between OpenID authentication and an OAuth flow:
+
+image::oauth.svg[width=800, align=center, link=https://www.google.com]
 
 === Kerberos
 
+Kerberos is an authentication protocol for client server connections.
+It was developed by MIT in the 1980s and is most largely deployed on Windows networks, but many Linux distributions support using it for authentication as well.
+Kerberos makes extensive use of time-based tickets and as such all client participating must have their clocks in sync.
+When functioning correctly, Kerberos allows for full authentication on an untrusted network.
+
+Kerberos makes use of many different services and concepts to perform its duties.
+Some of these services may run on the same machine and they are almost always abbreviated:
+
+Authentication Server (AS):: performs the authentication step with clients
+Ticket-Granting Service (TGS):: service which creates and signs tickets 
+Ticket-Granting Tickets (TGT):: time stamped and encrypted (with the TGS secret key) ticket that grants the ability to create tickets and sessions for services
+Key Distribution Center (KDC):: runs the TGS and grants TGTs
+Service Principle Name (SPN):: name of a service that uses Kerberos authentication
+
+To sign in and client reaches out to the AS which gets a TGT from the TGS running on the KDC and gives it to the client.
+The client gets the SPN of the service it wants to utilize and sends it along with the TGT to the TGS.
+Assuming the client has permission to access the service the TGS issues a ticket and session to the client.
+The ticket is then used to connect to the service.
+
+.Golden Ticket
+****
+A dangerous attack against Kerberos authentication exists and goes by the name _Golden Ticket_.
+TGTs are the cornerstone of Kerberos security and the Golden Ticket exploit targets them specifically.
+
+Using the fully qualified domain name, security identifier, username of an account, and a KRBTGT password hash an attacker can create their own TGTs that will grant access to services.
+The KRBTGT account is an account that Windows machines use to perform Kerberos administrative tasks.
+The KRBTGT password hash can be obtained from any machine where that account was used if the attacker has complete access to the files on the hard drive.
+This may be done with physical access or through the use of malware on a victim machine.
+
+An attacker will only be able to forge TGTs until the KRBTGT account password is changed, https://blog.quest.com/what-is-krbtgt-and-why-should-you-change-the-password/[so a common remediation strategy is to change the password].
+Ultimately the administrator will need to determine how the KRBTGT password hash was obtained in the first place.
+****
+
 === Tokenization
+
+Tokenization may be used as part of an access control scheme to protect sensitive information.
+Information that would be highly valuable if compromised is replaced with a random token known to the parties involved in the transaction.
+In a typically scenario once the tokens have been established, only the token is sent out over an untrusted network.
+
+Imagine you don't want your credit card number exposed to merchants.
+One solution would be if you used a payment service that issued you a new credit card number for each transaction.
+This credit card number would only be valid for a single transaction and would be billed to your regular credit card (which the payment service would have access to).
+In this case the token is the one-time-use credit card number and the sensitive information is your actual credit card number.
+Payment services like ApplePay and GoogleWallet do exactly this.
 
 == Lab: Linux File Permissions
 
@@ -535,3 +630,11 @@ Take a screenshot showing that the http user has access to each directory.
 When you are done, you can type exit to exit bash and stop the container.
 
 == Review Questions
+
+[qanda]
+What is the difference between authentication and authorization?::
+    {empty}
+Describe three technologies used to control physical access?::
+    {empty}
+Imagine you are writing security policies for a mid-sized corporation. What would you policy be regarding the use of SSH keys? Why?::
+    {empty}
