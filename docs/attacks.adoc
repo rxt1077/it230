@@ -21,7 +21,7 @@ This family of attacks places all parts of the CIA triad at risk.
                    New Connection
 ....
 
-A man in the middle attack is a blanket term applied when an attacker is intercepting communication.
+A man in the middle attack (MitM) is a blanket term applied when an attacker is intercepting communication.
 A typical attack involves eavesdropping and possibly modifying messages between two parties.
 Encryption can be used to mitigate the attack, making it impossible for an attacker to decrypt the messages they are intercepting.
 That being said, particular attention must be paid to the handshaking/key exchange protocol to be sure that an attacker does not gain access to the key(s) being used.
@@ -91,7 +91,7 @@ These attacks can be difficult to detect because they take place within the brow
 
 This family of attacks typically involves a MitM making a copy of the transmission and _replaying_ it to impersonate the victim.
 Logon credentials, simple hashes, and specific commands are sometimes susceptible to this type of attack.
-The solution is to use timestamps, nonces, rotating keys, or a counter to make sure commands cannot be executed outside of context.
+The solution is to use timestamps, nonces (random number for that particular session), rotating keys, or a counter to make sure commands cannot be executed outside of context.
 
 .One-time Passwords
 ****
@@ -157,7 +157,7 @@ Most servers will upgrade an insecure connection, but by intercepting that excha
 
 === MAC Spoofing/MAC Cloning
 
-Most networks expect that a MAC address will correspond to the unique numbers on a NIC, but it is actually quite easy to change.
+Most networks expect that a MAC address will correspond to the unique numbers on a network interface controller (NIC), but it is actually quite easy to change.
 Virtual networking necessitates the ability to use a different MAC address and this feature is built into most modern operating systems.
 MAC spoofing is when an attacker sets their MAC address to the MAC address of another machine on the network in an effort to initiate an attack.
 For example, them may set themselves up as a gateway to launch a MitM attack.
@@ -225,7 +225,7 @@ This means that the sources of packets often need to be authenticated in higher 
 .Smurf Attack
 ****
 
-[link=https://commons.wikimedia.org/wiki/File:Ataque_Smurf_DDoS.png]
+.https://commons.wikimedia.org/wiki/File:Ataque_Smurf_DDoS.png[Smurf DDos Attack] by https://www.imperva.com/learn/ddos/smurf-attack-ddos/?redirect=Incapsula[Imperva Incapsula] used under https://creativecommons.org/licenses/by-sa/4.0/deed.en[CC-BY-SA 4.0]
 image::smurf.png[width=600, align=center]
 
 The Smurf attack is a great example of how spoofed IP addresses can lead to major problems. 
@@ -250,7 +250,7 @@ https://cloud.google.com/dns/docs/dnssec[DNSSEC] can be used to mitigate these a
 
 === LLMNR Hijacking
 
-In this scenario an attacker responds to a LLMNR broadcast and impersonates an authentication server.
+In this scenario an attacker responds to a Link-Local Multicast Name Resolution (LLMNR) broadcast and impersonates an authentication server.
 The unexpecting victim fills in their credentials, which are promptly stolen.
 This attack can be mitigated by disabling LLMNR on the network.
 
@@ -268,7 +268,7 @@ In this situation the RCE is being used as part of a denial of service (DoS) att
 
 === Privilege Escalation
 
-[quote, Judy B. Haxor]
+[quote, Anonymous]
 There is no elevator to root, you have to use an exploit.
 
 [svgbob, escalation, width=200, float=left]

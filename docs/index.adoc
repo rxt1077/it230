@@ -5,6 +5,7 @@ Ryan Tolboom <Ryan.Tolboom@njit.edu>
 :diagram-cachedir: .asciidoctor/diagram
 :toc: left
 :stylesheet: ubuntu.css
+:figure-caption!:
 
 ////
 ++++

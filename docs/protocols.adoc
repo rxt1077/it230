@@ -288,7 +288,8 @@ TLS 1.2, the most common version, is still considered safe if best practices are
 
 === HTTPS
 
-image::https.png[float=right, width=300, link=https://commons.wikimedia.org/wiki/File:HTTPS_icon.png]
+.https://flic.kr/p/qi1eYu[HTTPS “icon”] by https://www.flickr.com/photos/smemon/[Sean MacEntee] used under https://creativecommons.org/licenses/by/2.0/deed.en[CC-BY 2.0]. 
+image::https.png[float=right, width=300]
 
 Hypertext Transfer Protocol Secure (HTTPS) solves the problem of unencrypted traffic by wrapping HTTP requests in TLS.
 HTTPS traffic uses port 443 and is typically signified in a browser with a lock icon in the upper left-hand corner.
@@ -417,7 +418,8 @@ SFTP also supports all SSH authentication methods.
 
 [.float-group]
 --
-image::snmp.png[float=left, link=https://commons.wikimedia.org/wiki/File:SNMP_TRAFFIC1.png, width=400]
+.https://commons.wikimedia.org/wiki/File:SNMP_TRAFFIC1.png[SNMP by Deegii121314] used under https://commons.wikimedia.org/wiki/File:SNMP_TRAFFIC1.png[CC-BY-SA 4.0]
+image::snmp.png[float=left, width=400]
 
 Simple Network Management Protocol is used for gathering information about the workings of a network.
 It is broken into two groups: clients using UDP port 161 (TLS 10161) and a manager using UDP port 162 (TLS 10162).

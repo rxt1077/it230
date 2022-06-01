@@ -260,7 +260,7 @@ There are several ways you can create your cipher blocks and depending on how yo
 [.float-group]
 --
 
-[link=https://commons.wikimedia.org/w/index.php?curid=26434116]
+.https://commons.wikimedia.org/wiki/File:ECB_encryption.svg[WhiteTimberwolf (SVG version)], Public domain, via Wikimedia Commons
 image::ecb.svg[width=600, float=right]
 
 The simplest mode of operation, data is divided into blocks and each block is encoded using a key.
@@ -273,7 +273,7 @@ This makes it easier, given enough data, to determine what the key is.
 [.float-group]
 --
 
-[link=https://commons.wikimedia.org/w/index.php?curid=26434096]
+.https://commons.wikimedia.org/wiki/File:CBC_encryption.svg[WhiteTimberwolf (SVG version)], Public domain, via Wikimedia Commons
 image::cbc.svg[width=600, float=left]
 
 Starting with an initialization vector (IV) each block is XORed with part of the ciphertext of the previous block to create a chain of ciphertext that is constantly changing.
@@ -286,7 +286,7 @@ This is the most common mode of operation, its weaknesses being that the algorit
 [.float-group]
 --
 
-[link=https://commons.wikimedia.org/w/index.php?curid=26434109]
+.https://commons.wikimedia.org/wiki/File:CTR_encryption_2.svg[WhiteTimberwolf (SVG version)], Public domain, via Wikimedia Commons
 image::ctr.svg[width=600, float=right]
 
 Instead of using an IV, CTR uses a nonce (random number that is the same for all blocks) and counter.
@@ -299,7 +299,7 @@ CTR mode solves the problems of ECB while still providing an algorithm that can 
 [.float-group]
 --
 
-[link=https://commons.wikimedia.org/w/index.php?curid=74845777]
+.https://commons.wikimedia.org/w/index.php?curid=74845777[Gallois Counter Mode block diagram with initialization vector, pass:q[<br>]adapted from a diagram by NIST] is used under https://creativecommons.org/publicdomain/zero/1.0/deed.en[CC0 1.0]
 image::gcm.svg[width=400, float=left]
 
 GCM uses a counter like CTR, but does not make use of a nonce.
@@ -349,7 +349,7 @@ ECC is based on the geometry of a pre-determined set of curves (some examples ca
 [.float-group]
 --
 
-[link=https://commons.wikimedia.org/w/index.php?curid=17063048]
+.https://commons.wikimedia.org/wiki/File:Diffie-Hellman_Key_Exchange.svg[Original schema: A.J. Han Vinck, University of Duisburg-EssenSVG version: Flugaal], Public domain, via Wikimedia Commons
 image::dh.svg[width=300, float=right]
 
 Given the slow nature of asymmetric algorithms, often an application such as a VPN will choose to use asymmetric cryptography to exchange a shared secret key and then use that secret key with a faster symmetric algorithm such as AES.
@@ -377,16 +377,16 @@ The certificate store is very important and while users rarely interact with it 
 https://docs.telerik.com/fiddler/configure-fiddler/tasks/trustfiddlerrootcert[This is can be used to create a proxy that can decrypt HTTPS traffic for debugging] or for more nefarious purposes.
 For this reason some applications, Facebook mobiles apps for example, maintain their own certificate store and prevent users from adding root CAs to it.
 
-image::letsencrypt.svg[width=200, float=left]
+image::letsencrypt.svg[width=200, float=left, link=https://letsencrypt.org/]
 
 So how do you get a certificate for your website?
 The customer will generate a Certificate Signing Request (CSR) that includes the public key and their ID.
 The CA will validate that the customer owns the website and build and sign the cert.
-This who process can be automated and performed for free via a  tool called https://letsencrypt.org/[Let's Encrypt].
+This whole process can be automated and performed for free via a tool called https://letsencrypt.org/[Let's Encrypt].
 
 === Blockchain
 
-[link=https://commons.wikimedia.org/w/index.php?curid=68638112]
+.https://commons.wikimedia.org/wiki/File:Bitcoin_logo.svg[Bitboy], Public domain, via Wikimedia Commons
 image::btc.svg[width=150, float=right]
 
 It is hard to talk about cryptography without addressing blockchains, one of the concepts behind cryptocurrencies.

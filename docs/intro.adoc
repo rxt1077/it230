@@ -2,6 +2,7 @@
 
 == Managing Risk
 
+.https://commons.wikimedia.org/wiki/File:Database-locked.svg[RRZEicons], https://creativecommons.org/licenses/by-sa/3.0[CC BY-SA 3.0], via Wikimedia Commons
 image::db-locked.png[width=200, float=left]
 
 _Information security_ (infosec) is largely the practice of preventing _unauthorized access_ to data.
@@ -96,7 +97,7 @@ This can be very important evidence in a court of law.
 While we're dispensing knowledge in the form of three letter acronyms (TLAs), another important acronym to keep in mind is DRY: Don't Repeat Yourself.
 
 [quote, Talking Heads, Psycho Killer]
-Say something once, why say it again?
+Say something once, why say it again?footnote:[Talking Heads. (1977). Psycho killer [song\]. On Talking Heads:77. Sire Records.]
 
 This is of course not entirely literal.
 Just because you've explained something to a coworker once does _not_ mean that you shouldn't explain it again.
@@ -165,7 +166,7 @@ These may be software developers exploiting legal loopholes or possibly even ind
 
 == Threat Actors
 
-.Guy Fawkes Mask
+.https://pixabay.com/illustrations/anonymous-revolution-guy-fawkes-1235169/[Anonymous Revolution Guy Fawkes] is used under https://pixabay.com/service/license/[Pixabay License]
 image::anonymous.svg[width=200, float=right, link=https://en.wikipedia.org/wiki/Guy_Fawkes_mask#Anonymous]
 
 To better be able to manage the risks of a data breach, it helps to be able to identify/understand the attacker or threat actor involved.

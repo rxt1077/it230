@@ -27,7 +27,7 @@ Some examples of identification would be usernames and passwords, token codes, a
 Typically it is suggested to use "something you have and something you know" for example the code in an SMS message to your phone (you have your phone) and a password (you know your password).
 
 There are many popular products for MFA, most of which are based on the time based creation of a code.
-Google Authenticator and Authy are each phone applications which generate codes from a cryptographic seed which is synced with the verifying system.
+https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US&gl=US[Google Authenticator] and https://authy.com/[Authy] are each phone applications which generate codes from a cryptographic seed which is synced with the verifying system.
 RSA IDs generate similar codes on a dedicated hardware device.
 
 === MAC, DAC, RBAC, and ABAC
@@ -44,7 +44,7 @@ ABAC can determine who has different levels of access to objects based on the at
 These attributes can be used together in any way that can be codified into a rule.
 For example, "Give Fred read access to non-classified documents in this folder from 9:00AM to 5:00PM."
 
-.Comparison between DAC, MAC, RBAC, and ABACfootnote:[Khalaf, Emad. (2017). A Survey of Access Control and Data Encryption for Database Security. journal of King Abdulaziz University Engineering Sciences. 28. 19-30. 10.4197/Eng.28-1.2.]
+.Comparison between DAC, MAC, RBAC, and ABACfootnote:[Khalaf, Emad. (2017). A Survey of Access Control and Data Encryption for Database Security. journal of King Abdulaziz University Engineering Sciences. 28. 19-30. 10.4197/Eng.28-1.2. Reproduced under license: CC BY-NC 4.0]
 [cols="1,1,1,1,1"]
 |===
 |Factors |DAC |MAC |RBAC |ABAC
@@ -91,6 +91,7 @@ For example, "Give Fred read access to non-classified documents in this folder f
 [.float-group]
 --
 
+.https://commons.wikimedia.org/wiki/File:Inveraray_Castle_-_south-west_facade.jpg[DeFacto], https://creativecommons.org/licenses/by-sa/4.0[CC BY-SA 4.0], via Wikimedia Commons
 image::castle.jpg[width=300, float=right]
 
 An organization's building is a large ongoing investment and is often an unexpected security asset or weakness.
@@ -115,6 +116,7 @@ A thorough risk assessment is often the first step in planning where to put gate
 [.float-group]
 --
 
+.https://pixabay.com/illustrations/biometrics-access-identification-4503107/[Biometrics Access Identification] is used under https://pixabay.com/service/license/[Pixabay License].
 image::biometric.jpg[width=300, float=left]
 
 Biometric security devices identify people based on on or more physical characteristics.
@@ -197,7 +199,7 @@ They may also benefit greatly from staff awareness training even if their job de
 [.float-group]
 --
 
-[link=https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg]
+.https://commons.wikimedia.org/wiki/File:CCTV_camera_and_iFacility_IP_Audio_speaker_on_a_pole.jpg[CCTV camera and iFacility IP Audio speaker on a pole] by RickySpanish used under https://creativecommons.org/licenses/by-sa/4.0/deed.en[CC-BY-SA 4.0]
 image::cctv.jpg[width=200, float=left]
 
 Cameras afford the operator an "always on" view of a location.
@@ -214,7 +216,7 @@ Cameras are an integral part of most security plans.
 .CCTV in London
 ****
 The largest deployment of CCTV cameras in the world is currently in London England.
-There are over half a million cameras recording the average Londoner more than 300 times a day.
+https://www.caughtoncamera.net/news/how-many-cctv-cameras-in-london/[There are over half a million cameras recording the average Londoner more than 300 times a day.]
 This makes London a very interesting case study in the effects of widespread camera use.
 
 It appears that conspicuous cameras can prevent certain types of crime (theft and burglary) but have little effect on crimes of passion (spontaneous and unplanned crimes).
@@ -388,7 +390,8 @@ OAuth is a method for allowing websites to access parts of a user's profile with
 OAuth is not _technically_ a full-fledged authentication protocol, but it is often used as part of one.
 The following diagram highlights the differences between OpenID authentication and an OAuth flow:
 
-image::oauth.svg[width=800, align=center, link=https://www.google.com]
+.https://commons.wikimedia.org/wiki/File:OpenIDvs.Pseudo-AuthenticationusingOAuth.svg[OpenID vs. Pseudo-Authentication using OAuth] by https://commons.wikimedia.org/wiki/File:OpenIDvs.Pseudo-AuthenticationusingOAuth.svg[Perhelion] used under https://commons.wikimedia.org/wiki/File:OpenIDvs.Pseudo-AuthenticationusingOAuth.svg[CC0 1.0]
+image::oauth.svg[width=800, align=center]
 
 === Kerberos
 
@@ -474,9 +477,9 @@ root@11ce9e5ee80e:/# useradd dave
 ----
 
 Traditional UNIX file permissions support user and group ownership of a file.
-Rread, write, and execute permissions for a file can be set for the user, group, or others.
+Read, write, and execute permissions for a file can be set for the user, group, or others.
 You can view the permissions of a file with the `ls -l` command.
-Let's make home directories for alice, bob, and carol and view the default permissions:
+Let's make home directories for Alice, Bob, and Carol and view the default permissions:
 
 [source, text]
 ----
@@ -540,7 +543,7 @@ drwx------ 2 bob   bob   4096 Oct 28 01:28 bob
 drwx------ 2 carol carol 4096 Oct 28 01:28 carol
 ----
 
-Things look much better, but let's test it and see if dave can view any of the directories:
+Things look much better, but let's test it and see if Dave can view any of the directories:
 
 [source, text]
 ----
@@ -554,7 +557,7 @@ ls: cannot open directory 'carol': Permission denied
 $ exit
 ----
 
-Lastly, lets make sure that alice can view the contents of her home directory:
+Lastly, lets make sure that Alice can view the contents of her home directory:
 
 [source, text]
 ----
@@ -574,7 +577,7 @@ Take a screenshot showing all of this and submit this as one of your deliverable
 ====
 
 Unfortunately traditional UNIX file permissions often do not provide the granularity needed in a modern system.
-For example, lets assume that we wanted a web server to be able to view the contents of alice, bob, and carol's home directories.
+For example, lets assume that we wanted a web server to be able to view the contents of Alice, Bob, and Carol's home directories.
 This is typically done to allow users to place a `public_html` directory in their home directory and set up a personal web space.
 We could do this by making their home directories viewable by others, but then we have the same issue we started with.
 We could also do this by changing the group ownership of their home directories to a group that the web server is part of, but then we open up the home directories to any other users or services that are part of that group.
