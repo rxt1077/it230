@@ -1,1 +1,191 @@
-= Solutions (WIP)
+= Security Solutions (WIP)
+
+To help combat security breaches, many different vendors offer security solutions.
+These may be hardware or software designed to help mitigate a security threat.
+Security solutions may be created in-house, created custom by a third party, or outsourced and offered as a service.
+When evaluating solutions it is important to have a plan and understand the features and possible pitfalls of that product.
+
+== False Positives / Negatives
+
+When a security solution detects a threat, but no threat exists, that is a _false positive_.
+Depending on the complexity of the solution it may utilize a set of rules, indicators of compromise, or possibly even artificial intelligence to trigger its warning system.
+In the case of a solution that creates a lot of false positives, it can be tiring for a team to go through each alert.
+Eventually teams are conditioned to ignore the alerts, making the security solution useless.
+
+The key to lowering the false positive rate of a system is to better tune the rule set used to trigger the warnings.
+A security team may spend time determining a baseline of events and looking for abnormalities that correspond to actual attacks.
+This information can then be used to build a better detection system.
+
+.Webroot Antivirus
+====
+https://www.nbcnews.com/tech/tech-news/popular-antivirus-program-mistakenly-ids-windows-threat-creating-chaos-n750521[In 2017 a popular antivirus service created a bad rule that identified certain Windows operating system files as threats.]
+The antivirus solution quarantined these files, which were critical for the operation of the machine.
+The result was a machine that was unusable.
+
+For 13 minutes, Webroot distributed this rule to its antivirus software shutting down operations on an untold number of machines.
+Fortunately Webroot was able to quickly identify the problem and send out an update which would have allowed the machines to automatically fix the problem.
+Unfortunately their infrastructure for distributing the update quickly became overloaded.
+====
+
+When a security solution fails to identify a threat, this is known as a _false negative_.
+While no solution can ever be 100% effective, false negatives can undermine confidence in a product.
+False negatives may be resolved by a skilled SOC team, closely monitoring what is happening.
+It is also possible to address false negatives through _Layered Security_ a concept that we will cover next.
+
+== Layered Security
+
+[svgbob, layers, float=left]
+....
++---------+----------------------------+
+| Layer 5 |      Human Monitoring      |
++---------+----------------------------+
+| Layer 4 | Intrusion Detection System |
++---------+----------------------------+
+| Layer 3 |          Firewall          |
++---------+----------------------------+
+| Layer 2 |        Antimalware         |
++---------+----------------------------+
+| Layer 1 |         Antivirus          |
++---------+----------------------------+
+| Layer 0 |     Operating System       |
++---------+----------------------------+
+....
+
+Given that a single security solution is never 100% effective it makes sense to approach security in layers and use multiple systems.
+There is often a lot of overlap between solutions and while that may seem inefficient in other fields, in cybersecurity we consider it a benefit.
+By using multiple solutions, sometimes referred to as multi-layered security or defense in depth, you can build a more robust protection against breaches.
+
+Let's take a look at an example to see how layered security can help mitigate the effects of a real-world attack.
+Assume an SOC is supporting a web application on self-hosted machines.
+A malicious actor wishes to exfiltrate data from the web application.
+They begin by testing to see if SQL several different SQL injection attacks yield any results.
+
+A well designed web application should sanitize its inputs and may prevent the queries from making it to the database.
+Similarly an alert team may notice a sudden uptick in SQL queries, far beyond the usual baseline for the application.
+An IDS (Intrusion Detection System) may flag the queries as known SQL injection attacks.
+Assuming the attack makes it past the application, team, and the IDS, it is possible that the database user is configured according to the principle of least privilege and the queries will not be executed due to a lack of permissions.
+
+As you can see, any one of these layers may be fail, but by having multiple layers the chance of an attack occurring is greatly diminished.
+
+== Network Solutions
+
+Many products are available for handling network traffic.
+They are typically marketed as either stand-alone devices, software to install on internal devices, or a subscription service that routes traffic through an external appliance.
+In the age of cloud computing network security as a service is becoming increasingly popular.
+
+=== Proxies
+
+[svgbob, tls-proxy, float=right]
+....
+                 TLS Decrypting Proxy
+
+                       Inspect
+                       /     ^
+                      V       \
+                Re-encrypt  Decrypt
+                      \      ^
+                       v    /
+.------.             .-------.             .--------.
+| User | <---------> | Proxy | <---------> | Server |
+'------'  encrypted  '-------'  encrypted  '--------'
+           traffic               traffic
+....
+
+A proxy typically sits between the users and an external network.
+Proxies and receive and send requests on behalf of a user, allowing for full control over the traffic going out and coming back in.
+
+Proxies can be used for caching, access control, URL filtering, content scanning, and even packet inspection.
+Proxy solutions may be explicit or transparent and are offered by many companies including McAfee, Fortigate, Netsparker, and Palo Alto.
+A typical application of a proxy would be to filter explicit content on a school district network.
+
+Proxies can also be broken into _forward_ and _reverse_ configurations.
+A forward proxy passes requests from a private or internal network to the internet.
+Forward proxies can speed up local requests through caching and validate that the request should be performed.
+Forward proxies are interoperable with standard firewalls and network address translation (NAT).
+
+Reverse proxies take requests from an external source and pass it to an internal service.
+This helps prevent clients from having direct access to internal services.
+Reverse proxies can utilize caching and validate requests as well.
+A reverse proxy can also be configured to work with a firewall.
+Whereas it used to be common practice to place a server in a demilitarized zone (DMZ) outside of a firewall, it is now far more common to employ a reverse proxy to reach that server. 
+
+=== Load Balancers
+
+A common application for reverse proxies is to act as a load balancer for traffic.
+Load balancers distribute work, in the form of external client requests, among the internal resources, typically servers.
+
+For example, if a company has four servers supporting a web application, they may employ a reverse proxy load balancer that takes requests from clients and passes that request to one of the four internal servers.
+Different metrics are used to determine how the servers are utilized including least used (round robin), weighted, least amount of active connections.
+Load balancers optimize bandwidth and increase availability.
+
+=== VPNs
+
+A virtual private network (VPN) is used to encrypt internet traffic between two networks or a client and a network.
+VPNs have become standard procedure for linking remote offices or connecting remote workers.
+Given the growth of working from home, almost all users have become familiar with what a VPN is and what it does.
+
+Site-to-site VPNs are typically used for linking offices together.
+This kind of VPN is on permanently.
+An example would be linking two college campuses: NJIT Newark and NJIT Jersey City.
+In this scenario users on either campus expect to be able to connect securely to services on the opposite campus at all times.
+The traffic is encrypted and carried over the Internet.
+
+Remote access VPNs are used by individuals connecting in to a secure network.
+This kind of VPN is usually stated through a application such as Cisco AnyConnect.
+When the application is running the user is able to securely access internal resources as if they were at the office.
+
+Many vendors offer VPN products including Cisco, Citrix, Fortinet, Palo Alto, and Checkpoint.
+Many open source options also exist for building VPNs including https://openvpn.net/[OpenVPN], https://www.wireguard.com/[WireGuard], and https://linuxhint.com/how-to-implement-ipsec-in-linux/[IPsec].
+
+=== TAP
+
+Sometimes it is necessary for a network or security engineer to monitor what is happening on a particular network segment.
+In this case a network terminal access point (TAP) can be employed.
+A TAP creates a copy of network traffic and forwards it to a particular port on a switch or router.
+
+== EDR
+
+Endpoint Detection and Response (EDR) is used to secure endpoints: servers, workstations, desktops, mobile devices, etc.
+EDR is typically implemented as a host-based incident prevention system (HBIPS), software that runs on the endpoint to monitor and collect data.
+
+These systems will usually watch for indicators of compromise, scan for malware, and can even quarantine or shutdown the endpoint as needed.
+Company hardware is a significant investment for any business and an EDR makes sure that investment is protected.
+Many systems exist for EDR including FireEye, SEP, and CrowdStrike.
+
+== Data Loss Prevention
+
+== IDS/IPS
+
+== Email Solutions
+
+The original protocols used to send/receive email were simple and not designed for the challenges we face today.
+SPAM and phishing emails are unfortunately common and can be addressed with email client add-ons that scan for viruses or use patterns to identify phishing emails.
+Many of these tools are already built into Google's GMail or Microsofts Exchange.
+
+Another large challenge is verifying the sender of an email.
+Currently three common methods exist: Sender Policy Framework (SPF), DomainKeys Identified Mail (DKIM), and Domain-base Message Authentication, Reporting, and Conformance (DMARC).
+
+SPF utilizes TXT records on a DNS domain to verify the IP of a sender.
+When inbound mail is received, the SPF information for the domain of the sender is retrieved, giving an allowed list of IPs.
+For example, NJIT's SPF record currently looks like this:
+
+[source, txt]
+----
+v=spf1 ip4:128.235.251.0/24 ip4:128.235.209.0/24 ip4:66.207.100.96/27 ip4:66.207.98.32/27 ip4:205.139.104.0/22 ip4:206.79.6.0/24 ip4:209.235.101.208/28 ip4:216.185.73.96/27 ip4:69.196.241.0/28 ip4:69.196.242.128/28 ip4:46.183.242.192/28 ip4:202.38.144.192/28 ip4:69.196.236.208/28 ip4:103.225.232.128/28 ip4:37.216.222.128/28 ip4:64.125.200.96/28 ip4:74.217.49.0/25 ip4:69.25.227.128/25 ip4:52.45.50.190 ip4:198.187.196.100 include:_netblock.njit.edu include:spf.sparkmail.org ~all
+----
+
+It is important to note that not all of these IPs belong to NJIT.
+Some may be groups that send emails on NJIT's behalf like mass mailers, web applications, etc.
+When properly configured SPF prevents an attacker from impersonating emails from a domain.
+
+DKIM utilizes public and private key cryptography to ensure that an email originated from a particular SMTP server.
+Public keys for a domain are advertised through a TXT DNS record for a particular domain.
+Private keys are used by the SMTP server for that domain to sign the emails being sent.
+A receiving SMTP server can then verify that the message originated from a valid SMTP server for that domain.
+Private keys can also be distributed to SMTP servers that send emails on behalf of the domain.
+
+DMARC applies policies to the SPF and DKIM validations.
+DMARC answers questions like, "What should I do if a message is from a valid SPF IP but doesn't have a valid DKIM signature?" or "What should I do with a message that looks like SPAM but has a valid DKIM signature?"
+DMARC puts many of the tools used to verify email together in a layered approach to determine whether to pass, quarantine, or block an email.
+
+== SEIM
