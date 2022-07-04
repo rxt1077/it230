@@ -1,4 +1,4 @@
-= Security Solutions (WIP)
+= Security Solutions
 
 To help combat security breaches, many different vendors offer security solutions.
 These may be hardware or software designed to help mitigate a security threat.
@@ -74,6 +74,34 @@ They are typically marketed as either stand-alone devices, software to install o
 In the age of cloud computing network security as a service is becoming increasingly popular.
 
 === Firewall
+
+A firewall is a service/software/device that blocks unwanted traffic and permits wanted traffic.
+Typically a firewall is a barrier between and private network and the Internet.
+
+Software like https://wiki.nftables.org/wiki-nftables/index.php/Main_Page[nftables] can be used to build a firewall on a Linux router for many interior clients.
+Interior clients may also run host-based firewalls such as https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-firewall/windows-firewall-with-advanced-security[Windows Defender Firewall].
+Finally hardware solutions for plug-in firewall devices are available from many vendors including Palo Alto and Cisco.
+Any combination of these solutions may be used.
+
+Firewalls typically employ rules regarding which packets can come in and how to handle them.
+For example a firewall may have a rule to `ALLOW` packets from exterior hosts connecting on port 22.
+This would allow SSH connections.
+Likewise a firewall may have a rule to track internal to external connection requests and perform network address translation (NAT).
+On an IPv4 network it is common to have a firewall also perform NAT.
+
+Next-Gen Firewalls (NGFW) perform the same functions of a standard firewall, but also employ an integrated intrusion prevention system (IPS) to mitigate threats.
+The firewall is a perfect place to perform these actions as it can easily close of connections.
+NGFW often tout artificial intelligence threat monitoring and automatic threat intelligence updating (typically updating attack signatures).
+A NGFW can also easily be built on a Linux device by making use of https://www.snort.org/[an IPS] in conjunction with a netfilter firewall.
+
+Network infrastructure may also make use of a special space _outside_ of a firewall called the Demilitarized Zone (DMZ).
+Servers that need to be directly connected to the Internet are often put in the DMZ so they don't have a deal with restrictive firewall rules.
+These servers may be used to detect malicious activity, monitor incoming traffic, or to handle basic requests such as serving static web pages.
+
+The largest firewall in the world is the Chinese Great Firewall, started in 1998 as a way to prevent outside influence in China.
+It is a system used to block IPs, hijack DNS queries, throttle traffic, and perform MitM decryption.
+The Great Firewall is made of proxies and firewalls performing packet-inspection and content filtering.
+VPNs are often employed within China to circumvent the great firewall and the great firewall is continually updated to attempt to detect and shut down this traffic.
 
 === Proxy
 
@@ -156,7 +184,25 @@ Many systems exist for EDR including FireEye, SEP, and CrowdStrike.
 
 == Data Loss Prevention
 
+Data loss prevention (DLP) solutions aim to stop the exfiltration of sensitive data.
+This could be personally identifying information (PI), medical records, social security numbers (SSNs), credit card numbers, etc.
+Typically DLP either functions on the endpoint and server, data at rest, or on the network, data in motion.
+
+Network DLP solutions may monitor emails or web traffic for sensitive strings, such as SSNs.
+When an SSN is detecting in an email, the email is quarantined and an alert is sent.
+Server and endpoint DLP solutions may periodically scan the system to see if sensitive strings are stored on the system.
+If it is a system that shouldn't have access to sensitive data an alert is sent.
+DLP on an endpoint may also limit tasks like USB usage or bulk data transmitting.
+
 == IDS/IPS
+
+Intrusion Detection Systems and Intrusion Prevention Systems are systems that monitor network traffic to detect/prevent attacks.
+These systems may look for known exploits, such as SQL injection patterns, in the traffic and trigger an alert when detected.
+An intrusion _prevention_ system will take it one step further and actually shut down the connection or kill the offending process.
+
+These systems employ exploit signatures or IDs that are indicators of compromise (IoCs), anomalies, or strange behaviors.
+The power of an IDS/IPS often comes from how up-to-date it's signature database is.
+There are many solutions in the category including Splunk, QRadar, CrowdStrike, and SolarWinds. 
 
 == Email Solutions
 
@@ -192,7 +238,10 @@ DMARC puts many of the tools used to verify email together in a layered approach
 
 == SEIM
 
-[source, svgbob, seim, align=right]
+[.float-group]
+--
+
+[svgbob, seim, float=right]
 ....
            Firewalls ----+  +---- Servers
                          |  |
@@ -209,6 +258,13 @@ Workstations -->| | [S]ecurity and | |<-- Switches
                          |  |
                  IPS ----+  +---- DMARC
 ....
+
+Security and Information Event management is a system for real-time monitoring of security information.
+Typicallty a SIEM system presents a dashboard showing events and has the ability to generate reports or create tickets.
+It may be separate device, software on an internal device, or even a third party service.
+Some examples of popular SIEMs are QRadar, Splunk, and Azure Sentinel.
+
+--
 
 == Lab: Exploiting log4j
 
