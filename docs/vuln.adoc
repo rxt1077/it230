@@ -1,5 +1,122 @@
 = Vulnerability Management and Compliance (WIP)
 
+It is not only good practice, but also a matter of law that information infrastructure be secured.
+In order to better understand what that legalities are and how vulnerabilities can and should be addressed, we need to make sure we understand the key terms used:
+
+Vulnerability:: a weakness or lack of countermeasure that can be exploited by a threat
+Vulnerability Management:: the process of identifying, classifying, and remediating vulnerabilities
+Asset:: something that we are trying to protect
+Threat:: the vulnerability being exploited
+Risk:: the impact of an exploit taking place
+Control/Countermeasure:: actions taken/configurations to remediate vulnerabilities
+
+It may be helpful to discuss these in terms of an analogy.
+A vulnerability would be an unlocked door.
+Vulnerability management would be noticing the door and weighing the risk.
+This may involve looking at the crime rate of the area, determining the value of the items in the house, taking into account how difficult it would be to lock the door, and determining whether you want to lock the door and/or purchase an alarm system.
+An asset would be the things in the house, like a laptop of example.
+Risk would be the impact or a robbery, perhaps $800 for the lost laptop.
+Finally controls/countermeasures would be locking the door, getting a camera system, and/or and alarm system.
+
+== Vulnerability Management
+
+The first step in managing vulnerabilities is gathering information.
+The security team needs to collect:
+
+* Hardware information including the operating systems being used and type of device (laptop, server, IoT, etc.)
+* Network information including IP addresses, MAC addresses, and details about the network segment
+* Domain information including domain name and workgroup
+* Information about applications used and their approval status
+* Information from security tools currently running on the device
+* Owner information for the device
+
+This information can be gathered from endpoint management software and a significant portion of it typically is.
+This step is part of inventory management, the process of keeping a centralized database of asset information.
+Using endpoint agents, network monitoring (often via simple network management protocol, SNMP), and endpoint scripts, an inventory management system can keep track of the last date a user was logged in, the operating system being used, the applications installed and their install dates, and the network segment the device is on.
+Good inventory management is required for good vulnerability management. 
+
+Scans can also be used to find vulnerabilities.
+Vulnerability scans can be run internally and externally either under a privileged or unprivileged account.
+Scans are typically scheduled and run per network segment at times when they will be least intrusive.
+These scans will generate reports or use dashboards to keep the security team notified if any vulnerabilities are found.
+
+Scripts or third party programs can also be used to monitor specific endpoints.
+These scripts may perform ICMP, SNMP, TCP/UDP, or HTTP checks.
+Often they are specific to the device being monitor.
+For example, if we have an internal web server that has had a directory traversal vulnerability in the past we might write a script to perform GET requests for vulnerable URLS and return an alert if they succeed.
+This kind of bespoke monitoring is a key aspect of vulnerability management.
+
+=== CVEs
+
+.https://www.cve.org/[CVE Logo] is used under fair use
+image::cve.svg[width=400, float=left]
+
+Vulnerabilities are classified/published in a US national vulnerability database operated by the MITRE corporation.
+The database is known as Common Vulnerabilities and Exposures or CVE for short.
+Typically these vulnerabilities are reported by vendors or researchers, vetted by MITRE, and finally given a number.
+A typical CVE may look like this: CVE-2021-26740.
+This shows the year the vulnerability was disclosed as well as a unique number for that vulnerability in that year.
+
+Security scanners will often report CVEs on systems that are vulnerable.
+The security team can then look up the CVE and find what steps can be taken to mitigate the exploit.
+It's important to note that MITRE and the disclosing vendor may also choose to https://lwn.net/Articles/762512/[_embargo_ a CVE], that is delay its release until after a patch is available.
+This does mean that not _all_ disclosed vulnerabilities are immediately available in the CVE database.
+
+=== CVSS
+
+[svgbob, cvss, float=right]
+....
++---+------------+
+| C |ommon       |
++---+------------+
+| V |ulnerability|
++---+------------+
+| S |coring      |
++---+------------+
+| S |ystem       |
++---+------------+
+....
+
+The Common Vulnerability Scoring System is a system used to assess the severity of exploits and vulnerabilities.
+Once a CVE is created a CVSS is also creating, taking into account the prevalence of the exploit, its ease of use, and its ability to do harm.
+CVSSs use a scale of zero to ten, zero being the least severe and ten being the most severe:
+
+* 0.0: None
+* 0.1-3.9: Low
+* 4.0-6.9: Medium
+* 7.0-8.9: High
+* 9.0-10.0: Critical
+
+CVSSs are researched and maintained by the National Infrastructure Advisory Council (NIAC).
+A CVSS score is a very important tool used in the next phase we will discuss, evaluation. 
+
+=== Evaluation
+
+Once information has been gathered and the threats are understood it is time to perform an evaluation.
+
+A security team needs to take into account the costs of asset.
+If this device was to go down how damaging would that be to the company?
+If it needed to be replaced how much would it cost?
+
+The value of the data also needs to be assessed.
+Is that data sensitive?
+Is it mission critical to the functioning of the company?
+What would happen if we lost this data?
+
+The value of an asset or data to a bad actor also needs to be assessed.
+Is there sensitive data that could be sold?
+Could the leaked data compromise the companies long-term goals?
+Could the data be used to cause an outage?
+
+Legal consequences of a vulnerability should also be assessed.
+Will there be fines or lawsuits if this vulnerability is exploited?
+
+Finally reputational consequences should be evaluated.
+Will there be a loss of customers if this threat is realized?
+Will a breach undermine the trust people place in us?
+
+== Compliance
+
 == Labs: Scanning with Nessus
 
 In this lab we will be downloading the Nessus vulnerability scanner and using it to scan a machine.
