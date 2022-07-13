@@ -207,7 +207,7 @@ COPY index.php /var/www/html/index.php
 This means it will be able to read and write (but not overwrite) in the /var/www/html directory.
 
 Let's download, build, and run this image.
-Download the `malicious.zip` file, unzip it in a directory where you have write access, and navigate to that directory in your shell.
+Download https://github.com/rxt1077/it230/raw/main/labs/malicious.zip[the malicious.zip file], unzip it in a directory where you have write access, and navigate to that directory in your shell.
 
 [source, console]
 ----
