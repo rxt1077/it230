@@ -699,6 +699,7 @@ $6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5
 Submit a screenshot with your lab showing that the output of the openssl command matches the hash in /etc/shadow
 ====
 
+[#crypto_review]
 == Review Questions
 
 [qanda]

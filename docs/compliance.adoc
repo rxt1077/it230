@@ -1,0 +1,260 @@
+= Vulnerability Management and Compliance
+
+It is not only good practice, but also a matter of law that information infrastructure be secured.
+In order to better understand what that legalities are and how vulnerabilities can and should be addressed, we need to make sure we understand the key terms used:
+
+Vulnerability:: a weakness or lack of countermeasure that can be exploited by a threat
+Vulnerability Management:: the process of identifying, classifying, and remediating vulnerabilities
+Asset:: something that we are trying to protect
+Threat:: the vulnerability being exploited
+Risk:: the impact of an exploit taking place
+Control/Countermeasure:: actions taken/configurations to remediate vulnerabilities
+
+It may be helpful to discuss these in terms of an analogy.
+A vulnerability would be an unlocked door.
+Vulnerability management would be noticing the door and weighing the risk.
+This may involve looking at the crime rate of the area, determining the value of the items in the house, taking into account how difficult it would be to lock the door, and determining whether you want to lock the door and/or purchase an alarm system.
+An asset would be the things in the house, like a laptop of example.
+Risk would be the impact or a robbery, perhaps $800 for the lost laptop.
+Finally controls/countermeasures would be locking the door, getting a camera system, and/or and alarm system.
+
+== Vulnerability Management
+
+The first step in managing vulnerabilities is gathering information.
+The security team needs to collect:
+
+* Hardware information including the operating systems being used and type of device (laptop, server, IoT, etc.)
+* Network information including IP addresses, MAC addresses, and details about the network segment
+* Domain information including domain name and workgroup
+* Information about applications used and their approval status
+* Information from security tools currently running on the device
+* Owner information for the device
+
+This information can be gathered from endpoint management software and a significant portion of it typically is.
+This step is part of inventory management, the process of keeping a centralized database of asset information.
+Using endpoint agents, network monitoring (often via simple network management protocol, SNMP), and endpoint scripts, an inventory management system can keep track of the last date a user was logged in, the operating system being used, the applications installed and their install dates, and the network segment the device is on.
+Good inventory management is required for good vulnerability management. 
+
+Scans can also be used to find vulnerabilities.
+Vulnerability scans can be run internally and externally either under a privileged or unprivileged account.
+Scans are typically scheduled and run per network segment at times when they will be least intrusive.
+These scans will generate reports or use dashboards to keep the security team notified if any vulnerabilities are found.
+
+Scripts or third party programs can also be used to monitor specific endpoints.
+These scripts may perform ICMP, SNMP, TCP/UDP, or HTTP checks.
+Often they are specific to the device being monitor.
+For example, if we have an internal web server that has had a directory traversal vulnerability in the past we might write a script to perform GET requests for vulnerable URLS and return an alert if they succeed.
+This kind of bespoke monitoring is a key aspect of vulnerability management.
+
+=== CVEs
+
+.https://www.cve.org/[CVE Logo] is used under fair use
+image::cve.svg[width=400, float=left]
+
+Vulnerabilities are classified/published in a US national vulnerability database operated by the MITRE corporation.
+The database is known as Common Vulnerabilities and Exposures or CVE for short.
+Typically these vulnerabilities are reported by vendors or researchers, vetted by MITRE, and finally given a number.
+A typical CVE may look like this: CVE-2021-26740.
+This shows the year the vulnerability was disclosed as well as a unique number for that vulnerability in that year.
+
+Security scanners will often report CVEs on systems that are vulnerable.
+The security team can then look up the CVE and find what steps can be taken to mitigate the exploit.
+It's important to note that MITRE and the disclosing vendor may also choose to https://lwn.net/Articles/762512/[_embargo_ a CVE], that is delay its release until after a patch is available.
+This does mean that not _all_ disclosed vulnerabilities are immediately available in the CVE database.
+
+=== CVSS
+
+[svgbob, cvss, float=right]
+....
++---+------------+
+| C |ommon       |
++---+------------+
+| V |ulnerability|
++---+------------+
+| S |coring      |
++---+------------+
+| S |ystem       |
++---+------------+
+....
+
+The Common Vulnerability Scoring System is a system used to assess the severity of exploits and vulnerabilities.
+Once a CVE is created a CVSS is also creating, taking into account the prevalence of the exploit, its ease of use, and its ability to do harm.
+CVSSs use a scale of zero to ten, zero being the least severe and ten being the most severe:
+
+* 0.0: None
+* 0.1-3.9: Low
+* 4.0-6.9: Medium
+* 7.0-8.9: High
+* 9.0-10.0: Critical
+
+CVSSs are researched and maintained by the National Infrastructure Advisory Council (NIAC).
+A CVSS score is a very important tool used in the next phase we will discuss, evaluation. 
+
+=== Evaluation
+
+Once information has been gathered and the threats are understood it is time to perform an evaluation.
+
+A security team needs to take into account the costs of asset.
+If this device was to go down how damaging would that be to the company?
+If it needed to be replaced how much would it cost?
+
+The value of the data also needs to be assessed.
+Is that data sensitive?
+Is it mission critical to the functioning of the company?
+What would happen if we lost this data?
+
+The value of an asset or data to a bad actor also needs to be assessed.
+Is there sensitive data that could be sold?
+Could the leaked data compromise the companies long-term goals?
+Could the data be used to cause an outage?
+
+Legal consequences of a vulnerability should also be assessed.
+Will there be fines or lawsuits if this vulnerability is exploited?
+
+Finally reputational consequences should be evaluated.
+Will there be a loss of customers if this threat is realized?
+Will a breach undermine the trust people place in us?
+
+== Compliance
+
+Both business and legal standards have been established to ensure that all parts of the information security CIA triad are protected.
+Taking measures to follow these standards is known as _compliance_.
+This section will outline the details of many important policies and businesses comply with.
+
+=== Compliance Tools
+
+In order to determine if systems are in compliance, compliance audits are performed.
+These may be automated, and may be as simple as endpoint software that periodically scans machines.
+They may be as complex as having an outside team perform penetration testing on a particular site.
+In either case, compliance audits are looking for situations that violate security policies.
+
+_Risk assessment_ is an important part of compliance that determines just how damaging one of the violations discovered may be.
+Risk analysis reports are often generated as a second step in a compliance audit.
+These reports help the company make an informed decision as to what actions should be taken.
+
+Lastly _change controls_ are used to ensure that changes that need to happen are put in place and to track down changes that led to the violations of the security policies.
+By keeping track of how and why a system changes and requiring approvals systems can more from an insecure state to a secure one and hopefully stay that way.
+Change controls should be found in all facets of cybersecurity work.
+
+=== PII/PCI
+
+Personally Identifiable Information (PII) and Payment Card Industry (PCI) compliance is probably the largest sector of compliance.
+PII may be social security numbers (SSNs), first and last names, birthdays, addresses, mother's maiden names, etc.
+PCI related data would be a card holder's name, account number, card expiration dates, security codes, strip/chip data, PINs, or card numbers.
+
+Most of the protocols detailed here are designed to protect this data.
+
+=== PCI DSS
+
+PCI DSS stands for Payment Card Industry Data Security Standards.
+It is mandated by the major credit card companies and maintained by the Payment Card Industry Security Standards Council (PCI SSC).
+
+Coming in at over 100 pages, the DSS are basic rules to protect PCI data.
+They detail network security, vulnerability management, monitoring/testing requirements, and other information security policy.
+
+The standards are are based on levels, which in turn are based on how many credit card transactions a business performs.
+More strict standards are applied to companies that do more business (lower levels).
+The levels are shown below:
+
+* Level 1 - Over six million transactions annually
+* Level 2 - Between one and six million transactions annually
+* Level 3 - Between 20,000 and one million transactions annually
+* Level 4 - Less than 20,000 transactions annually 
+
+=== PHI/HIPPA
+
+Protected Health Information (PHI) is another type of protected data covered by various legal and industry standards.
+PHI may be a medical history, admissions information for medical facilities, prescription information, or health insurance data.
+
+The Health Insurance Portability and Accountability Act (HIPAA) provides standards for how PHI should be handled. 
+In accordance with HIPAA PHI can only be disclosed to certain parties, users have a right to see and correct PHI, and PHI must be securely stored and transmitted.
+
+If you've ever wondered why your health care provider always sends you to a secure portal instead of emailing you the details of your visit, it is because they are dealing with PHI and email is not considered secure.
+
+=== SOX/GLBA
+
+The Sarbanes-Oxley Act (SOX) was passed following the busting of the dotcom bubble to help combat financial fraud.
+SOX details some basic CIA measures (as do most regulations):
+
+Confidentiality:: encryption, data loss prevention
+Integrity:: access control, logging 
+Accessibility:: data retention, audits, public disclosure of breaches
+
+The interesting thing is that these controls also make it harder for a company to lie about its dealings.
+By retaining records for 90 days, tracking changes, and requiring public disclosure, SOX makes it harder for corporations to commit fraud.
+
+The Gram-Leach-Bliley Act (GLBA) is another act designed to protect CIA and provide more information for the customer.
+The GLBA mandates that a financial institution must explain what they do with customer information, offer the customer the right to opt-out, and make sure the vendors they work with are in compliance.
+
+=== GDPR
+
+.https://www.Convert.com/GDPR[Convert GDPR] is used under https://creativecommons.org/licenses/by/2.0/[CC BY 2.0]
+image::gdpr.jpg[width=300, float=left]
+
+The General Data Protection Regulation (GDPR) is a less targeted, but more far-reaching European Union law requiring that customers be notified if they are being tracked.
+For most people, the biggest effect of the GDPR is that they have to sign off on cookies being used by web sites.
+Recall that cookies are used almost exclusively for session management and as such they track visitors to a website.
+
+The GDPR outlines rules for risk assessment, encryption, pseudonym usage, documentation, and audits.
+The GDPR also gives visitors the option to have their customer data forgotten by a website.
+Businesses wishing to operation in the European theater, most world-wide businesses, must make themselves GDPR compliant.
+
+=== US Patriot Act/PRISM
+
+Not all regulations that require compliance are concerned with protecting information.
+Some regulations are designed to specifically weaken confidentiality for spying by government entities.
+
+The US Patriot Act was passed following the 9/11 attacks and among many other things, it required telecom providers to comply with request customer information.
+These could be logs of phone calls, samples of network traffic, or location information.
+
+Later in 2007, the Protect America Act (PAA) expanded on this surveillance requiring more companies to comply with requests for information.
+This act ushered in the PRISM program, uncovered by the Edward Snowden leaks, which forced companies to comply with a world-wide internet surveillance program.
+
+== Lab: Scanning with Nessus
+
+In this lab we will be downloading the Nessus vulnerability scanner and using it to scan a machine.
+https://www.tenable.com/products/nessus/nessus-essentials[Click here to register for an activation code and receive a link to download Nessus essentials.]
+Once you have installed the latest version of Nessus for your OS and completed the registration move on to the next steps.
+
+WARNING: Nessus runs a web interface on localhost with a self-signed certificate, so you will need to accept it to continue.
+
+Run `ipconfig` on a Windows device or `ifconfig` on a Mac to find your Wifi adapter IP address.
+Exchange IP addresses with a friend (you will scan each other) and put your friend's IP into the _Welcome to Nessus Essentials_ dialog.
+When you click _Next_ Nessus will begin the host discovery step, making sure that the IP address you put in actually corresponds to an active host.
+Click the checkbox next to the host once it shows up in _Host Discovery_ and run the scan.
+You'll notice the status is _Running_ while the scan is being performed.
+
+
+[IMPORTANT.deliverable]
+====
+Once the scan is complete, take a look at the summary of vulnerabilities in the _Hosts_ tab.
+How many non-info vulnerabilities are there in each category (Low, Medium, High, Critical)?
+====
+
+[IMPORTANT.deliverable]
+====
+Take a screenshot of the _Vulnerabilities_ tab once the scan is complete.
+====
+
+[IMPORTANT.deliverable]
+====
+Pick two vulnerabilities and describe them _in your own words_.
+What mitigation steps could you take to eliminate these vulnerabilities?
+====
+
+[IMPORTANT.deliverable]
+====
+In the _VPR Top Threats_ tab what is the assessed threat level?
+What is _predictive prioritization_ and why does Nessus use it?
+====
+
+[#compliance_review]
+== Review Questions
+
+[qanda]
+What information needs to be collected by a security team when assessing possible vulnerabilities?::
+    {empty}
+What is the purpose of the CVE database and how does it help a security team?::
+    {empty}
+Give three examples of PII.::
+    {empty}

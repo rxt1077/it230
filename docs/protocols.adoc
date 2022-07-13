@@ -632,6 +632,7 @@ BONUS: How can you test to see if you got it right? What does this say about how
 
 When you are all done poking around, you can exit the shell and run `docker-compose down` to stop `victim` from running in the background.
 
+[#protocols_review]
 == Review Questions
 
 [qanda]

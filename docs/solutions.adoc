@@ -408,6 +408,7 @@ What is the database password?
 What steps would you take to mitigate the risk of a deployed application having this vulnerability?
 ====
 
+[#solutions_review]
 == Review Questions
 
 [qanda]

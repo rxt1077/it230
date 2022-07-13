@@ -632,6 +632,7 @@ Take a screenshot showing that the http user has access to each directory.
 
 When you are done, you can type exit to exit bash and stop the container.
 
+[#access_review]
 == Review Questions
 
 [qanda]

@@ -28,6 +28,8 @@ include::legal.adoc[]
 
 include::ack.adoc[]
 
+include::instruct.adoc[]
+
 :sectnums:
 
 include::intro.adoc[]
@@ -44,6 +46,6 @@ include::solutions.adoc[]
 
 include::access.adoc[]
 
-include::vuln.adoc[]
+include::compliance.adoc[]
 
 include::virt.adoc[]

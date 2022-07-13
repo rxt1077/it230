@@ -1,4 +1,4 @@
-= Virtualization (WIP)
+= Virtualization
 
 Information Technology has seen massive growth in the adoption of virtualization as the underpinning of dynamic and robust systems.
 This shift from bare-metal resources to virtual resources provides its own unique security challenges and considerations.
@@ -13,35 +13,38 @@ There are a few ways that virtual computing is typically accomplished:
 
 === Virtual Machines
 
-[svgbob, vm, width=200, float=right]
+[svgbob, vm, width=400, float=right]
 ....
-  +-----------------+
-  | Actual Hardware |
-  |  "(bare metal)" |
-  +-----------------+
-           |
-           V
-+---------------------+
-|       Host OS       |
-| +-----------------+ |
-| |    OS Kernel    | |
-| +-----------------+ |
-|          |          |
-|          V          |
-| +-----------------+ |
-| |  OS Userspace   | |
-| +-----------------+ |
-+---------------------+
-           |
-           V
-  +-----------------+
-  |   VM Software   |
-  +-----------------+
-           |
-           V
-+---------------------+
-|      Guest OS       |
-| +-----------------+ |
+    Virtual Machine        Container Deployment
+       Deployment
+
+  +-----------------+      +-----------------+
+  | Actual Hardware |      | Actual Hardware |
+  |  "(bare metal)" |      |  "(bare metal)" |
+  +-----------------+      +-----------------+
+           |                        |
+           V                        V
++---------------------+  +----------------------+
+|       Host OS       |  |       Host OS        |
+| +-----------------+ |  | +------------------+ |
+| |    OS Kernel    | |  | |    OS Kernel     | |
+| +-----------------+ |  | +------------------+ |
+|          |          |  |          |           |
+|          V          |  |          V           |
+| +-----------------+ |  | +------------------+ |
+| |  OS Userspace   | |  | |  OS Userspace    | |
+| +-----------------+ |  | +------------------+ |
++---------------------+  +----------------------+
+           |                        |
+           V                        V
+  +-----------------+    +----------------------+
+  |   VM Software   |    |  Container Runtime   |
+  +-----------------+    +----------------------+
+           |                        |
+           V                        V
++---------------------+     +---------------+
+|      Guest OS       |     |  Application  |
+| +-----------------+ |     +---------------+
 | |    OS Kernel    | |
 | +-----------------+ |
 |          |          |
@@ -71,23 +74,192 @@ This resource use problem and the increasing popularity of virtualization led to
 
 === Containers
 
+A container simplifies the VM by using the same operating system kernel as the host.
+This is accomplished by using special features of the Linux kernel to isolate the container.
+https://man7.org/linux/man-pages/man7/namespaces.7.html[Linux namespaces] controlled by https://man7.org/linux/man-pages/man7/cgroups.7.html[cgroups] allow a daemon (Docker, podman, etc.) to make an environment where the application has limited access to the full system.
+Typically containers are used to run a single application as if it were running all by itself on an actual host.
+This makes it easier to deploy the unique environments that some applications require.
+
+The obvious security concern lies in the isolation.
+What happens if a container has access to another containers resources?
+Given that containers for rival companies may be running next to each other on the same machine in the cloud, what are the risks of having a malicious container access or disrupt another?
+
 === Container Orchestration Systems
+
+Containers also make it easier to restart or scale applications.
+Container orchestration systems leverage this by monitoring containers and bringing them up or down as needed.
+The most popular container orchestration system is https://kubernetes.io/[Kubernetes], developed by Google to manage web applications.
+
+Given the orchestration systems create containers from images as needed, one of the obvious areas of concern is the integrity of those images.
+If an image registry is compromised the orchestration system will still deploy the images stored there typically making the issue far worse.
+Containers can also be hard to manage from a logging standpoint, which may cause compliance issues.
+Whereas a company may have monitored the logs of a single server in the past, they now have to monitor the logs of hundreds of containers running on a server.
 
 === IaaS
 
+IaaS stands for infrastructure as a service and it refers to purchasing VMs or container resources from a provider.
+Some popular IaaS companies are Amazon Web Systems, Microsoft Azure, and Linode.
+Each has some basic security tools and default policies in place to help keep the purchased resources secure, but ultimately most of the security responsibility for making sure the resources are secure lies with the group purchasing the resource. 
+
 === PaaS
+
+PaaS stands for platform as a service and refers to a higher-level service that deploys an application in an already established environment running on an IaaS service.
+Heroku is a great example of this type of service.
+
+Heroku supports many different applications, but they all work in relatively the same manner:
+Imagine there is a git repository of a Django web application that needs to be deployed.
+Heroku will take an Amazon EC2 instance running on AWS, clone the repo, install a Python virtual environment with the needed dependencies, and install a production Django web server on the system.
+
+While the user could take these steps themselves, PaaS makes it easier to deploy an application.
 
 === SaaS
 
+Software as a service (SaaS) is a methodology that we are quite used to.
+SaaS takes a web application and makes it available for a subscription.
+Some examples would be Webex, Dropbox, Google Workspace, etc.
+SaaS is a popular way to monitize software.
+
+One of the security concerns with SaaS is that it consolidates information with a single provider.
+If the server running the software is compromised, the PII of millions of people may be leaked.
+
 == Cloud Computing
+
+IaaS ushered in a shift from on-premises deployments of software to deployments _in the cloud_ or on a IaaS resource.
+Information technology has seen a shift to the cloud and back again with all kinds of mixed options in between.
+A business may choose any of these models depending on their needs.
 
 === Public
 
+Public cloud infrastructure consists of providers like AWS who host huge data centers throughout the world and welcome anyone who can afford it to use their resources.
+Public cloud providers claim to be secure and may even allow for audits (typically through a third party) to meet compliance requests.
+Ultimately the security of the underlying public cloud infrastructure lies in the hands of the provider, something that not all companies are comfortable with.
+
 === Private
+
+Private cloud takes the virtualization and automation technologies used by public cloud providers and hosts them internally.
+By utilizing technologies like https://www.redhat.com/en/topics/openstack[OpenStack] a company can take full control of their deployment and run their own cloud.
+This has some disadvantages for companies that may lack the servers, space, and utilities, but for companies that were already self-hosted, migrated to the public cloud, and now would like more control, private cloud is an excellent choice.
 
 === Hybrid
 
+Hybrid cloud uses both models, public and private, and hosts some things on public IaaS services and other on internal, private IaaS services.
+This can be the best of both worlds, assuming the applications being supported leverage the full advantages of their environment.
+
 === Multi-Cloud
+
+Multi-cloud typically refers to utilizing more than one cloud provider.
+This may be required for applications that wish to remain available even if their cloud provider fails.
+Multi-cloud also avoids the issue of vendor lock-in, where the application is only set up to run on one provider.
+
+From a security standpoint, multi-cloud likely increases the attack surface of an application.
+You now have to be concerned with the vulnerabilities of two providers instead of just one.
+This must be weighed against the benefits of redundancy when deciding whether or not to utilize more than one cloud provider.
 
 == Serverless Solutions
 
+One interesting outcome of the move to virtualized technologies is the advent of _serverless_ solutions.
+A cloud user might not want to have to admin an entire Linux server, or even a Linux container just to run their application.
+They may be willing to design the application to work directly within a system that the cloud provider creates.
+
+https://aws.amazon.com/lambda/[Amazon Lambda] is an example of such a system.
+Users create functions which run seemingly on their own, without worrying about the underlying systems supporting them.
+From a security standpoint, this places a lot of trust in the provider.
+
+== 4C's of Cloud Native Security
+
+When reflecting on how to secure an application running in the cloud, a common tactic is to look at the four Cs involved:
+
+Code::
+    How secure is the code of the application?
+    Is it configured correctly?
+    Is it subject to buffer overflows or other issues?
+    If the code isn't secure, the application never will be
+Container::
+    How secure is the container itself?
+    Are there limits to what the container has access to?
+    Does the Linux distribution on the container have known vulnerabilities?
+    Is the code running as a privileged user on the container?
+Cluster::
+    The container orchestration system is going to run on a cluster, how secure is this cluster?
+    Has the container orchestration system been configured correctly?
+    Is the virtual network being used secure?
+    Are its ingress and egress points mapped and monitored?
+Cloud::
+    Is the cloud provider you are using secure?
+    If they have are compromised everything within them is compromised.
+    Can you trust this computing base?
+
+== Lab: Malicious Containers
+
+While containers have made it much easier to deploy software, they have also made it easier to deploy _malicious_ software.
+Imagine that we have an internal company website, written in PHP and deployed in a Docker container.
+Given the layered nature of the Docker build system, this application is _trusting_ that the images it is building from are secure.
+Take a look at the following `Dockerfile` to see just how easy it is to slip something malicious into the image:
+
+[source, dockerfile]
+----
+FROM php:apache
+COPY shell.php /var/www/html/shell.php
+COPY index.php /var/www/html/index.php
+----
+
+`shell.php` is a shell written in PHP that will execute with the permissions of the web server.
+This means it will be able to read and write (but not overwrite) in the /var/www/html directory.
+
+Let's download, build, and run this image.
+Download the `malicious.zip` file, unzip it in a directory where you have write access, and navigate to that directory in your shell.
+
+[source, console]
+----
+PS C:\Users\rxt1077\it230\labs\malicious> docker build -t malicious . <1>
+[+] Building 32.4s (8/8) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                                                        0.0s
+ => => transferring dockerfile: 134B                                                                                                                                                                        0.0s
+ => [internal] load .dockerignore                                                                                                                                                                           0.0s
+ => => transferring context: 2B                                                                                                                                                                             0.0s
+ => [internal] load metadata for docker.io/library/php:apache                                                                                                                                              32.2s
+ => [1/3] FROM docker.io/library/php:apache@sha256:f1c5dba2a2981f91ec31b9596d4165acd0b46e58382e47622487e130a21e420d                                                                                         0.0s
+ => [internal] load build context                                                                                                                                                                           0.0s
+ => => transferring context: 61B                                                                                                                                                                            0.0s
+ => CACHED [2/3] COPY shell.php /var/www/html/shell.php                                                                                                                                                     0.0s
+ => CACHED [3/3] COPY index.php /var/www/html/index.php                                                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                                                      0.1s
+ => => exporting layers                                                                                                                                                                                     0.0s
+ => => writing image sha256:e1dc75a91b2e269091069b1e3406a496b4bbfd95b066f970062ea8b3a74d8368                                                                                                                0.0s
+ => => naming to docker.io/library/malicious                                                                                                                                                                0.0s
+PS C:\Users\rxt1077\it230\labs\malicious> docker run -p 8080:80 malicious <2>
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.17.0.2. Set the 'ServerName' directive globally to suppress this message
+AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 172.17.0.2. Set the 'ServerName' directive globally to suppress this message
+[Wed Jul 13 02:25:57.082000 2022] [mpm_prefork:notice] [pid 1] AH00163: Apache/2.4.54 (Debian) PHP/8.1.8 configured -- resuming normal operations
+[Wed Jul 13 02:25:57.082089 2022] [core:notice] [pid 1] AH00094: Command line: 'apache2 -D FOREGROUND'
+----
+<1> Build the image and tag it `malicious`, don't foget the `.` at the end!
+<2> Run the `malicious` image and forward local port 8080 to port 80 in the container
+
+Now you should be able to navigate to http://localhost:8080 to see the default web page.
+
+[IMPORTANT.deliverable]
+====
+What's for lunch?
+====
+
+Now based on the information in the Dockerfile, get a shell on the compromised web server.
+
+[IMPORTANT.deliverable]
+====
+Notice of the time off request on the main page doesn't work?
+From your shell, create a new web page on the server named `timeoff.html` with the text `GRANTED`.
+What command did you use to make the new file?
+What happens now when you click on the time off link?
+====
+
+[#virt_review]
+== Review Questions
+
+[qanda]
+Why might a company choose to deploy an application on the public cloud? Does this entail any new security considerations?::
+    {empty}
+Which type of service requires more trust in the provider, IaaS or PaaS? Why?::
+    {empty}
+How do the 4C's of cloud native security reflect the principle of _layered security_? Do any of the layers overlap?::
+    {empty}

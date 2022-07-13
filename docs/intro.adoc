@@ -262,6 +262,7 @@ Come up with at least five different ways of getting free breakfasts and map the
 If you are unfamiliar with _any_ information security attacks, you may want to start by researching attacks and then mapping them to free breakfast ideas.
 ====
 
+[#intro_review]
 == Review Questions
 
 [qanda]

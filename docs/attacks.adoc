@@ -876,6 +876,7 @@ How would https://www.ssh.com/academy/ssh/host-key[managing host keys correctly]
 
 To stop the running containers, you can type Ctrl-C in the terminal running `docker-compose up`, exit out of the victim, and exit out of the attacker.
 
+[#attacks_review]
 == Review Questions
 
 [qanda]
