@@ -48,4 +48,6 @@ include::access.adoc[]
 
 include::compliance.adoc[]
 
+include::incident.adoc[]
+
 include::virt.adoc[]
