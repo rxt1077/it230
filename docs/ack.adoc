@@ -1,5 +1,7 @@
 = Acknowledgements
 
+This material was funded by the Fund for the Improvement of Postsecondary Education (FIPSE) of the U.S. Department of Education for the Open Textbooks Pilot grant awarded to Middlesex College for the Open Textbook Collaborative.
+
 The author would like to thank New Jersey Institute of Technology (NJIT) Open Access Textbooks (OAT) project and the https://middlesexcc.libguides.com/OTCProject[Open Textbook Collaborative Project (OTC)] for making this text possible.
 
 The author would also like to acknowledge the contributions and hard work of:
@@ -8,3 +10,4 @@ The author would also like to acknowledge the contributions and hard work of:
 * Jacob Jones, NJIT 2023
 * Raymond Vasquez
 * Justine Krawiec, Instructional Designer NJIT
+* Alison Cole, Computing & Information Technology Librarian
