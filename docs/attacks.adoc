@@ -175,6 +175,7 @@ This then allows an attacker to capture traffic from other machines on the netwo
 [.float-group]
 --
 
+.https://commons.wikimedia.org/wiki/File:ARP_Spoofing.svg[ARP Spoofing] by 0x5534C, see page for license via Wikimedia Commons
 image::arp.svg[width=500, float=left]
 
 An attacker may also use ARP packets to impersonate another machine on the network, such as a gateway router.
