@@ -462,14 +462,14 @@ For Windows you can use the https://www.microsoft.com/en-us/p/windows-terminal/9
 Gray boxes show the commands as typed into the terminal with typical output where possible.
 Your prompt (the part shown before the command) may differ depending on your OS.
 
-Start by running a BASH shell on an Ubuntu Linux container:
+Start by running a BASH shell on a custom Linux container:
 
 [source,console]
 ----
-ryan@R90VJ3MK:/windir/c/Users/rxt1077/it230/docs$ docker run -it ubuntu bash <1>
+ryan@R90VJ3MK:/windir/c/Users/rxt1077/it230/docs$ docker run -it ryantolboom/hash <1>
 root@8e0962021f85:/# <2>
 ----
-<1> Here we are using the Docker run command to interactively (-it) run bash on Ubuntu
+<1> Here we are using the Docker run command interactively (-it) as this container runs bash by default
 <2> Notice the new prompt showing that we are root on this container
 
 MD5 is a message-digest algorithm that produces significantly better hashes than our Anagram algorithm.
@@ -505,114 +505,56 @@ For our final activity, lets take a look at some of the weaknesses of hashes.
 *Hash Cracking*
 
 Passwords in a Linux system are hashed and stored in the `/etc/shadow` file.
-Let's create a user, give them a simple password, and print out the contents of that file to see how it looks:
+Let's print out the contents of that file to see how it looks:
 
 [source,console]
 ----
-root@8e0962021f85:/# useradd karl
-root@8e0962021f85:/# passwd karl
-New password: <1>
-Retype new password: <2>
-passwd: password updated successfully
-root@8e0962021f85:/# cat /etc/shadow
-root:*:18866:0:99999:7:::
-daemon:*:18866:0:99999:7:::
-bin:*:18866:0:99999:7:::
-sys:*:18866:0:99999:7:::
-sync:*:18866:0:99999:7:::
-games:*:18866:0:99999:7:::
-man:*:18866:0:99999:7:::
-lp:*:18866:0:99999:7:::
-mail:*:18866:0:99999:7:::
-news:*:18866:0:99999:7:::
-uucp:*:18866:0:99999:7:::
-proxy:*:18866:0:99999:7:::
-www-data:*:18866:0:99999:7:::
-backup:*:18866:0:99999:7:::
-list:*:18866:0:99999:7:::
-irc:*:18866:0:99999:7:::
-gnats:*:18866:0:99999:7:::
-nobody:*:18866:0:99999:7:::
-_apt:*:18866:0:99999:7:::
-karl:$6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5KdBTo1vZic00RYAupPRiqyC1d.:18871:0:99999:7::: <3>
+root@7f978dd90746:/# cat /etc/shadow
+root:*:19219:0:99999:7:::
+daemon:*:19219:0:99999:7:::
+bin:*:19219:0:99999:7:::
+sys:*:19219:0:99999:7:::
+sync:*:19219:0:99999:7:::
+games:*:19219:0:99999:7:::
+man:*:19219:0:99999:7:::
+lp:*:19219:0:99999:7:::
+mail:*:19219:0:99999:7:::
+news:*:19219:0:99999:7:::
+uucp:*:19219:0:99999:7:::
+proxy:*:19219:0:99999:7:::
+www-data:*:19219:0:99999:7:::
+backup:*:19219:0:99999:7:::
+list:*:19219:0:99999:7:::
+irc:*:19219:0:99999:7:::
+gnats:*:19219:0:99999:7:::
+nobody:*:19219:0:99999:7:::
+_apt:*:19219:0:99999:7:::
+karl:$y$j9T$oR2ZofMTuH3dpEGbw6c/y.$TwfvHgCl4sIp0b28YTepJ3YVvl/3UyWKeLCmDV1tAd9:19255:0:99999:7::: <1>
 ----
-<1> At this prompt type `test`, it will _not_ be echoed to the screen
-<2> At this prompt retype `test`
-<3> As you can see here the `karl` user has a long hash immediately after their username
+<1> As you can see here the `karl` user has a long hash immediately after their username
 
-One of the problems with hashes are that if people choose simple passwords, like `test`, they can be easily cracked by a program that takes a wordlist of common passwords, generates their hashes, and then checks to see if the hash is the same.
+One of the problems with hashes are that if people choose simple passwords, they can be easily cracked by a program that takes a wordlist of common passwords, generates their hashes, and then checks to see if the hash is the same.
 While a hash may be a one-way function, it is still subject to this type of attack.
-We're going to install a program called https://www.openwall.com/john/[John the Ripper] on our container and do exactly that:
+We're use a program called https://www.openwall.com/john/[John the Ripper] and do exactly that.
+
+John the Ripper is already installed on this container along with a simple wordlist.
+We will tell it to use the default wordlist to try and determine what the password is that matches karl's hash in `/etc/shadow`:
 
 [source,console]
 ----
-root@8e0962021f85:/# apt-get update <1>
-Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
-Get:2 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
-Get:3 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [488 kB]
-Get:4 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.1 kB]
-Get:5 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [1037 kB]
-Get:6 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
-Get:7 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
-Get:8 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [790 kB]
-Get:9 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
-Get:10 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
-Get:11 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
-Get:12 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
-Get:13 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1479 kB]
-Get:14 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [535 kB]
-Get:15 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [33.4 kB]
-Get:16 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1068 kB]
-Get:17 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [6324 B]
-Get:18 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [2668 B]
-Fetched 18.9 MB in 22s (869 kB/s)
-Reading package lists... Done
-root@8e0962021f85:/# apt-get install john <2>
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following additional packages will be installed:
-  john-data
-Suggested packages:
-  wordlist
-The following NEW packages will be installed:
-  john john-data
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 4466 kB of archives.
-After this operation, 7875 kB of additional disk space will be used.
-Do you want to continue? [Y/n] y <3>
-Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 john-data all 1.8.0-2build1 [4276 kB]
-Get:2 http://archive.ubuntu.com/ubuntu focal/main amd64 john amd64 1.8.0-2build1 [189 kB]
-Fetched 4466 kB in 7s (683 kB/s)
-debconf: delaying package configuration, since apt-utils is not installed
-Selecting previously unselected package john-data.
-(Reading database ... 4127 files and directories currently installed.)
-Preparing to unpack .../john-data_1.8.0-2build1_all.deb ...
-Unpacking john-data (1.8.0-2build1) ...
-Selecting previously unselected package john.
-Preparing to unpack .../john_1.8.0-2build1_amd64.deb ...
-Unpacking john (1.8.0-2build1) ...
-Setting up john-data (1.8.0-2build1) ...
-Setting up john (1.8.0-2build1) ...
-----
-<1> We start by updating the available package list
-<2> We then install the program
-<3> You must interactively press `Y` here to continue the installation
-
-Now that we have John the Ripper installed, we can use the default wordlist to try and determine what the password is that matches karl's hash in `/etc/shadow`:
-
-[source,console]
-----
-root@8e0962021f85:/# john --wordlist=/usr/share/john/password.lst /etc/shadow
+root@8e0962021f85:/# john --format=crypt --wordlist=/usr/share/john/password.lst /etc/shadow
 Loaded 1 password hash (crypt, generic crypt(3) [?/64])
 Press 'q' or Ctrl-C to abort, almost any other key for status
-test             (karl)
+<karl's password>             (karl)
 1g 0:00:00:01 100% 0.6211g/s 178.8p/s 178.8c/s 178.8C/s lacrosse..pumpkin
 Use the "--show" option to display all of the cracked passwords reliably
 Session completed
 ----
 
-Given that `test` is in the included common password wordlist, `/usr/share/john/password.lst`, you will quickly find that John the Ripper figures out that karl's password is `test`.
+NOTE: Once john has cracked a password it will not show it if you run it again.
+To _show_ the passwords that have already been cracked you must run the `--show` command with the file: `john --show /etc/shadow`
+
+Given that the password is in the included common password wordlist, `/usr/share/john/password.lst`, you will quickly find that John the Ripper figures out that karl's password.
 John the Ripper can also run incrementally though all the possible character combinations, but it takes much longer.
 To help make these types of attacks more difficult, every hash in `/etc/shadow` is built off of a random number.
 This number is called a _salt_ and is stored with the hash.
@@ -620,83 +562,37 @@ This means that instead of just trying one hash for each word in the wordlist, t
 Modern hash crackers may use https://en.wikipedia.org/wiki/Rainbow_table[rainbow tables] so that all of the possible hashes have already been computed.
 These tables may take up terabytes of disk space, but can make cracking even complicated hashes much simpler.
 
-Let's use https://www.mkssoftware.com/docs/man1/openssl_passwd.1.asp[the openssl passwd command] to show that `test` is the actual password.
-Note that the salt is stored in between the second set of `$` in the karl users line in `/etc/shadow`.
-The number in between the first set of `$` is the version of the hashing algorithm being used, six in our case.
-Your salt _will be different_ so when you execute these commands you will need to copy and paste it accordingly.
+Let's use a custom utility named `crypt` to show that we have the actual password.
+We will start by printing out just the line in `/etc/shadow` that has karl's info.
+We will use the `grep` command to limit out output to things that have `karl` in them:
 
 [source,console]
 ----
-root@e6e96ae9488c:/# apt-get install openssl
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-The following additional packages will be installed:
-  libssl1.1
-Suggested packages:
-  ca-certificates
-The following NEW packages will be installed:
-  libssl1.1 openssl
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 1941 kB of archives.
-After this operation, 5411 kB of additional disk space will be used.
-Do you want to continue? [Y/n] <1>
-Get:1 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 libssl1.1 amd64 1.1.1f-1ubuntu2.8 [1320 kB]
-Get:2 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 openssl amd64 1.1.1f-1ubuntu2.8 [620 kB]
-Fetched 1941 kB in 3s (706 kB/s)
-debconf: delaying package configuration, since apt-utils is not installed
-Selecting previously unselected package libssl1.1:amd64.
-(Reading database ... 4127 files and directories currently installed.)
-Preparing to unpack .../libssl1.1_1.1.1f-1ubuntu2.8_amd64.deb ...
-Unpacking libssl1.1:amd64 (1.1.1f-1ubuntu2.8) ...
-Selecting previously unselected package openssl.
-Preparing to unpack .../openssl_1.1.1f-1ubuntu2.8_amd64.deb ...
-Unpacking openssl (1.1.1f-1ubuntu2.8) ...
-Setting up libssl1.1:amd64 (1.1.1f-1ubuntu2.8) ...
-debconf: unable to initialize frontend: Dialog
-debconf: (No usable dialog-like program is installed, so the dialog based frontend cannot be used. at /usr/share/perl5/Debconf/FrontE
-nd/Dialog.pm line 76.)
-debconf: falling back to frontend: Readline
-debconf: unable to initialize frontend: Readline
-debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/lo
-cal/lib/x86_64-linux-gnu/perl/5.30.0 /usr/local/share/perl/5.30.0 /usr/lib/x86_64-linux-gnu/perl5/5.30 /usr/share/perl5 /usr/lib/x86_
-64-linux-gnu/perl/5.30 /usr/share/perl/5.30 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base) at /usr/share/perl5/Debconf
-/FrontEnd/Readline.pm line 7.)
-debconf: falling back to frontend: Teletype
-Setting up openssl (1.1.1f-1ubuntu2.8) ...
-Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
-root@e6e96ae9488c:/# cat /etc/shadow <2>
-root:*:18866:0:99999:7:::
-daemon:*:18866:0:99999:7:::
-bin:*:18866:0:99999:7:::
-sys:*:18866:0:99999:7:::
-sync:*:18866:0:99999:7:::
-games:*:18866:0:99999:7:::
-man:*:18866:0:99999:7:::
-lp:*:18866:0:99999:7:::
-mail:*:18866:0:99999:7:::
-news:*:18866:0:99999:7:::
-uucp:*:18866:0:99999:7:::
-proxy:*:18866:0:99999:7:::
-www-data:*:18866:0:99999:7:::
-backup:*:18866:0:99999:7:::
-list:*:18866:0:99999:7:::
-irc:*:18866:0:99999:7:::
-gnats:*:18866:0:99999:7:::
-nobody:*:18866:0:99999:7:::
-_apt:*:18866:0:99999:7:::
-karl:$6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5KdBTo1vZic00RYAupPRiqyC1d.:18871:0:99999:7::: <3>
-root@e6e96ae9488c:/# openssl passwd -6 -salt A52NvzxmRoUpGksY test <4>
-$6$A52NvzxmRoUpGksY$b8yzhXN1B4HM5ULw.QTSVB2s8yJuuC1XTtu7i8fopIy/kbIOmhB2LZ8O2oD5KdBTo1vZic00RYAupPRiqyC1d. <5>
+root@7f978dd90746:/# cat /etc/shadow | grep karl
+karl:$y$j9T$oR2ZofMTuH3dpEGbw6c/y.$TwfvHgCl4sIp0b28YTepJ3YVvl/3UyWKeLCmDV1tAd9:19255:0:99999:7:::
 ----
-<1> Don't forget to hit `y`
-<2> `cat` is a command that prints the contents of a file
-<3> My salt is `A52NvzxmRoUpGksY` but yours will be different!
-<4> We know from John the Ripper that the password is `test` if you look at the hash it should match what is in `/etc/shadow`
+
+The first part of the shadow line is the username, karl.
+The next part of the shadown line, immediately following the first colon, is the hash information.
+The characters in between the first set of `$` is the version of the hashing algorithm being used, `y` for yescrypt in our case.
+The characters in between the second set of `$` are the parameters passed to yescrypt which will always be `j9T` for us.
+The characters in between the third set of `$` is your salt.
+Finally the characters in between the fourth set of `$` is the hash.
+
+The `crypt` utility calls the system https://man7.org/linux/man-pages/man3/crypt.3.html[`crypt`] command and prints the output.
+Let's run this utility with the password we've cracked and the first three parts of the hash information from `/etc/shadow`.
+If everything goes well, you should see hash output that matches what is in `/etc/shadow`:
+
+[source,console]
+----
+root@7f978dd90746:/# crypt <karl's password> '$y$j9T$oR2ZofMTuH3dpEGbw6c/y.' <1>
+$y$j9T$oR2ZofMTuH3dpEGbw6c/y.$TwfvHgCl4sIp0b28YTepJ3YVvl/3UyWKeLCmDV1tAd9
+----
+<1> Don't forget to use the actual password you cracked and put the hash info in single quotes
 
 [IMPORTANT.deliverable]
 ====
-Submit a screenshot with your lab showing that the output of the openssl command matches the hash in /etc/shadow
+Submit a screenshot with your lab showing that the output of the `crypt` command matches the hash in /etc/shadow
 ====
 
 [#crypto_review]
