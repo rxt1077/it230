@@ -640,5 +640,5 @@ What is the difference between authentication and authorization?::
     {empty}
 Describe three technologies used to control physical access?::
     {empty}
-Imagine you are writing security policies for a mid-sized corporation. What would you policy be regarding the use of SSH keys? Why?::
+Imagine you are writing security policies for a mid-sized corporation. What would your policy be regarding the use of SSH keys? Why?::
     {empty}
