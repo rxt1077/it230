@@ -562,7 +562,8 @@ This means that instead of just trying one hash for each word in the wordlist, t
 Modern hash crackers may use https://en.wikipedia.org/wiki/Rainbow_table[rainbow tables] so that all of the possible hashes have already been computed.
 These tables may take up terabytes of disk space, but can make cracking even complicated hashes much simpler.
 
-Let's use a custom utility named `crypt` to show that we have the actual password.
+Let's use a custom utility named `https://github.com/rxt1077/it230/blob/main/labs/hash/crypt.c[`crypt`] to show that we have the actual password.
+This utility is already installed on your container.
 We will start by printing out just the line in `/etc/shadow` that has karl's info.
 We will use the `grep` command to limit out output to things that have `karl` in them:
 
@@ -579,8 +580,7 @@ The characters in between the second set of `$` are the parameters passed to yes
 The characters in between the third set of `$` is your salt.
 Finally the characters in between the fourth set of `$` is the hash.
 
-For this lab we will use a simple https://github.com/rxt1077/it230/blob/main/labs/hash/crypt.c[`crypt`] utility which calls the system https://man7.org/linux/man-pages/man3/crypt.3.html[`crypt`] command and prints the output.
-It is already included in the `ryantolboom/hash` image.
+The [`crypt`] utility calls the system https://man7.org/linux/man-pages/man3/crypt.3.html[`crypt`] command and prints the output.
 Let's run this utility with the password we've cracked and the first three parts of the hash information from `/etc/shadow`.
 If everything goes well, you should see hash output that matches what is in `/etc/shadow`:
 
