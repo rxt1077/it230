@@ -579,7 +579,8 @@ The characters in between the second set of `$` are the parameters passed to yes
 The characters in between the third set of `$` is your salt.
 Finally the characters in between the fourth set of `$` is the hash.
 
-The `crypt` utility calls the system https://man7.org/linux/man-pages/man3/crypt.3.html[`crypt`] command and prints the output.
+For this lab we will use a simple https://github.com/rxt1077/it230/blob/main/labs/hash/crypt.c[`crypt`] utility which calls the system https://man7.org/linux/man-pages/man3/crypt.3.html[`crypt`] command and prints the output.
+It is already included in the `ryantolboom/hash` image.
 Let's run this utility with the password we've cracked and the first three parts of the hash information from `/etc/shadow`.
 If everything goes well, you should see hash output that matches what is in `/etc/shadow`:
 
