@@ -489,6 +489,28 @@ ICMP Floods:: Often referred to as pinging, ICMP echo requests can be used to ov
 
 Buffer Overflows/Exploits:: Poorly designed software may fail when it receives unexpected data. This could be something as simple as sending more data than a buffer can hold, or https://en.wikipedia.org/wiki/WinNuke[setting the urgent pointer (URG) on a packet destined for port 139 of a Windows system].
 
+.Remote Shells
+****
+As you have hopefully experienced by completing the labs, Linux systems traditionally have a powerful shell system that uses text commands to control the OS.
+Through the shell you can create, read, update, or delete files, make network connections, configure kernel parameters, install packages, etc.
+In fact, all modern operating systems have shells that can be used to control them.
+On a Windows machine, having access to PowerShell running as an Administrator is all an attacker would need to have complete control over the system.
+Often the outcome of an attack is being able to interact with a shell remotely on the exploited machine.
+
+In this scenario we say the victim is running a _remote shell_.
+Remote shells can run in the background on a victim machine listening on a port for an attacker to connect, but often the exploited machine may not actually have an external IP the attacker can use to connect.
+In these instances a _reverse shell_ is used.
+A reverse shell reaches out from the victim to the attacker and establishes a connection _from the inside_.
+This is more compatible with the firewalls/NAT routers that sit between most devices and the Internet.
+
+In either case having privileged shell access to a machine over a remote connection allows an attacker to basically do anything they want.
+To that end, many tools have sprung up to provide remote shell access.
+A machine may already have a remote shell tool installed, such as an SSH server.
+Barring that https://netcat.sourceforge.net/[Netcat] can be used with any executable to provide access to it over a network.
+https://www.metasploit.com/[metasploit] (a very popular pentesting framework) comes with many payloads, most of which are shells of various types.
+Programs also exist to run shells over ICMP, Discord, IRC, or even DNS!
+****
+
 == Lab: MitM with Scapy
 
 In this lab we will use a fake SSH server, https://github.com/jaksi/sshesame[sshesame], and an interactive packet manipulation program, https://scapy.net/[scapy], to disrupt an ongoing SSH session between victim and server, position ourself in the middle of the traffic, and capture the username and password victim is using.
