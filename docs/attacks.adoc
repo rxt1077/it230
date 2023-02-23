@@ -611,6 +611,9 @@ server_1    | Server listening on :: port 22.
 <1> Notice that attacker has a fake SSH server running in the background
 <2> Notice that server has a legitimate SSH server running in the background
 
+NOTE: If you receive the error `failed to create network scapy_testnet: Error response from daemon: Pool overlaps with other one on this address space` check to see if you have other containers running and stop them.
+You may also need to run `docker network prune` to remove the old networks Docker built.
+
 In the second terminal run `docker-compose run victim bash` and then from the prompt we'll SSH to server using the password "password":
 
 .victim
@@ -625,7 +628,12 @@ You are now logged into 'server' (presumably from 'victim') via SSH for this ass
 Leave this connection open while you experiment with scapy from 'attacker'.
 bf9ebe42a108:~#
 ----
-<1> The password is "password"
+<1> The password is "password". It will not be echoed to the screen as you type it.
+
+NOTE: If for some reason the password will not work and you are sure you are typing it in correctly you can run the following command `docker compose run server passwd` (note it's _passwd_ and not _password_).
+Type in the password twice and it will be reset to whatever you typed.
+What you type will not be echoed to the screen.
+You should now be able to ssh from victim to server with the password you typed in.
 
 In the third terminal we'll start by _executing_ (recall that at this point it's already running sshesame in the background) a BASH shell on attacker and configuring it to accept packets not only for its own IP address, but also for the server's IP address.
 Once traffic is routed to us, this will allow attacker to also respond to packets destined for 172.20.0.5.
