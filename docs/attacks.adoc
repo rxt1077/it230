@@ -630,7 +630,7 @@ bf9ebe42a108:~#
 ----
 <1> The password is "password". It will not be echoed to the screen as you type it.
 
-NOTE: If for some reason the password will not work and you are sure you are typing it in correctly you can run the following command `docker compose run server passwd` (note it's _passwd_ and not _password_).
+NOTE: If for some reason the password will not work and you are sure you are typing it in correctly you can run the following command `docker compose exec server passwd` (note it's _passwd_ and not _password_).
 Type in the password twice and it will be reset to whatever you typed.
 What you type will not be echoed to the screen.
 You should now be able to ssh from victim to server with the password you typed in.
