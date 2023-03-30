@@ -242,12 +242,6 @@ Pick two vulnerabilities and describe them _in your own words_.
 What mitigation steps could you take to eliminate these vulnerabilities?
 ====
 
-[IMPORTANT.deliverable]
-====
-In the _VPR Top Threats_ tab what is the assessed threat level?
-What is _predictive prioritization_ and why does Nessus use it?
-====
-
 [#compliance_review]
 == Review Questions
 
