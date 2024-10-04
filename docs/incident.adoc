@@ -200,47 +200,6 @@ Disclosure is also an important aspect of the reporting phase.
 Both compliance and basic ethics mandate that customers be made aware of any data lost.
 By disclosing the details of an incident you can also other companies aware of what types of attacks are occurring "in the wild."
 
-=== Redundancy
-
-Redundant services can help with continuity by making sure there is always an uncompromised service available.
-The key concepts of redundancy are detailed within the language it uses:
-
-Redundancy:: extra components/services that run in case of failures
-Failover:: the process of turning over to a secondary device
-High availability (HA):: ensures high level of operation performance
-Fault tolerance:: allows a system to continue in the event of a failure
-Single Point of Failure (SPOF):: a single failure that can cause an outage
-
-==== Hot, Cold, & Warm
-
-One typical way to implement redundancy is through the use of hot, cold, and warm sites.
-
-A hot site is a secondary location that is live and replicating in real-time what is happening in production.
-In the case of the primary site going down, a hot site can failover immediately.
-
-A cold site is a secondary location without equipment.
-A cold site will take some time to set up and configure in the case of an outage.
-
-A warm site is a secondary location with all equipment and connectivity.
-The equipment will still need to be turned on and made production ready, but it will not take as long to failover to a warm site as a cold one.
-
-==== RAID
-
-RAID is an interesting case of redundancy that occurs at the server storage level.
-RAID stands for Redundant Array of Inexpensive/Independent Disks and as the name states it uses multiple disks to make reads/writes faster _and_ to be able to recover if one of the disks fails.
-It is important to note that RAID is not a backup.
-Backups are meant to aid in recovery and can be co-located.
-A RAID array is mean to work on a single machine and help mitigate damages cause by disk failures.
-
-RAID has multiple levels, each of which prioritizes a different aspect:
-
-* RAID 0: Data is stripped across multiple disks to make reads/writes faster.
-  If a single disk is lost _the whole array goes down_.
-* RAID 1: Data is mirrored across multiple disks for redundancy.
-  If a single disk is lost the array can be recovered from the other disks.
-* RAID 5: At least three disks are used in a stripped and mirrored fashion such that read/write speeds are increased _and_ if a _single_ disk goes down the array can be rebuilt.
-* RAID 10: A combination of RAID0 and RAID1. 
-
 == MITRE ATT&CK Framework
 
 In the <<Malware>> chapter we covered Lockheed Martin's Cyber Killchain attack analysis framework.

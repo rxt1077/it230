@@ -236,7 +236,7 @@ DMARC applies policies to the SPF and DKIM validations.
 DMARC answers questions like, "What should I do if a message is from a valid SPF IP but doesn't have a valid DKIM signature?" or "What should I do with a message that looks like SPAM but has a valid DKIM signature?"
 DMARC puts many of the tools used to verify email together in a layered approach to determine whether to pass, quarantine, or block an email.
 
-== SEIM
+== SIEM
 
 [.float-group]
 --
@@ -260,7 +260,7 @@ Workstations -->| | [S]ecurity and | |<-- Switches
 ....
 
 Security and Information Event management is a system for real-time monitoring of security information.
-Typicallty a SIEM system presents a dashboard showing events and has the ability to generate reports or create tickets.
+Typically a SIEM system presents a dashboard showing events and has the ability to generate reports or create tickets.
 It may be separate device, software on an internal device, or even a third party service.
 Some examples of popular SIEMs are QRadar, Splunk, and Azure Sentinel.
 
