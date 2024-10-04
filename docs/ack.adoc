@@ -6,7 +6,7 @@ The author would like to thank New Jersey Institute of Technology (NJIT) Open Ac
 
 The author would also like to acknowledge the contributions and hard work of:
 
-* Karl Giannoglou, Adjunct Professor NJIT
+* Karl Giannoglou, University Lecturer NJIT
 * Jacob Jones, NJIT 2023
 * Raymond Vasquez
 * Justine Krawiec, Instructional Designer NJIT
