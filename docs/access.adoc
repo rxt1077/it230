@@ -323,7 +323,7 @@ Read and write permission would be 3 (1 + 2).
 Permissions are specified with the `chmod` command, the first octal number is the permissions for the owner, the second is for the group, and the third is for all user.
 So to change a file to have read, write, and execute permissions for the owner, read permissions for the group, and no permissions for everyone else, the command would be `chmod 710 <filename>` where `<filename>` is the name of your file.
 
-The owner and group of a file can be set with the `chown` command: `chown <owner>.<group> <filename>`.
+The owner and group of a file can be set with the `chown` command: `chown <owner>:<group> <filename>`.
 If `<group>` is not specified only the owner is changed.
 
 === ACLs
@@ -495,14 +495,14 @@ drwxr-xr-x 2 root root 4096 Oct 28 01:28 carol
 The text `drwxr-xr-x` tells us that these files are directories, the owner has read/write/execute permission, the group has read/execute permission, and other users have read/execute permission.
 It is important to note that execute permissions are required for viewing the contents of a directory.
 
-Files owners and a groups are set with the `chown` command, following the format `chown <user>.<group> <filename>`.
+Files owners and a groups are set with the `chown` command, following the format `chown <user>:<group> <filename>`.
 Let's try to use this command to make the home directories of alice, bob, and carol private:
 
 [source, text]
 ----
-root@11ce9e5ee80e:/home# chown alice.alice alice
-root@11ce9e5ee80e:/home# chown bob.bob bob
-root@11ce9e5ee80e:/home# chown carol.carol carol
+root@11ce9e5ee80e:/home# chown alice:alice alice
+root@11ce9e5ee80e:/home# chown bob:bob bob
+root@11ce9e5ee80e:/home# chown carol:carol carol
 root@11ce9e5ee80e:/home# ls -l
 total 12
 drwxr-xr-x 2 alice alice 4096 Oct 28 01:28 alice
