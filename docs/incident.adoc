@@ -331,6 +331,6 @@ Imagine you are responsible for disclosing the details of the attack to affected
 [IMPORTANT.deliverable]
 ====
 Come up with two different groups that should receive a disclosure from Sony as a result of the 2014 breach.
-Write a disclosure email for each of them, detailing what happened, what the response was, and what the effect of the party is.
+Write a disclosure email for each of them, detailing what happened, what the response was, and what the effect on the party is.
 Be sure to keep your audience in mind when determining how much detail and what types of things should be discussed in the email.
 ====
