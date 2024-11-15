@@ -325,7 +325,7 @@ How does the ATT&CK framework differ from the Cyber Killchain Framework? You may
 == Lab: Reporting on the 2014 Sony Pictures Hack
 
 Take a moment to read through the details of the https://en.wikipedia.org/wiki/Sony_Pictures_hack[2014 Sony Pictures Hack].
-Feel free to research an used other sources as well.
+Feel free to research an use other sources as well.
 Imagine you are responsible for disclosing the details of the attack to affected parties shortly after it had occurred.
 
 [IMPORTANT.deliverable]
